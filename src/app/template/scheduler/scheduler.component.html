@@ -1,0 +1,205 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-1">
+    <a class="navbar-brand" href="#">CITCONTROL</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Solicitudes <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Calendario</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Programar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <button class="btn  my-2 my-sm-0 text-white" type="submit">Salir</button>
+        </form>
+    </div>
+</nav>
+
+<div class="container-fluid bg-darken-2">
+    <main class="p-5">
+
+        <ng-container *ngIf="toggle">
+            <div class="row">
+            <div class="col-12 d-flex justify-content-end py-2">
+                <button (click)="toggleScheduler()" class="btn btn-outline-danger"><i class="far fa-calendar-alt"></i></button>
+            </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5 col-md-4 col-lg-4">
+                    <div class="card shadow-lg rounded bg-transparent">
+                        <div class="card-body">
+                            <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-1">Tucumán</button>
+                                <button type="button" class="btn btn-4 text-dark">Salta/Jujuy</button>
+                            </div>
+                            <select class="custom-select custom-select-sm mt-2 btn-1">
+                                <option selected>A programar</option>
+                                <option value="1">Programandas</option>
+                                <option value="2">Canceladas</option>
+                            </select>
+                            <hr>
+                            <div class="items" style="overflow-y: scroll;height: 65vh;">
+                                <div *ngFor="let item of [1,1,1,1,1,1,1,1]" class="card mb-2 custom-card card-green rounded">
+                                    <div class="card-body d-flex  p-0">
+                                        <div class="col-4 p-3">
+                                            <div class="mb-3">
+                                                <i class="fas fa-map-marker"></i> 150km
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-th"></i> 80has
+                                            </div>
+                                        </div>
+                                        <div class="col-8 p-3">
+                                            <div class="d-flex justify-content-between">
+                                                <h6>UP-6875-232</h6>
+                                                <input type="checkbox" class="c-pointer">
+                                            </div>
+                                            <div class="d-flex text-muted">
+                                                <small>
+                                                    <i class="far fa-clock"></i> &nbsp; 22/14/2020
+                                                </small>
+                                            </div>
+                                            <div class="d-flex text-muted mt-2">
+                                                <small>
+                                                    <i class="fas fa-industry"></i> &nbsp; Umbrella Corp. SRL
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-7 col-md-8 col-lg-8">
+                    <div class="card bg-grey vh-96">
+                        <div class="card-body">
+                        <iframe style="height: 100%;" width="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=es&amp;q=Les%20Rambles,%201%20Barcelona,%20Spain+(Mi%20nombre%20de%20egocios)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!toggle">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end py-2">
+                    <button (click)="toggleScheduler()" class="btn btn-outline-success"><i class="far fa-list-alt"></i></button>
+                </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-sm-5 col-md-4 col-lg-4">
+                        <div class="card shadow-lg rounded bg-transparent">
+                            <div class="card-body">
+                                <div class="items" style="overflow-y: scroll;height: 65vh;">
+                                    <div *ngFor="let item of [1,1,1]" class="card mb-2 custom-card card-green rounded">
+                                        <div class="card-body d-flex  p-0">
+                                            <div class="col-4 p-3">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-map-marker"></i> 150km
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-th"></i> 80has
+                                                </div>
+                                            </div>
+                                            <div class="col-8 p-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <h6>UP-6875-232</h6>
+                                                    <input type="checkbox" class="c-pointer">
+                                                </div>
+                                                <div class="d-flex text-muted">
+                                                    <small>
+                                                        <i class="far fa-clock"></i> &nbsp; 22/14/2020
+                                                    </small>
+                                                </div>
+                                                <div class="d-flex text-muted mt-2">
+                                                    <small>
+                                                        <i class="fas fa-industry"></i> &nbsp; Umbrella Corp. SRL
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-sm-7 col-md-8 col-lg-8">
+                        <div class="card bg-grey vh-90">
+                            <div class="card-body">
+                                 <div class="row">
+                                     <div class="col-12 bg-infoX d-flex justify-content-between">
+                                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-secondary">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-secondary">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                          </div>
+                                            <input type="text" class="form-control btn-sm w-50">
+                                            <button class="btn btn-outline-primary"><i class="far fa-save"></i></button>
+                                     </div>
+                                     <div class="col-12 pt-1">
+                                        <div id="calendar">
+
+                                            <div class="calendar-month">
+                                                    Agorsto 2020
+                                            </div>
+                                            
+                                            <div class="calendar-header">
+                                                <div class="header-day">Lunes 15</div>
+                                                <div class="header-day">Martes 16</div>
+                                                <div class="header-day">Miercoles 17</div>
+                                                <div class="header-day">Jueves 18</div>
+                                                <div class="header-day">Viernes 19</div>
+                                                <div class="header-day">Sabado 20</div>
+                                            </div>
+                                            
+                                            <div class="calendar-body" *ngFor="let item of [1,1,1,1,1,1,1,1,1,1];">
+
+                                                <div class="aver">
+                                                    asdas
+                                                </div>
+
+                                                <div class="body-day"></div>
+                                                <div class="body-day"></div>
+                                                <div class="body-day"></div>
+                                                <div class="body-day"></div>
+                                                <div class="body-day"></div>
+                                                <div class="body-day"></div>
+                                            </div>
+
+
+                                        </div>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </ng-container>
+    </main>
+
+</div>

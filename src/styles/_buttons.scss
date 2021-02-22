@@ -1,0 +1,17 @@
+@for $i from 1 through 4 {
+    @debug nth($colorList, $i);
+
+    .btn-#{$i}{
+        background-color: nth($colorList, $i);
+        color:#fff;
+        $border: 1px solid nth($colorList, $i);
+    }
+
+    .btn-#{$i}:hover{
+        background-color: nth($colorDarkenList, $i);
+        $border: 1px solid nth($colorDarkenList, $i);
+        color:#fff;
+        
+    }
+
+}
