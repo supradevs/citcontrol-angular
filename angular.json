@@ -28,9 +28,14 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/css/style.css",
+              "src/assets/css/components.css",
               "src/styles.scss"
             ],
             "scripts": [
+              "src/assets/js/stisla.js",
+              "src/assets/js/scripts.js",
+              "src/assets/js/custom.js"
             ]
           },
           "configurations": {
