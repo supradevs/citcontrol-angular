@@ -5,6 +5,11 @@ import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
+    path:'',
+    pathMatch:'full',
+    redirectTo:'login'
+  },
+  {
     path:'**',
     component: AppComponent
   }

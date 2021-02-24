@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module'
 import { SharedModule } from './shared/shared.module'
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthModule } from './features/auth/auth.module';
+import { MonitoringModule } from './features/monitoring/monitoring.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AuthModule } from './features/auth/auth.module';
     CoreModule,
     SharedModule,
     AuthModule,
+    MonitoringModule,
     //last
     AppRoutingModule,
   ],

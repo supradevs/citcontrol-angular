@@ -1,0 +1,11 @@
+@import './styles/utils';
+@import './styles/scroll';
+@import './styles/font-sizes';
+
+.navbar-bg {
+    height: 70px;
+}
+
+body.layout-3 .main-content {
+    padding-top: 100px;
+}
