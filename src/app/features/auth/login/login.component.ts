@@ -13,6 +13,8 @@ import { AuthService } from './../services/auth.service';
 })
 export class LoginComponent {
 
+  loading: boolean = false;
+
   @ViewChild('modal') private modal: LightModalComponent;
 
   loginForm = this.formBuilder.group({
@@ -37,13 +39,18 @@ export class LoginComponent {
 
   onLogin(): void
   {
+    this.loading = true;
+
     const {username, password, device_name, remember} = this.loginForm.value;
 
     this.authService.login({username, password, device_name}, remember).subscribe(
       (role: string) => {
         this.redirect(role);
       },
-      (error: any) => this.modal.openModal()
+      (error: any) => {
+        this.modal.openModal()
+        this.loading = false;
+      }
     );
   }
 

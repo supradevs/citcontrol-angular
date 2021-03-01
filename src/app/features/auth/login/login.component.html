@@ -61,17 +61,18 @@
               </div>
             </div>
             <div class="simple-footer">
+
               Copyright &copy; Supra
             </div>
           </div>
         </div>
       </div>
     </section>
-
+  
     <app-light-modal #modal>
       <div class="text-center text-danger">
         <b>Usuario o contraseña incorrecta <i class="fas fa-times"></i></b>
       </div>
     </app-light-modal>
 
-
+    <app-load-spinner *ngIf="loading"></app-load-spinner>
