@@ -1,3 +1,15 @@
 .c-pointer{
     cursor: pointer;
 }
+
+@for $i from 1 through 10 {
+  $j: $i * 10;
+
+  .vh-#{$j}{
+    height: #{$j}vh;
+  }
+
+  .vw-#{$j}{
+    height: #{$j}vh;
+  }
+}

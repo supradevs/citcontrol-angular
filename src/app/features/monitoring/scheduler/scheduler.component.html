@@ -2,8 +2,8 @@
 
   <div class="section-body">
     <h2 class="section-title">Solicitudes</h2>
-    <p class="section-lead">listado de solcitudes</p>
-    
+    <p class="section-lead">Programar solicitudes</p>
+
     <ng-container *ngIf="toggle">
       <div class="row">
         <div class="col-md-4">
@@ -92,11 +92,18 @@
             <div class="card" id="settings-card">
               <div class="card-header py-1">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="grupo">
+
                 </div>
               </div>
               <div class="card-body">
                 <app-planner-calendar></app-planner-calendar>
+
+                <div class="row">
+                  <div class="col-12">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus, atque incidunt. Praesentium eveniet cupiditate facere architecto sunt odit at reiciendis numquam fuga eos quae, distinctio qui temporibus suscipit, ex libero!
+                  </div>
+                </div>
+
               </div>
               <div class="card-footer bg-whitesmoke text-md-right">
                 <button (click)="toggle = !toggle" class="btn btn-primary" id="save-btn">Programar</button>
@@ -106,7 +113,7 @@
         </div>
       </div>
     </ng-container>
-  
+
 
   </div>
   </section>
@@ -116,7 +123,7 @@
 
 
 <!-- Modal -->
-<button (click)="openLightModal = !openLightModal">cambio</button>
+<!-- <button (click)="openLightModal = !openLightModal">cambio</button> -->
 
 <app-light-modal [open]="openLightModal">
   <li class="media">

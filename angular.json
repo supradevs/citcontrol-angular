@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+
               "src/assets/css/style.css",
               "src/assets/css/components.css",
               "src/styles.scss"
@@ -98,6 +99,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -129,6 +131,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "citcontrol-angular"
 }

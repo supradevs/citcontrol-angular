@@ -1,48 +1,61 @@
-<div id="app">
-    <section class="section">
+    <section class="section w-100 vh-100 d-flex align-items-center">
       <div class="container mt-5">
         <div class="row">
-          
+
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="card card-warning">
               <div class="card-header"><h4 class="text-warning">CITCONTROL</h4></div>
 
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="needs-validation" novalidate="">
                   <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                    <label for="text">Usuario</label>
+                    <input
+                      formControlName="username"
+                      type="text"
+                      class="form-control"
+                      name="text"
+                      tabindex="1"
+                      required
+                      autofocus
+                    >
                     <div class="invalid-feedback">
-                      Please fill in your email
+                      Ingrese su usuario
                     </div>
                   </div>
 
                   <div class="form-group">
                     <div class="d-block">
-                    	<label for="password" class="control-label">Password</label>
-                      <div class="float-right">
+                    	<label for="password" class="control-label">Contraseña</label>
+                      <div *ngIf="false" class="float-right">
                         <a href="auth-forgot-password.html" class="text-small">
                           Forgot Password?
                         </a>
                       </div>
                     </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                    <input
+                      formControlName="password"
+                      id="password"
+                      type="password"
+                      class="form-control"
+                      name="password"
+                      tabindex="2"
+                      required
+                    >
                     <div class="invalid-feedback">
-                      please fill in your password
+                      Ingrese su contraseña
                     </div>
                   </div>
 
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">Remember Me</label>
+                      <input formControlName="remember" autocomplete="off" type="checkbox" name="remember" class="custom-control-input c-pointer" tabindex="3" id="remember-me">
+                      <label class="custom-control-label c-pointer" for="remember-me">Recordarme</label>
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <button routerLink="/monitoreo/solicitudes" type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
-                      Login
-                    </button>
+                    <input [disabled]="loginForm.invalid" type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
                   </div>
                 </form>
               </div>
@@ -54,4 +67,11 @@
         </div>
       </div>
     </section>
-  </div>
+
+    <app-light-modal #modal>
+      <div class="text-center text-danger">
+        <b>Usuario o contraseña incorrecta <i class="fas fa-times"></i></b>
+      </div>
+    </app-light-modal>
+
+

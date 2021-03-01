@@ -1,100 +1,107 @@
 <section class="section">
-
-    <div class="section-body">
-      <h2 class="section-title">Crear solicitudes</h2>
-      <p class="section-lead">crea solictudes para productores</p>
-      <div class="card">
-        <div class="card-header">
-          <h4>Formulario</h4>
-        </div>
-        <div class="card-body">
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="form-group">
-                      <label>Buscar productor</label>
-                      <div class="input-group">
-                      <div class="input-group-prepend">
-                          <div class="input-group-text">
-                              <i class="fas fa-industry"></i>
-                          </div>
-                      </div>
-                      <input type="text" class="form-control phone-number">
-                      </div>
+  <div class="section-body">
+    <h2 class="section-title">Crear solicitudes</h2>
+    <p class="section-lead">crea solictudes para productores</p>
+    <div class="card">
+      <div class="card-header">
+        <h4>Formulario</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Buscar productor</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-industry"></i>
                   </div>
-              </div>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title">Umbrella Corporation SRL - 22477220987</h2>
-
-      <div class="row">
-        <div class="col-lg-6 col-md-6 col-12 col-sm-12">
-          <div class="card">
-            <div class="card-header">
-              <h4>Unidades productivas</h4>
-              <div class="card-header-action">
-                <button 
-                  (click)="selectAll = !selectAll" 
-                  [ngClass]="{'btn-primary': !selectAll, 'btn-danger': selectAll}" 
-                  class="btn"
-                >
-                {{ !selectAll ? 'Seleccionar todo' : 'Quitar todo' }}
-              </button>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table table-striped mb-0">
-                  <tbody>
-                    <tr *ngFor="let item of [1,1,1,1,1,1]">
-                      <td>
-                        <div class="d-flex justify-content-between">
-                          <span>SL-4172-462</span>
-                          <span class="badge badge-primary badge-pill">14</span>
-                        </div>
-                        <div class="table-links">
-                          <i class="fas fa-eye c-pointer"></i>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between">
-              <h4>UP SM-4561-095 LOTES</h4>
-              <span>
-                <input [id]="i" type="checkbox" class="checkbox-fix c-pointer mr-2">
-                <label [for]="i" class="c-pointer">seleccionar todo</label>
-              </span>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                  <ng-container *ngFor="let item of [1,1,1,1,1,1,1,1,1,1,1]; let i = index;">
-                    <div class="col-md-6 d-flex justify-content-center mb-3">
-                      <input [id]="i" type="checkbox" class="checkbox-fix c-pointer mr-2">
-                      <label [for]="i" class="c-pointer">SM-4565-345-321</label>
-                    </div>
-                  </ng-container>
+                </div>
+                <input type="text" class="form-control phone-number" />
               </div>
             </div>
           </div>
         </div>
       </div>
-
-    
-      
-      <div class="row mb-5">
-          <div class="col-md-12 d-flex justify-content-end">
-              <button class="btn btn-lg btn-success">Enviar</button>
-          </div>
-      </div>
-
-
     </div>
-  </section>
+
+    <h2 class="section-title">Umbrella Corporation SRL - 22477220987</h2>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Unidades productivas</h4>
+            <div class="card-header-action">
+              <button
+                (click)="selectAll = !selectAll"
+                [ngClass]="{
+                  'btn-primary': !selectAll,
+                  'btn-danger': selectAll
+                }"
+                class="btn"
+              >
+                {{ !selectAll ? "Seleccionar todo" : "Quitar todo" }}
+              </button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-striped mb-0">
+                <tbody>
+                  <tr *ngFor="let item of [1, 1, 1, 1, 1, 1]">
+                    <td>
+                      <div class="d-flex justify-content-between">
+                        <span>SL-4172-462</span>
+                        <span class="badge badge-primary badge-pill">14</span>
+                      </div>
+                      <div class="table-links">
+                        <i class="fas fa-eye c-pointer"></i>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <h4>UP SM-4561-095 LOTES</h4>
+            <span>
+              <input type="checkbox" class="checkbox-fix c-pointer mr-2" />
+              <label class="c-pointer">seleccionar todo</label>
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <ng-container
+                *ngFor="
+                  let item of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+                  let i = index
+                "
+              >
+                <div class="col-md-6 d-flex justify-content-center mb-3">
+                  <input
+                    [id]="i"
+                    type="checkbox"
+                    class="checkbox-fix c-pointer mr-2"
+                  />
+                  <label [for]="i" class="c-pointer">SM-4565-345-321</label>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-md-12 d-flex justify-content-end">
+        <button class="btn btn-lg btn-success">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>

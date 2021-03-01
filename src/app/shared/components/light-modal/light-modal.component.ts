@@ -13,33 +13,19 @@ export class LightModalComponent implements OnInit, AfterViewInit  {
 
   button:any;
 
-  constructor() 
-  { 
-
-  }
-
-  ngAfterViewInit() 
+  ngAfterViewInit()
   {
     this.button = this.modal.nativeElement;
-    //console.log(this.modal.nativeElement.click())
   }
 
-  ngOnInit(): void 
+  ngOnInit(): void
   {
     this.id = this.id ?? 'lightModalComponentId';
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-
-    this.openModal(changes.open.currentValue);
-    // You can also use categoryId.previousValue and 
-    // categoryId.firstChange for comparing old and new values
-    
-}
-
-openModal(open: boolean): void
-{
-  if (open) this.button.click();
-}
+  openModal(): void
+  {
+    this.button.click();
+  }
 
 }
