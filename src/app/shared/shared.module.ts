@@ -10,6 +10,7 @@ import { PlannerCalendarComponent } from './components/planner-calendar/planner-
 import { LightModalComponent } from './components/light-modal/light-modal.component'
 import { AuthGuard } from './guards/auth.guard';
 import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
     PlannerCalendarComponent,
     LightModalComponent,
     LoadSpinnerComponent,
+    AlertComponent,
   ],
   exports:[
     FormsModule,
@@ -37,6 +39,7 @@ import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.com
     PlannerCalendarComponent,
     LightModalComponent,
     LoadSpinnerComponent,
+    AlertComponent
   ]
 })
 export class SharedModule { }

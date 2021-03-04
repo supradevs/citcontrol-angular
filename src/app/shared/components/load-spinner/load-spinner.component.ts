@@ -1,3 +1,4 @@
+import { LoadSpinnerService } from './../../services/load-spinner.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoadSpinnerComponent implements OnInit {
 
-  constructor() { }
+  constructor(public spinnerService: LoadSpinnerService) { }
 
   ngOnInit(): void {
   }

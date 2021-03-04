@@ -1,89 +1,99 @@
-<section class="section">
+<form (ngSubmit)="onSubmit()" [formGroup]="form" class="section">
+
   <div class="section-body">
     <h2 class="section-title">Crear solicitudes</h2>
     <p class="section-lead">
       Permite crear solicitudes de servicios. <br>
-      * Por cada fila se va a crear una solicitud. <br>
-      * El rango máximo por solicitud es de 12 hs, en caso de requerir mas horas se debe crear una nueva solicitud. <br>
-      * El rango mínimo de cada solicitud es de una hora. <br>
-      * Se puede solicitar un servicio con un minimo de 8 horas de anticipación, desde la hora actual sumado 8 horas.
-
     </p>
+
+    <div class="alert alert-warning alert-has-icon">
+      <div class="alert-icon"><i class="fas fa-info-circle"></i></div>
+      <div class="alert-body">
+        <div class="alert-title">Atención</div>
+          <ul>
+            <li>Por cada fila se va a crear una solicitud.</li>
+            <li>El rango máximo por solicitud es de 12 hs, en caso de requerir mas horas se debe crear una nueva solicitud.</li>
+            <li>El rango mínimo de cada solicitud es de una hora.</li>
+            <li>Se puede solicitar un servicio con un minimo de 8 horas de anticipación.</li>
+          </ul>
+        </div>
+    </div>
+
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h4>Formulario</h4>
-        <i title="AGREGAR FILA" class="fa fa-plus-circle text-success fs-20 c-pointer position-relative right-7"></i>
+        <i (click)="onCreateRequest()" title="AGREGAR FILA" class="fa fa-plus-circle text-success fs-20 c-pointer position-relative right-7"></i>
       </div>
       <div class="card-body">
-
-        <ng-container *ngIf="false">
-
-        <pre>
-          status: {{ form.status }}
-        </pre>
-        <pre>
-          valid: {{ form.valid  }}
-        </pre>
-        <pre>
-          {{ form.value | json }}
-        </pre>
-        </ng-container>
-
-
-        <form [formGroup]="form" class="form" >
-
           <ng-container formArrayName="list">
 
-            <ng-container *ngFor="let controls of controlList.controls">
-
-              <section class="w-100 d-flex justify-content-between mb-5">
-                <div>
+            <ng-container *ngFor="let controls of controlList.controls; let i = index;">
+             
+              <section [formGroupName]="i" class="w-100 d-flex justify-content-between mb-5">
+                
+                <div class="text-center">
                   <span><b>Empaque</b></span> <br>
-                  <select class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
-                    <option value="">Emapque</option>
-                    <option value="">adasd dada SRL</option>
-                    <option value="">adasd dada SRL</option>
-                    <option value="">adasd dada SRL</option>
+                  <select formControlName="empaque_id" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
+                    <option value="">Seleccionar</option>
+                    <option *ngFor="let packing of packings" [value]="packing.id">{{ packing.empaque }}</option>
                   </select>
+                  <b class="text-danger" *ngIf="isInvalid(i, 'empaque_id')">
+                    * campo requerido
+                  </b>
                 </div>
 
-                <div>
+                <div class="text-center">
                   <span><b>Servicio</b></span> <br>
-                  <select class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
-                    <option value="">servicio1/servicio1</option>
-                    <option value="">servicio1/servicio1</option>
-                    <option value="">servicio1/servicio1</option>
-                    <option value="">servicio1/servicio1</option>
+                  <select formControlName="servicio_id" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
+                    <option value="">Seleccionar</option>
+                    <option *ngFor="let service of services" [value]="service.id">{{ service.servicio }}</option>
                   </select>
+                  <b class="text-danger" *ngIf="isInvalid(i, 'servicio_id')">
+                    * campo requerido
+                  </b>
                 </div>
 
-                <div>
+                <div class="text-center">
                   <span><b>Fecha inicio</b></span> <br>
-                  <input type="datetime-local" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
+                  <input (change)="setDate($event, i, 'fecha_inicio')" formControlName="fecha_inicio" type="datetime-local" step="3600" class="form-control mb-2 mr-sm-2">
+                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_inicio') && controls.get('fecha_inicio').hasError('isMinor')">
+                    * La mínima fecha de inicio disponible es <br> {{ minHour | date:'dd/MM/yyyy HH:00' }}
+                  </b>
                 </div>
-                <div>
+
+                <div class="text-center">
                   <span><b>Fecha fin</b></span> <br>
-                  <input type="datetime-local" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
+                  <input (change)="setDate($event, i, 'fecha_fin')" formControlName="fecha_fin" type="datetime-local" class="form-control mb-2 mr-sm-2">
+                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_fin') && controls.get('fecha_fin').hasError('invalidDates')">
+                    * La fecha de fin debe ser entre {{ serviceConfig.MINIMUN_RANGE }} y {{ serviceConfig.MAXIMUN_RANGE }} <br> horas despues de la fecha de inicio
+                  </b>
                 </div>
 
                 <div class="d-flex justify-content-center align-items-center">
-                  <i title="ELIMINAR FILA" class="fa fa-times-circle fa-lg c-pointer position-relative top-6 right-8 text-danger"></i>
+                  <i 
+                    (click)="onDeleteRequest(i)" 
+                    [ngClass]="{'text-danger c-pointer': minLengthControl}"
+                    title="ELIMINAR FILA" 
+                    class="fa fa-times-circle fa-lg c-pointer position-relative top-6 right-8">
+                  </i>
                 </div>
             </section>
+            <hr>
             </ng-container>
 
           </ng-container>
-
-        </form>
       </div>
     </div>
 
-
-
-    <div class="row mb-5">
+    <div class="row mb-5 pb-5">
       <div class="col-md-12 d-flex justify-content-end">
         <button class="btn btn-lg btn-success">Enviar</button>
       </div>
     </div>
   </div>
-</section>
+</form>
+
+  
+<app-alert [color]="'success'" [show]="success" (accept)="onAccept()">
+  Solicitudes creadas
+</app-alert>

@@ -1,3 +1,4 @@
+import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
 import { Router } from '@angular/router';
 import { LightModalComponent } from './../../../shared/components/light-modal/light-modal.component';
 import { Credentials } from './../models/credentials.interface';
@@ -13,9 +14,7 @@ import { AuthService } from './../services/auth.service';
 })
 export class LoginComponent {
 
-  loading: boolean = false;
-
-  @ViewChild('modal') private modal: LightModalComponent;
+  error: boolean = false;
 
   loginForm = this.formBuilder.group({
     username:['afinoa', Validators.required],
@@ -27,7 +26,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private spinner: LoadSpinnerService
   ) {
 
     if(this.authService.isLogged())
@@ -39,22 +39,23 @@ export class LoginComponent {
 
   onLogin(): void
   {
-    this.loading = true;
+    this.spinner.show();
 
     const {username, password, device_name, remember} = this.loginForm.value;
 
     this.authService.login({username, password, device_name}, remember).subscribe(
       (role: string) => {
+        this.spinner.hide();
         this.redirect(role);
       },
       (error: any) => {
-        this.modal.openModal()
-        this.loading = false;
+        this.error = true;
+        this.spinner.hide();
       }
     );
   }
 
-  private redirect(role)
+  private redirect(role: string): void
   {
     this.router.navigateByUrl(this.redirectionPath(role));
   }

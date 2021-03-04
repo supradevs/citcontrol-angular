@@ -1,18 +1,43 @@
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
+import { DatesValidator } from './../../../shared/validators/DatesValidator';
+import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import * as moment from 'moment';
+
+import { ProductorService } from './../services/productor.service';
+import { Packing, Service, ServiceRequest, ServiceConfig } from '../models';
+import { HoursHelperService } from './../../../shared/helpers/hours-helper.service';
 
 @Component({
   selector: 'app-create-requests',
   templateUrl: './create-requests.component.html',
   styleUrls: ['./create-requests.component.scss']
 })
-export class CreateRequestsComponent implements OnInit {
-
+export class CreateRequestsComponent {
 
   form: FormGroup;
+  packings: Packing[] = [];
+  services: Service[] = [];
+  serviceConfig = ServiceConfig;
+  success: boolean = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder, 
+    private productorService: ProductorService,
+    private hoursHelper: HoursHelperService,
+    private spinner: LoadSpinnerService
+  ) {
+
+    this.productorService
+      .getPackings()
+      .subscribe((packings: Packing[]) => this.packings = packings);
+
+    this.productorService
+      .getServices()
+      .subscribe((services: Service[]) => this.services = services);
+
     this.initForm();
+
   }
 
   initForm(): void
@@ -20,9 +45,6 @@ export class CreateRequestsComponent implements OnInit {
     this.form = this.fb.group({
       list: this.fb.array([])
     });
-
-    this.controlList.push( this.newGroup );
-    this.controlList.push( this.newGroup );
     this.controlList.push( this.newGroup );
   }
 
@@ -34,16 +56,115 @@ export class CreateRequestsComponent implements OnInit {
   get newGroup(): FormGroup
   {
     return this.fb.group({
-      packing: ['emp'],
-      service: ['servi'],
-      start: ['st'],
-      end: ['end']
-    })
+        empaque_id: ['', Validators.required],
+        servicio_id: ['', Validators.required],
+        fecha_inicio: [this.minHour, [Validators.required, DatesValidator.min(this.minHour)]],
+        fecha_fin: ['', [Validators.required]]
+      },
+      {
+        validator: this.checkTimeRangeIsValid('fecha_inicio', 'fecha_fin')}
+      )
   }
 
+  checkTimeRangeIsValid(firstControl: string, secondControl: string) {
+    return (formGroup: FormGroup) => {
+      const firstControlValue = formGroup.controls[firstControl].value;
+      const secondControlValue = formGroup.controls[secondControl].value;
+      const minHoursAllowed = this.serviceConfig.MINIMUN_RANGE;
+      const maxHoursAllowed = this.serviceConfig.MAXIMUN_RANGE;
+      const verify = this.hoursHelper.checkDiffBetween(firstControlValue,secondControlValue, minHoursAllowed, maxHoursAllowed);
 
-
-  ngOnInit(): void {
+      if(verify)
+        formGroup.controls[secondControl].setErrors(null);
+      else
+        formGroup.controls[secondControl].setErrors({invalidDates: true});
+    }
   }
+
+  onCreateRequest(): void 
+  {
+    this.controlList.push( this.newGroup );
+  }
+
+  onDeleteRequest( index:number ): void 
+  {
+    if(this.controlList.length > 1)
+    {
+      this.controlList.removeAt( index );
+    }
+  }
+
+  get minLengthControl(): boolean 
+  {
+    return this.controlList.length > 1;
+  }
+
+  get minHour()
+  {
+    const dirtyHour = moment().add(ServiceConfig.HOURS_IN_ADVANCE, 'hours') ;
+
+    return this.hoursHelper.setOclock(dirtyHour).format('YYYY-MM-DDTHH:mm');
+  }
+
+  setDate(event: any, index: number, controlName: string)
+  {
+    if(event.target.value)
+    {
+      const hourOclock = this.hoursHelper.setOclock(event.target.value).format('YYYY-MM-DDTHH:mm');
+      const controlsRow = this.controlList.at(index);
+      event.target.value = hourOclock;
+      controlsRow['controls'][controlName].setValue(hourOclock);
+    }
+
+  }
+
+  getControl(index: number, controlName: string)
+  {
+    return this.controlList.controls[index]['controls'][controlName];
+  }
+
+  isInvalid(index: number, controlName: string): boolean
+  {
+    const control = this.controlList.controls[index]['controls'][controlName];
+    return control.invalid && control.dirty;
+  }
+
+  markAsInvalidControls(): void 
+  {
+    this.controlList.controls.forEach((item: any) => {
+      Object.values(item.controls).forEach((control:FormControl) => {
+        control.markAsDirty()
+      })
+    });
+  }
+
+  onSubmit()
+  {
+    this.markAsInvalidControls();
+    if(this.form.valid)
+    {
+      this.spinner.show();
+      this.productorService.createRequests(this.mapForm())
+          .subscribe(
+            () => {
+              this.spinner.hide()
+              this.success = true;
+              this.form.reset();
+            },
+            (error) => console.log(error)
+          );
+    }
+  }
+
+  onAccept(): void
+  {
+    this.success = false;
+  }
+
+  mapForm(): ServiceRequest[]
+  {
+    return this.form.value.list.map((controls:any) => ServiceRequest.create(controls))
+  }
+
 
 }

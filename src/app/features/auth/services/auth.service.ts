@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { environment } from './../../../../environments/environment';
 import { Credentials } from './../models/credentials.interface';
 import { User } from '../models/user.interface';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
   private logged: boolean = false;
   private userLogged: User;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private storage: StorageService) {
     this.logged = this.isSavedInStorage();
     this.userLogged = this.getUserFromStorage();
   }
@@ -46,49 +47,27 @@ export class AuthService {
 
   logout(): void
   {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    this.storage.cleanStorage();
     this.logged = false;
     this.userLogged = null;
   }
 
   private readData(user: User, token: string, remember: boolean): void
   {
-    const userStr = JSON.stringify(user);
-
-    if(remember){
-      localStorage.setItem('user', userStr);
-      localStorage.setItem('token', token);
-    }
-    else{
-      sessionStorage.setItem('user', userStr);
-      sessionStorage.setItem('token', token);
-    }
+    this.storage
+        .setDefault(remember)
+        .setItem('user', user, true)
+        .setItem('token', token)
   }
-
 
   private isSavedInStorage(): boolean
   {
-    return localStorage.getItem('token') !== null || sessionStorage.getItem('token') !== null;
+    return this.storage.getItem('token') !== null;
   }
 
   private getUserFromStorage(): User
   {
-    const session = sessionStorage.getItem('user');
-    const local = localStorage.getItem('user');
-
-    if( session !== null)
-    {
-      return JSON.parse( session );
-    }
-    else if( local !== null)
-    {
-      return JSON.parse( local );
-    }
-
-    return null
+    return this.storage.getItem('user', true);
   }
 
 }
