@@ -88,7 +88,7 @@
               "browserTarget": "citcontrol-angular:build:production"
             },
             "qa": {
-              "browserTarget": "citcontrol-angular:build:qa"
+              "browserTarget": "docs:build:qa"
             }
           }
         },
