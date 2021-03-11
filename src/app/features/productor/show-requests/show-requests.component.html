@@ -1,0 +1,93 @@
+<div class="section">
+    <div class="section-body">
+
+    <app-title-section 
+        [title]="'Mostrar solicitudes'" 
+        [description]="'Permite ver el listado de solicitudes creadas.'">
+    </app-title-section>
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <h4>Solicitudes</h4>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="form" class="row">
+                <div class="col-md-6">
+                    <input formControlName="search" name="search" type="text" class="form-control" placeholder="Buscar">
+                </div>
+                <div class="col-md-6">
+                    <select formControlName="packingId" class="form-control">
+                        <option
+                            *ngFor="let packing of packings | async"   
+                            [value]="packing.id"
+                        >{{ packing.empaque }}</option>
+                    </select>
+                </div>
+            </form>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Servicio</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <th>Rep.</th>
+                                <th>Estado</th>
+                                <th>Detalle</th>
+                                <th></th>
+                            </tr>
+                        </thead>                
+                        <tbody>
+                            <tr *ngFor="let request of requests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }">
+                                <td>{{ request.id }}</td>
+                                <td width="2%">{{ request.servicio }}</td>
+                                <td>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</td>
+                                <td>{{ request.fecha_fin | date: 'dd/MM/yyyy HH:mm' }}</td>
+                                <td>{{ request.reprogramada | yesNo | titlecase  }}</td>
+                                <td [style]="{'color': request.estado | color}" width="15%">{{ request.estado | uppercase  }}</td>
+                                <td width="" class="p-2">
+                                    <p *ngIf="request.fecha_cancelacion">Fecha: {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm' }}<br></p>
+                                    <p *ngIf="request.motivo_cancelacion">Motivo:{{ request.motivo_cancelacion }}<br></p> 
+                                    <p *ngIf="request.respuesta_cancelacion">Respuesta: {{ request.respuesta_cancelacion }}</p>
+                                </td>
+                                <td>
+                                    <div class="w-100 d-flex justify-content-center">
+                                        <i class="far fa-calendar-times mr-4 c-pointer"></i>
+                                        <i (click)="onModalCancel(request)" class="far fa-trash-alt c-pointer"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <pagination-controls 
+                        (pageChange)="getPage(currentPage = $event)"
+                        previousLabel="Anterior"
+                        nextLabel="Siguiente"
+                    >
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+</div>
+
+<app-modal 
+    [title]="'Cancelación en termino'"
+    [show]="modalInTerm"
+    (rightClick)="onCancelRequest($event)"
+>
+    <p *ngIf="request">
+        La solicitud número <b>{{ request.id }}</b> con fecha de inicio 
+        <b>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</b> <br> 
+        será cancelada en termino. <br> Presione <i>guardar cambios</i> para aceptar.
+    </p>
+</app-modal>

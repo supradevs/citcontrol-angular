@@ -5,12 +5,34 @@ import { RouterModule } from '@angular/router';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlannerCalendarComponent } from './components/planner-calendar/planner-calendar.component';
-import { LightModalComponent } from './components/light-modal/light-modal.component'
-import { AuthGuard } from './guards/auth.guard';
 import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { TitleSectionComponent } from './components/title-section/title-section.component';
+
+import { AuthGuard } from './guards/auth.guard';
+
+import { YesNoPipe } from './pipes/yes-no.pipe';
+import { ColorPipe } from './pipes/color.pipe';
+import { ModalComponent } from './components/modal/modal.component';
+
+
+const elements = [
+  //components
+  NavbarComponent,
+  PlannerCalendarComponent,
+  LoadSpinnerComponent,
+  AlertComponent,
+  TitleSectionComponent,
+  ModalComponent,
+
+  //pipes
+  YesNoPipe,
+  ColorPipe
+];
 
 @NgModule({
   imports: [
@@ -19,27 +41,21 @@ import { AlertComponent } from './components/alert/alert.component';
     ReactiveFormsModule,
     RouterModule,
     CommonModule,
+    NgxPaginationModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
   ],
   declarations: [
-    NavbarComponent,
-    PlannerCalendarComponent,
-    LightModalComponent,
-    LoadSpinnerComponent,
-    AlertComponent,
+   ...elements,
   ],
   exports:[
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    NavbarComponent,
-    PlannerCalendarComponent,
-    LightModalComponent,
-    LoadSpinnerComponent,
-    AlertComponent
+    NgxPaginationModule,
+    ...elements
   ]
 })
 export class SharedModule { }

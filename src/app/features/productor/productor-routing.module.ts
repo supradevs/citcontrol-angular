@@ -1,3 +1,4 @@
+import { ShowRequestsComponent } from './show-requests/show-requests.component';
 import { CreateRequestsComponent } from './create-requests/create-requests.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -15,17 +16,16 @@ const routes: Routes = [
       {
         path:'',
         pathMatch: 'prefix',
-        redirectTo: 'crear-solicitudes'
+        redirectTo: 'show-solicitudes'
       },
       {
         path:'crear-solicitudes',
         component: CreateRequestsComponent
       },
-      // {
-      //   path:'planificador',
-      //   component: SchedulerComponent
-      // },
-
+      {
+        path:'mostrar-solicitudes',
+        component: ShowRequestsComponent
+      },
     ]
   }
 ];

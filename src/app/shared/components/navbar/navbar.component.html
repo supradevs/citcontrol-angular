@@ -14,8 +14,8 @@
         <ng-container [ngSwitch]="authService.user().role">
 
           <ng-container *ngSwitchCase="'Productor'">
-            <li class="nav-item"><a href="#" class="nav-link">Crear solcitudes</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Ver Solcitudes</a></li>
+            <li class="nav-item"><a routerLink="crear-solicitudes" routerLinkActive="router-link-active"  class="nav-link">Crear solcitudes</a></li>
+            <li class="nav-item"><a routerLink="mostrar-solicitudes" class="nav-link">Ver Solcitudes</a></li>
           </ng-container>
 
 

@@ -1,10 +1,7 @@
 import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
 import { Router } from '@angular/router';
-import { LightModalComponent } from './../../../shared/components/light-modal/light-modal.component';
-import { Credentials } from './../models/credentials.interface';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { NgxSpinnerService } from "ngx-spinner";
 import { AuthService } from './../services/auth.service';
 
 @Component({

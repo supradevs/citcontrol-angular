@@ -1,10 +1,12 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="form" class="section">
 
   <div class="section-body">
-    <h2 class="section-title">Crear solicitudes</h2>
-    <p class="section-lead">
-      Permite crear solicitudes de servicios. <br>
-    </p>
+
+    <app-title-section 
+      [title]="'Crear solicitudes'" 
+      [description]="'Permite crear solicitudes de servicios.'">
+    </app-title-section>
+    
 
     <div class="alert alert-warning alert-has-icon">
       <div class="alert-icon"><i class="fas fa-info-circle"></i></div>

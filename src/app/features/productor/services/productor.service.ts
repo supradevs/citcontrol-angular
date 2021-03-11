@@ -27,6 +27,11 @@ export class ProductorService {
     return this.http.get<Service[]>(`${this.api}/inspeccion/servicios`);
   }
 
+  getRequests(packingId: number, search: string = '', page: number = 1): Observable<any> 
+  {
+    return this.http.get<any[]>(`${this.api}/inspeccion/solicitudes/${packingId}?search=${search}&page=${page}`);
+  }
+
   createRequests(requests: ServiceRequest[])
   {
     return this.http.post(`${this.api}/inspeccion/solicitud_empaque`, {servicios: requests})
