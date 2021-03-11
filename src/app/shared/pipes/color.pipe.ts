@@ -14,7 +14,7 @@ export class ColorPipe implements PipeTransform {
       'a programar': Colors.toSchedule,
       'programada': Colors.scheduled,
       'completada': Colors.completed,
-      'cancelada a termino': Colors.canceledInTerm,
+      'cancelada en termino': Colors.canceledInTerm,
       'cancelada fuera de termino': Colors.canceledOutOfTerm,
     }
 

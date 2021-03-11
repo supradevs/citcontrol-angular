@@ -6,6 +6,7 @@ import { tap, debounceTime } from 'rxjs/operators';
 import { Packing, Request } from './../models';
 import { ProductorService } from './../services/productor.service';
 import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
+import { OutOfTermPipe } from '../pipes/out-of-term.pipe';
 
 @Component({
   selector: 'app-show-requests',
@@ -15,6 +16,7 @@ import { LoadSpinnerService } from './../../../shared/services/load-spinner.serv
 export class ShowRequestsComponent implements OnInit {
 
   public form: FormGroup;
+  public formCancel: FormGroup;
   public packings: Observable<any>;
   public requests: Request[] = [];
   public currentPage: number = 1;
@@ -22,12 +24,14 @@ export class ShowRequestsComponent implements OnInit {
   public totalItems: number;
   public modalInTerm: boolean = false;
   public request: Request;
+  public index: number;
 
 
   constructor(
     private fb: FormBuilder, 
     public productorService: ProductorService,
-    private spinner: LoadSpinnerService
+    private spinner: LoadSpinnerService,
+    private outOfTerm: OutOfTermPipe
     ) { }
 
   ngOnInit(): void {
@@ -56,6 +60,10 @@ export class ShowRequestsComponent implements OnInit {
     this.form = this.fb.group({
       search: [''],
       packingId: ['']
+    });
+
+    this.formCancel = this.fb.group({
+      text: ['Fuerza mayor'],
     });
 
   }
@@ -101,14 +109,24 @@ export class ShowRequestsComponent implements OnInit {
     this.getRequests();
   }
 
-  onModalCancel(request:Request): void 
+  onModalCancel(request:Request, index: number): void 
   {
     this.modalInTerm = !this.modalInTerm;
     this.request = request;
-    console.log(request)
+    this.index = index;
+  
   }
 
-  onCancelRequest(event): void {
-    console.log(event)
+  onCancelRequest(event: any): void {
+
+    const date = this.request.fecha_inicio;
+    const outOfTerm = this.outOfTerm.transform(date);
+    const text = outOfTerm ? this.formCancel.value.text : '';
+    this.spinner.show();
+    this.productorService.cancelRequest(this.request.id, text).subscribe((data:any) => {
+      this.requests[this.index] = data.data;
+      this.spinner.hide();
+    });
+    
   }
 }

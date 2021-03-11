@@ -16,7 +16,7 @@ const routes: Routes = [
       {
         path:'',
         pathMatch: 'prefix',
-        redirectTo: 'show-solicitudes'
+        redirectTo: 'mostrar-solicitudes'
       },
       {
         path:'crear-solicitudes',

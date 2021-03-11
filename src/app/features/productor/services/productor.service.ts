@@ -32,6 +32,12 @@ export class ProductorService {
     return this.http.get<any[]>(`${this.api}/inspeccion/solicitudes/${packingId}?search=${search}&page=${page}`);
   }
 
+  cancelRequest(requestId: number,text: string): Observable<any> 
+  {
+    const data = { motivo_cancelacion: text };
+    return this.http.put<any[]>(`${this.api}/inspeccion/solicitud_cancelacion/${requestId}`, data);
+  }
+
   createRequests(requests: ServiceRequest[])
   {
     return this.http.post(`${this.api}/inspeccion/solicitud_empaque`, {servicios: requests})

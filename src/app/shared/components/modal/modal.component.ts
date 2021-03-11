@@ -39,8 +39,6 @@ export class ModalComponent implements OnInit {
 
   private first: boolean = false;
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 
@@ -52,7 +50,6 @@ export class ModalComponent implements OnInit {
       document.getElementById("openModalButton").click();
     }
 
-    console.log(this.first)
   }
 
   onLeftClick(): void 
@@ -62,7 +59,6 @@ export class ModalComponent implements OnInit {
 
   onRightClick(): void 
   {
-    //document.getElementById("closeModalButton").click();
     this.rightClick.emit(true);
   }
 }

@@ -40,7 +40,7 @@
                             </tr>
                         </thead>                
                         <tbody>
-                            <tr *ngFor="let request of requests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }">
+                            <tr *ngFor="let request of requests | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }; let i = index">
                                 <td>{{ request.id }}</td>
                                 <td width="2%">{{ request.servicio }}</td>
                                 <td>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</td>
@@ -48,15 +48,18 @@
                                 <td>{{ request.reprogramada | yesNo | titlecase  }}</td>
                                 <td [style]="{'color': request.estado | color}" width="15%">{{ request.estado | uppercase  }}</td>
                                 <td width="" class="p-2">
-                                    <p *ngIf="request.fecha_cancelacion">Fecha: {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm' }}<br></p>
-                                    <p *ngIf="request.motivo_cancelacion">Motivo:{{ request.motivo_cancelacion }}<br></p> 
-                                    <p *ngIf="request.respuesta_cancelacion">Respuesta: {{ request.respuesta_cancelacion }}</p>
+                                    <p *ngIf="request.fecha_cancelacion">Fecha cancelacion: {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm' }}<br></p>
+                                    <p *ngIf="request.motivo_cancelacion">Motivo cancelacion: {{ request.motivo_cancelacion }}<br></p> 
+                                    <p>Cancelacion aceptada: {{ request.aceptacion | yesNo | titlecase }}</p>
                                 </td>
                                 <td>
-                                    <div class="w-100 d-flex justify-content-center">
-                                        <i class="far fa-calendar-times mr-4 c-pointer"></i>
-                                        <i (click)="onModalCancel(request)" class="far fa-trash-alt c-pointer"></i>
-                                    </div>
+                                    <ng-container *ngIf="request.estado === 'a programar'">
+                                        <div *ngIf="request.fecha_inicio | available" class="w-100 d-flex justify-content-center">
+                                            <i *ngIf="!(request.fecha_inicio | outOfTerm)" title="REPROGRAMAR SOLICITUD" class="far fa-calendar-times mr-4 c-pointer"></i>
+                                            <i title="CANCELAR SOLICITUD" (click)="onModalCancel(request, i)" class="far fa-trash-alt c-pointer"></i>
+                                        </div>
+                                    </ng-container>
+
                                 </td>
                             </tr>
                         </tbody>
@@ -81,13 +84,60 @@
 </div>
 
 <app-modal 
-    [title]="'Cancelación en termino'"
+    *ngIf="request"
+    [title]="(request.fecha_inicio | outOfTerm) ? 'Cancelación fuera de termino' : 'Cancelación en termino'"
     [show]="modalInTerm"
     (rightClick)="onCancelRequest($event)"
 >
-    <p *ngIf="request">
-        La solicitud número <b>{{ request.id }}</b> con fecha de inicio 
-        <b>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</b> <br> 
-        será cancelada en termino. <br> Presione <i>guardar cambios</i> para aceptar.
-    </p>
+
+    <ng-container>
+
+        <div class="d-flex justify-content-between">
+            <b>Solicitud</b>
+            <b>ID {{ request.id }}</b>
+        </div>
+        <div class="d-flex justify-content-between">
+            <b>Inicio</b>
+            <b>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</b>
+        </div>
+
+
+        <ng-container *ngIf="request.fecha_inicio | outOfTerm">
+            <form [formGroup]="formCancel">
+                <div class="form-check mt-2">
+                    <input  
+                        formControlName="text"
+                        value="Fuerza mayor"
+                        class="form-check-input c-pointer" 
+                        type="radio" 
+                        name="text" 
+                        id="flexRadioDefault1"
+                        [checked]="true"
+                    >
+                    <label class="form-check-label c-pointer" for="flexRadioDefault1">
+                        Por razones de fuerza mayor
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input 
+                        formControlName="text"
+                        value="Otras razones"
+                        class="form-check-input c-pointer" 
+                        type="radio" 
+                        name="text" 
+                        id="flexRadioDefault2" 
+                    >
+                    <label class="form-check-label c-pointer" for="flexRadioDefault2">
+                        Otras razones
+                    </label>
+                </div>
+            </form>
+
+        </ng-container>
+        
+    </ng-container>
+    
+
+
+
 </app-modal>
