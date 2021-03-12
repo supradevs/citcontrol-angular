@@ -1,13 +1,13 @@
 
   <button 
-    id="openModalButton" 
+    [id]="'openModalButton' + randomId" 
     [hidden]="true" 
+    [attr.data-target]="'#appModal' + randomId"
     data-toggle="modal"
-    data-target="#appModal"
-  ></button>
+  >ssss</button>
 
   <!-- Modal -->
-  <div class="modal" id="appModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal" [id]="'appModal' + randomId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -20,9 +20,16 @@
           <ng-content></ng-content>
         </div>
         <div class="modal-footer">
-          <button (click)="onLeftClick()" type="button" class="btn btn-secondary" data-dismiss="modal">{{ btnLeftText }}</button>
+          <button 
+            (click)="onLeftClick()" 
+            [disabled]="btnLeftDisable"
+            type="button" 
+            class="btn btn-secondary" 
+            data-dismiss="modal">{{ btnLeftText }}
+          </button>
           <button
             (click)="onRightClick()" 
+            [disabled]="btnRightDisable"
             type="button" 
             class="btn btn-primary"
             data-dismiss="modal" 

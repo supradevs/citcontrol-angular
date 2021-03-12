@@ -1,3 +1,4 @@
+export { Reprogramming } from './reprogramming.model';
 export { ServiceConfig } from './service-config.enum';
 export { Service } from './service.interface';
 export { ServiceRequest } from './service-request.model';

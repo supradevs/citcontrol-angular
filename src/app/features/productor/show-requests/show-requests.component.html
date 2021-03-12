@@ -55,8 +55,17 @@
                                 <td>
                                     <ng-container *ngIf="request.estado === 'a programar'">
                                         <div *ngIf="request.fecha_inicio | available" class="w-100 d-flex justify-content-center">
-                                            <i *ngIf="!(request.fecha_inicio | outOfTerm)" title="REPROGRAMAR SOLICITUD" class="far fa-calendar-times mr-4 c-pointer"></i>
-                                            <i title="CANCELAR SOLICITUD" (click)="onModalCancel(request, i)" class="far fa-trash-alt c-pointer"></i>
+                                            <i 
+                                                *ngIf="!(request.fecha_inicio | outOfTerm)" 
+                                                (click)="onModalReprogramming(request, i)" 
+                                                title="REPROGRAMAR SOLICITUD" 
+                                                class="far fa-calendar-times mr-4 c-pointer">
+                                            </i>
+                                            <i 
+                                                (click)="onModalCancel(request, i)" 
+                                                title="CANCELAR SOLICITUD" 
+                                                class="far fa-trash-alt c-pointer">
+                                            </i>
                                         </div>
                                     </ng-container>
 
@@ -83,13 +92,66 @@
 
 </div>
 
+
+
+<app-modal
+    [show]="modalReprogramming"
+    [title]="'Reprogramar Solicitud'"
+    [btnRightDisable]="formReprogramming.invalid"
+    (rightClick)="onReprogrammingRequest($event)"
+>
+    <form [formGroup]="formReprogramming">
+        <div class="form-group">
+            <label>Solicitud</label>
+            <input type="text" class="form-control" disabled [value]="request?.id">
+        </div>
+
+        <div class="form-group">
+            <label>Servicio</label>
+            <input type="text" class="form-control" disabled [value]="request?.servicio">
+        </div>
+
+        <div class="form-group">
+            <label>Fecha inicio</label>
+            <input 
+                (change)="setDate($event, 'fecha_inicio')"
+                formControlName="fecha_inicio" 
+                name="fecha_inicio" 
+                type="datetime-local" 
+                class="form-control"
+
+            >
+            <b class="text-danger" *ngIf="isInvalid('fecha_inicio', 'isMinor')">
+                * La mínima fecha de inicio disponible es {{ minHour | date:'dd/MM/yyyy HH:00' }}
+            </b>
+        </div>
+
+        <div class="form-group">
+            <label>Fecha fin</label>
+            <input 
+                (change)="setDate($event, 'fecha_fin')"
+                formControlName="fecha_fin" 
+                name="fecha_fin" 
+                type="datetime-local" 
+                class="form-control"
+            >
+            <b class="text-danger" *ngIf="isInvalid('fecha_fin', 'invalidDates')">
+                * La fecha de fin debe ser entre 
+                {{ serviceConfig.MINIMUN_RANGE }} y {{ serviceConfig.MAXIMUN_RANGE }} 
+                horas despues de la fecha de inicio
+            </b>
+        </div>
+    </form>
+
+
+</app-modal>
+
 <app-modal 
     *ngIf="request"
     [title]="(request.fecha_inicio | outOfTerm) ? 'Cancelación fuera de termino' : 'Cancelación en termino'"
     [show]="modalInTerm"
     (rightClick)="onCancelRequest($event)"
 >
-
     <ng-container>
 
         <div class="d-flex justify-content-between">
@@ -136,8 +198,4 @@
         </ng-container>
         
     </ng-container>
-    
-
-
-
 </app-modal>

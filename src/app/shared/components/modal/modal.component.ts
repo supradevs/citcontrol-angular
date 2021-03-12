@@ -9,18 +9,19 @@ import {
   AfterViewInit,
   ElementRef 
 } from '@angular/core';
+import { random } from '../../helpers/random.function';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent {
 
   @ViewChild('btnRight') someInput: ElementRef;
 
   @Input()
-  show: boolean = false;
+  show: any;
 
   @Input()
   title: string = 'Modal';
@@ -31,23 +32,32 @@ export class ModalComponent implements OnInit {
   @Input()
   btnRightText: string = 'Guardar cambios';
 
+  @Input()
+  btnLeftDisable: boolean = false;
+
+  @Input()
+  btnRightDisable: boolean = false;
+
   @Output() 
   leftClick = new EventEmitter<boolean>();
 
   @Output() 
   rightClick = new EventEmitter<boolean>();
 
-  private first: boolean = false;
+  public randomId: number;
 
-  ngOnInit(): void {
+  constructor()
+  {
+    this.randomId = random(1000,9000);
   }
 
   ngOnChanges(changes: SimpleChanges): void {   
-    
-    if(this.first || changes.show.currentValue)
+
+    if(('show' in changes) && (!changes.show.firstChange))
     {
-      this.first = true;
-      document.getElementById("openModalButton").click();
+      setTimeout(() => {
+        document.getElementById("openModalButton" + this.randomId).click();
+      }, 50)
     }
 
   }

@@ -1,9 +1,9 @@
 import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
-import { DatesValidator } from './../../../shared/validators/DatesValidator';
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import * as moment from 'moment';
 
+import { DatesValidator } from './../../../shared/validators/DatesValidator';
+import { TimesService } from './../services/times.service';
 import { ProductorService } from './../services/productor.service';
 import { Packing, Service, ServiceRequest, ServiceConfig } from '../models';
 import { HoursHelperService } from './../../../shared/helpers/hours-helper.service';
@@ -20,13 +20,17 @@ export class CreateRequestsComponent {
   services: Service[] = [];
   serviceConfig = ServiceConfig;
   success: boolean = false;
+  minHour: string;
 
   constructor(
     private fb: FormBuilder, 
     private productorService: ProductorService,
     private hoursHelper: HoursHelperService,
-    private spinner: LoadSpinnerService
+    private spinner: LoadSpinnerService,
+    private times: TimesService
   ) {
+
+    this.minHour = this.times.minHour();
 
     this.productorService
       .getPackings()
@@ -62,23 +66,8 @@ export class CreateRequestsComponent {
         fecha_fin: ['', [Validators.required]]
       },
       {
-        validator: this.checkTimeRangeIsValid('fecha_inicio', 'fecha_fin')}
-      )
-  }
-
-  checkTimeRangeIsValid(firstControl: string, secondControl: string) {
-    return (formGroup: FormGroup) => {
-      const firstControlValue = formGroup.controls[firstControl].value;
-      const secondControlValue = formGroup.controls[secondControl].value;
-      const minHoursAllowed = this.serviceConfig.MINIMUN_RANGE;
-      const maxHoursAllowed = this.serviceConfig.MAXIMUN_RANGE;
-      const verify = this.hoursHelper.checkDiffBetween(firstControlValue,secondControlValue, minHoursAllowed, maxHoursAllowed);
-
-      if(verify)
-        formGroup.controls[secondControl].setErrors(null);
-      else
-        formGroup.controls[secondControl].setErrors({invalidDates: true});
-    }
+        validator: this.times.checkTimeRangeIsValid('fecha_inicio', 'fecha_fin')
+      })
   }
 
   onCreateRequest(): void 
@@ -97,13 +86,6 @@ export class CreateRequestsComponent {
   get minLengthControl(): boolean 
   {
     return this.controlList.length > 1;
-  }
-
-  get minHour()
-  {
-    const dirtyHour = moment().add(ServiceConfig.HOURS_IN_ADVANCE, 'hours') ;
-
-    return this.hoursHelper.setOclock(dirtyHour).format('YYYY-MM-DDTHH:mm');
   }
 
   setDate(event: any, index: number, controlName: string)

@@ -7,6 +7,7 @@ export class DatesValidator {
     {
         const minDate = moment(date);
         
+        
         return (control: AbstractControl) => {
             
             const value = moment(control.value);
