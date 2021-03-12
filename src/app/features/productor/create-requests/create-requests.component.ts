@@ -105,10 +105,14 @@ export class CreateRequestsComponent {
     return this.controlList.controls[index]['controls'][controlName];
   }
 
-  isInvalid(index: number, controlName: string): boolean
+  isInvalid(index: number, controlName: string, error: string = ''): boolean
   {
     const control = this.controlList.controls[index]['controls'][controlName];
-    return control.invalid && control.dirty;
+    
+    if(error.length > 0)
+      return control.invalid && control.dirty && control.hasError(error);
+    else 
+      return control.invalid && control.dirty;
   }
 
   markAsInvalidControls(): void 

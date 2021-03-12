@@ -58,7 +58,7 @@
                 <div class="text-center">
                   <span><b>Fecha inicio</b></span> <br>
                   <input (change)="setDate($event, i, 'fecha_inicio')" formControlName="fecha_inicio" type="datetime-local" step="3600" class="form-control mb-2 mr-sm-2">
-                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_inicio') && controls.get('fecha_inicio').hasError('isMinor')">
+                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_inicio', 'isMinor')">
                     * La mínima fecha de inicio disponible es <br> {{ minHour | date:'dd/MM/yyyy HH:00' }}
                   </b>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="text-center">
                   <span><b>Fecha fin</b></span> <br>
                   <input (change)="setDate($event, i, 'fecha_fin')" formControlName="fecha_fin" type="datetime-local" class="form-control mb-2 mr-sm-2">
-                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_fin') && controls.get('fecha_fin').hasError('invalidDates')">
+                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_fin', 'invalidDates')">
                     * La fecha de fin debe ser entre {{ serviceConfig.MINIMUN_RANGE }} y {{ serviceConfig.MAXIMUN_RANGE }} <br> horas despues de la fecha de inicio
                   </b>
                 </div>
