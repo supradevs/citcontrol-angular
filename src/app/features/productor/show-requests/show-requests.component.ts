@@ -156,11 +156,8 @@ export class ShowRequestsComponent implements OnInit {
   }
 
   onReprogrammingRequest(event: any): void {
-    
     const values = this.formReprogramming.value;
-    console.log( Reprogramming.create(values))
-
-    
+    this.spinner.show();
     this.productorService
         .reprogrammingRequest(this.request.id, Reprogramming.create(values))
         .subscribe((data:any) => {
@@ -173,7 +170,6 @@ export class ShowRequestsComponent implements OnInit {
   isInvalid(controlName: string, error: string): boolean
   {
     const control = this.formReprogramming.controls[controlName];
-    // console.log(control)
     return control.invalid && control.dirty && control.hasError(error);
   }
 
