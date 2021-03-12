@@ -173,6 +173,11 @@ export class ShowRequestsComponent implements OnInit {
     return control.invalid && control.dirty && control.hasError(error);
   }
 
+  accepted(request: Request): boolean
+  {
+    return request.fecha_cancelacion && request.estado == 'cancelada fuera de termino';
+  }
+
   setDate(event: any, controlName: string)
   {
     if(event.target.value)

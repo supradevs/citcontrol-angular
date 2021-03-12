@@ -50,7 +50,7 @@
                                 <td width="" class="p-2">
                                     <p *ngIf="request.fecha_cancelacion">Fecha cancelacion: {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm' }}<br></p>
                                     <p *ngIf="request.motivo_cancelacion">Motivo cancelacion: {{ request.motivo_cancelacion }}<br></p> 
-                                    <p *ngIf="request.fecha_cancelacion">Cancelacion aceptada: {{ request.aceptacion | yesNo | titlecase }}</p>
+                                    <p *ngIf="accepted(request)">Cancelacion aceptada: {{ request.aceptacion | yesNo | titlecase }}</p>
                                 </td>
                                 <td>
                                     <ng-container *ngIf="request.estado === 'a programar'">
