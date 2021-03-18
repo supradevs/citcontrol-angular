@@ -9,6 +9,7 @@ import { ShowRequestsComponent } from './show-requests/show-requests.component';
 import { InTermPipe } from './pipes/in-term.pipe';
 import { OutOfTermPipe } from './pipes/out-of-term.pipe';
 import { AvailablePipe } from './pipes/available.pipe';
+import { ShowRequestComponent } from './show-request/show-request.component';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { AvailablePipe } from './pipes/available.pipe';
     ProductorComponent, 
     CreateRequestsComponent, 
     ShowRequestsComponent, 
-    InTermPipe, OutOfTermPipe, AvailablePipe
+    InTermPipe, OutOfTermPipe, AvailablePipe, ShowRequestComponent
   ],
   imports: [
     CommonModule,
