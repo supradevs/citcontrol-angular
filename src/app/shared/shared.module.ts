@@ -18,6 +18,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { YesNoPipe } from './pipes/yes-no.pipe';
 import { ColorPipe } from './pipes/color.pipe';
 import { ModalComponent } from './components/modal/modal.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
 
 
 const elements = [
@@ -28,10 +30,12 @@ const elements = [
   AlertComponent,
   TitleSectionComponent,
   ModalComponent,
+  NotificationsComponent,
 
   //pipes
   YesNoPipe,
-  ColorPipe
+  ColorPipe,
+  DateAgoPipe
 ];
 
 @NgModule({
