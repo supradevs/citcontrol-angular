@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 import { ProductorComponent } from './productor.component';
+import { ShowRequestComponent } from './show-request/show-request.component';
 
 
 const routes: Routes = [
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path:'mostrar-solicitudes',
         component: ShowRequestsComponent
+      },
+      {
+        path:'mostrar-solicitudes/:id',
+        component: ShowRequestComponent
       },
     ]
   }

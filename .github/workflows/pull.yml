@@ -1,0 +1,23 @@
+name: Angular
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  angular-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to QA
+      uses: appleboy/ssh-action@master
+      with:
+          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.HOST }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/citcontrol-angular
+            git pull origin develop
+            docker-compose restart
