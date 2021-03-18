@@ -1,4 +1,4 @@
-<li *ngIf="true" class="dropdown dropdown-list-toggle">
+<li class="dropdown dropdown-list-toggle">
     <a 
         [ngClass]="{'beep': notifications.length > 0}"
         href="#" 
@@ -11,7 +11,6 @@
           Notifications
       </div>
       <div class="dropdown-list-content dropdown-list-icons">
-
         <ng-container *ngIf="notifications.length > 0; else noNotifications">
             <ng-container *ngFor="let notification of notifications">
                 <a [routerLink]="['/productor/solicitud', notification.id]" routerLinkActive="router-link-active"  class="dropdown-item dropdown-item-unread">
@@ -27,14 +26,11 @@
                 </a>
             </ng-container>
         </ng-container>
-
         <ng-template #noNotifications>
             <div class="text-center">
                 No hay notificaciones
             </div>
         </ng-template>
-
-       
       </div>
       <div class="dropdown-footer text-center">
         <a href="#">&nbsp;</a>
