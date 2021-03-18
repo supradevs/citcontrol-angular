@@ -6,7 +6,6 @@ import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 import { ProductorComponent } from './productor.component';
 import { ShowRequestComponent } from './show-request/show-request.component';
 
-
 const routes: Routes = [
   {
     path:'productor',
@@ -28,7 +27,7 @@ const routes: Routes = [
         component: ShowRequestsComponent
       },
       {
-        path:'mostrar-solicitudes/:id',
+        path:'solicitud/:id',
         component: ShowRequestComponent
       },
     ]
