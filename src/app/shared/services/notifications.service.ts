@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { Notification } from '../models';
+import { Request } from 'src/app/features/productor/models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,4 +24,9 @@ export class NotificationsService {
       );
   }
 
+  updateNotification(id: number | string): Observable<Request> 
+  {
+    const url = environment.API_URL + `/inspeccion/notificacion_solicitud_empaque/${id}`;
+    return this.http.put(url, {}).pipe(map((data:any) => data.data));
+  }
 }

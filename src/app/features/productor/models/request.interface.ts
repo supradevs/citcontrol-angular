@@ -4,7 +4,7 @@ export interface Request {
     fecha_fin: string;
     fecha_cancelacion: string;
     motivo_cancelacion: string;
-    respuesta_cancelacion: string;
+    aceptacion: number;
     reprogramada: string;
     created_at: string;
     servicio: string;
