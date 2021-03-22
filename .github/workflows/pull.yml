@@ -20,4 +20,6 @@ jobs:
           script: |
             cd /home/citcontrol-angular
             git pull origin develop
-            docker-compose restart
+            docker build -t citcontrol-image .
+            docker rm -f citcontrol
+            docker run -d -p 4000:80 --name citcontrol citcontrol-image

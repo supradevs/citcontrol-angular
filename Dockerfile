@@ -1,15 +1,9 @@
-FROM node:lts-alpine 
-
-# Install global npm packages
-RUN npm install -g @angular/cli
-
-# Set working directory
+FROM node:lts-alpine AS build
 WORKDIR /app
-
-# Copy and install local npm packages
 COPY package.json* package-lock.json* ./
-
+RUN npm cache clean --force
 RUN npm install
-
-# Copy the remaining source code
 COPY . .
+RUN npm run build
+FROM nginx:latest
+COPY --from=build /app/dist/citcontrol-angular /usr/share/nginx/html
