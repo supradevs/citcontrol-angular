@@ -1,5 +1,4 @@
-name: Angular
-
+name: Angular-citcontrol
 on:
   push:
     branches: [ develop ]
@@ -7,7 +6,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  angular-test:
+  angular-citcontrol:
     runs-on: ubuntu-latest
     steps:
     - name: Deploy to QA
@@ -20,6 +19,6 @@ jobs:
           script: |
             cd /home/citcontrol-angular
             git pull origin develop
-            # docker build -t citcontrol-image .
-            # docker rm -f citcontrol
-            # docker run -d -p 4000:80 --name citcontrol citcontrol-image
+            docker build -t citcontrol-image .
+            docker rm -f citcontrol
+            docker run -d -p 7300:80 --name citcontrol citcontrol-image
