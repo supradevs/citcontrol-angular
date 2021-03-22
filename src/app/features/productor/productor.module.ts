@@ -11,13 +11,15 @@ import { OutOfTermPipe } from './pipes/out-of-term.pipe';
 import { AvailablePipe } from './pipes/available.pipe';
 import { ShowRequestComponent } from './show-request/show-request.component';
 
-
 @NgModule({
   declarations: [
     ProductorComponent, 
     CreateRequestsComponent, 
     ShowRequestsComponent, 
-    InTermPipe, OutOfTermPipe, AvailablePipe, ShowRequestComponent
+    InTermPipe, 
+    OutOfTermPipe, 
+    AvailablePipe, 
+    ShowRequestComponent
   ],
   imports: [
     CommonModule,

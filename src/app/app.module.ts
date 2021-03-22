@@ -13,10 +13,12 @@ import { MonitoringModule } from './features/monitoring/monitoring.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ApiTokenInterceptorService } from './core/interceptors/api-token-interceptor.service';
+import { AfinoaComponent } from './features/afinoa/afinoa.component';
+import { AfinoaModule } from './features/afinoa/afinoa.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +27,7 @@ import { ApiTokenInterceptorService } from './core/interceptors/api-token-interc
     AuthModule,
     MonitoringModule,
     ProductorModule,
+    AfinoaModule,
     //last
     AppRoutingModule,
     NgbModule,
