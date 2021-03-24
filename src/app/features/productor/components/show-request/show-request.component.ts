@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { LoadSpinnerService } from 'src/app/shared/services/load-spinner.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
+import { Request } from '../../models';
 
-import { Request } from '../models';
 @Component({
   selector: 'app-show-request',
   templateUrl: './show-request.component.html',

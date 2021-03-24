@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationsService } from '../../services/notifications.service';
+import { NavigationStart, Router } from '@angular/router';
 
 import { Notification } from '../../models';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-notifications',
@@ -12,14 +15,22 @@ export class NotificationsComponent implements OnInit {
 
   public notifications: Notification[] = [];
 
-  constructor(private notificationsService: NotificationsService) { }
+
+  constructor(
+    private notificationsService: NotificationsService,
+    private router: Router
+  ) { 
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationStart))
+    .subscribe(params => {
+      this.ngOnInit();
+    });
+  }
 
   ngOnInit(): void {
-
+    this.notifications = [];
     this.notificationsService.getNotifications().subscribe(
       (notifications:any) => this.notifications = notifications
     )
-
   }
-
 }

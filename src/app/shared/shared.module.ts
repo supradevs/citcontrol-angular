@@ -40,11 +40,10 @@ const elements = [
 
 @NgModule({
   imports: [
-    BrowserAnimationsModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    CommonModule,
     NgxPaginationModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -57,7 +56,6 @@ const elements = [
   exports:[
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
     NgxPaginationModule,
     ...elements
   ]

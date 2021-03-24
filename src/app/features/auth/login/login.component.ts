@@ -54,17 +54,7 @@ export class LoginComponent {
 
   private redirect(role: string): void
   {
-    this.router.navigateByUrl(this.redirectionPath(role));
-  }
-
-  redirectionPath(role: string):string
-  {
-    const redirectTo = {
-      Afinoa: '/monitoreo',
-      Productor: '/productor',
-      Citcontrol: ''
-    }
-    return redirectTo[role];
+    this.router.navigateByUrl(`/${role.toLowerCase()}`);
   }
 
 }

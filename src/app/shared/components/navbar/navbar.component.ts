@@ -9,16 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+  user: any = {}
+
   constructor(public authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.user = this.authService.user();
   }
 
   onLogout(): void
   {
     this.authService.logout();
-    this.router.navigateByUrl('/login');
-
+    this.router.navigateByUrl('/autenticacion/login');
   }
 
 }

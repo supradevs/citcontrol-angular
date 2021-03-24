@@ -1,0 +1,1 @@
+export { Packing } from './packing.interface'

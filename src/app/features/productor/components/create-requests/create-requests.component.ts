@@ -1,12 +1,12 @@
-import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
-import { DatesValidator } from './../../../shared/validators/DatesValidator';
-import { TimesService } from './../services/times.service';
-import { ProductorService } from './../services/productor.service';
-import { Packing, Service, ServiceRequest, ServiceConfig } from '../models';
-import { HoursHelperService } from './../../../shared/helpers/hours-helper.service';
+import { LoadSpinnerService } from '../../../../shared/services/load-spinner.service';
+import { DatesValidator } from '../../../../shared/validators/DatesValidator';
+import { TimesService } from '../../services/times.service';
+import { ProductorService } from '../../services/productor.service';
+import { Packing, Service, ServiceRequest, ServiceConfig } from '../../models';
+import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
 
 @Component({
   selector: 'app-create-requests',

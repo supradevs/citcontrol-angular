@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, debounceTime } from 'rxjs/operators';
 
-import { ServiceConfig } from './../models/service-config.enum';
-import { DatesValidator } from './../../../shared/validators/DatesValidator';
-import { Packing, Request, Reprogramming } from './../models';
-import { TimesService } from './../services/times.service';
-import { ProductorService } from './../services/productor.service';
-import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
-import { HoursHelperService } from './../../../shared/helpers/hours-helper.service';
-import { OutOfTermPipe } from '../pipes/out-of-term.pipe';
+import { ServiceConfig } from '../../models';
+import { DatesValidator } from '../../../../shared/validators/DatesValidator';
+import { Packing, Request, Reprogramming } from '../../models';
+import { TimesService } from '../../services/times.service';
+import { ProductorService } from '../../services/productor.service';
+import { LoadSpinnerService } from '../../../../shared/services/load-spinner.service';
+import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
+import { OutOfTermPipe } from '../../pipes/out-of-term.pipe';
 
 @Component({
   selector: 'app-show-requests',

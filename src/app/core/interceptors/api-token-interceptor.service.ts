@@ -28,8 +28,7 @@ export class ApiTokenInterceptorService implements HttpInterceptor {
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     if (err.status === 401) {
         this.authService.logout();
-        alert('Session expirada');
-        this.router.navigateByUrl(`/login`);
+        this.router.navigateByUrl(`/autenticacion/login`);
         return of(err.message); 
     }
     return throwError(err);

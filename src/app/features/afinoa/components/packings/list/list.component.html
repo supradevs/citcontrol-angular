@@ -1,0 +1,57 @@
+<app-title-section
+  [title]="'Empaques'"
+  [description]="'Muestra todos los empaques'"
+>
+</app-title-section>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <h4>Empaques</h4>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="form" class="row">
+            <div class="col-md-4">
+                <input formControlName="search" name="search" type="text" class="form-control" placeholder="Buscar">
+            </div>
+            <div class="col-md-4">
+                <select formControlName="provinces" class="form-control">
+                    <option *ngFor="let item of provinces" [value]="item.value">
+                        {{ item.province }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select formControlName="state" class="form-control">
+                    <option *ngFor="let packing of packingsStates" [value]="packing.id">{{ packing.state }}</option>
+                </select>
+            </div>
+        </form>
+        <div class="row mt-4">
+            <div class="col-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Codigo</th>
+                            <th>Empaque</th>
+                            <th>Horas solicitdas</th>
+                            <th>Estado actual</th>
+                        </tr>
+                    </thead>                
+                    <tbody>
+                        <tr 
+                            *ngFor="let item of packings"
+                        >
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.codigo_empaque }}</td>
+                            <td>{{ item.empaque }}</td>
+                            <td>{{ item.horas_solicitdas }}</td>
+                            <td>{{ item.estado_actual }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

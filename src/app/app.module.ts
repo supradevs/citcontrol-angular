@@ -1,20 +1,15 @@
-import { ProductorModule } from './features/productor/productor.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module'
-import { SharedModule } from './shared/shared.module'
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { AuthModule } from './features/auth/auth.module';
-import { MonitoringModule } from './features/monitoring/monitoring.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ApiTokenInterceptorService } from './core/interceptors/api-token-interceptor.service';
-import { AfinoaComponent } from './features/afinoa/afinoa.component';
-import { AfinoaModule } from './features/afinoa/afinoa.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -22,16 +17,11 @@ import { AfinoaModule } from './features/afinoa/afinoa.module';
   ],
   imports: [
     BrowserModule,
-    CoreModule,
-    SharedModule,
-    AuthModule,
-    MonitoringModule,
-    ProductorModule,
-    AfinoaModule,
-    //last
+    HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    CoreModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

@@ -11,7 +11,7 @@
       </a>
       <ul class="navbar-nav">
 
-        <ng-container [ngSwitch]="authService.user().role">
+        <ng-container [ngSwitch]="user.role">
 
           <ng-container *ngSwitchCase="'Productor'">
             <li class="nav-item"><a routerLink="crear-solicitudes" routerLinkActive="router-link-active"  class="nav-link">Crear solcitudes</a></li>
@@ -190,16 +190,16 @@
       <li class="dropdown">
         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
         <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-        <div class="d-sm-none d-lg-inline-block">{{ authService.user().username }}</div></a>
+        <div class="d-sm-none d-lg-inline-block">{{ user.username }}</div></a>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item has-icon">
-            <i class="fas fa-envelope-square"></i> ID {{ authService.user().id }}
+            <i class="fas fa-envelope-square"></i> ID {{ user.id }}
           </a>
           <a class="dropdown-item has-icon">
-            <i class="far fa-user"></i> {{ authService.user().username }}
+            <i class="far fa-user"></i> {{ user.username }}
           </a>
           <a class="dropdown-item has-icon">
-            <i class="fas fa-cogs"></i> {{ authService.user().role }}
+            <i class="fas fa-cogs"></i> {{ user.role }}
           </a>
           <div class="dropdown-divider"></div>
           <a (click)="onLogout()" class="dropdown-item has-icon text-danger c-pointer">
