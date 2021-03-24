@@ -1,13 +1,9 @@
 import { 
   Component, 
-  OnInit, 
   Input, 
   Output, 
   EventEmitter, 
   SimpleChanges, 
-  ViewChild,
-  AfterViewInit,
-  ElementRef 
 } from '@angular/core';
 import { random } from '../../helpers/random.function';
 
@@ -17,8 +13,6 @@ import { random } from '../../helpers/random.function';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
-
-  @ViewChild('btnRight') someInput: ElementRef;
 
   @Input()
   show: any;
