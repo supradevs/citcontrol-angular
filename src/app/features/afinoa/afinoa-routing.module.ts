@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 
 import { AfinoaComponent } from './afinoa.component';
 import { ListComponent } from './components/packings/list/list.component';
+import { NotificationComponent } from './components/packings/notification/notification.component';
 import { ShowComponent } from './components/packings/show/show.component';
 
 
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path:'empaques',
         component: ListComponent
+      },
+      {
+        path:'solicitud/:id',
+        component: NotificationComponent
       },
       {
         path:'**',

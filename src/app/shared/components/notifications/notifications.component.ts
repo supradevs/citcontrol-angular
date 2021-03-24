@@ -4,6 +4,7 @@ import { NavigationStart, Router } from '@angular/router';
 
 import { Notification } from '../../models';
 import { filter } from 'rxjs/operators';
+import { AuthService } from 'src/app/features/auth/services/auth.service';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class NotificationsComponent implements OnInit {
 
   constructor(
     private notificationsService: NotificationsService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { 
     this.router.events
     .pipe(filter(event => event instanceof NavigationStart))
@@ -32,5 +34,13 @@ export class NotificationsComponent implements OnInit {
     this.notificationsService.getNotifications().subscribe(
       (notifications:any) => this.notifications = notifications
     )
+  }
+
+
+  redirect(id: number): void 
+  {
+    const user = this.authService.user();
+    const module = user.role.toLowerCase();
+    this.router.navigateByUrl(`${module}/solicitud/${id}`);
   }
 }

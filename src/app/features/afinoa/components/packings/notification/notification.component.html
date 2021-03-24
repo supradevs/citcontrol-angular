@@ -1,0 +1,95 @@
+
+<app-title-section
+[title]="'Detalle solicitud'"
+[description]="'Muestra el detalle de la solicitud seleccionada'"
+>
+</app-title-section>
+
+<ng-container *ngIf="request">
+<div class="card">
+  <div class="card-body">
+    <div class="row d-flex justify-content-center">
+      <div class="invoice">
+        <div class="invoice-print">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="invoice-title">
+                <h2>Solicitud</h2>
+                <div class="invoice-number">#{{ request.id }}</div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-6">
+                  <address>
+                    <strong>Servicio:</strong><br />
+                    {{ request.servicio  }}
+                  </address>
+                </div>
+                <div class="col-md-6 text-md-right">
+                  <address>
+                    <strong>Fecha solicitud:</strong><br />
+                    {{ request.created_at | date: 'dd/MM/yyyy HH:mm'  }}
+                  </address>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <address>
+                    <strong>Solicitud reprogramada:</strong><br />
+                    {{ request.reprogramada | yesNo | titlecase}}
+                  </address>
+                </div>
+                <div class="col-md-6 text-md-right">
+                  <address>
+                    <strong>Estado:</strong><br />
+                    {{ request.estado  }}<br /><br />
+                  </address>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <address>
+                    <strong>Inicio del servicio:</strong><br />
+                      {{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm'  }}
+                  </address>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <address>
+                        <strong>Fin del servicio:</strong
+                        ><br />
+                        {{ request.fecha_fin | date: 'dd/MM/yyyy HH:mm'  }}
+                    </address>
+                </div>
+              </div>
+              <div *ngIf="request.fecha_cancelacion" class="row">
+                <div class="col-md-6">
+                  <address>
+                    <strong>Fecha cancelacion:</strong><br />
+                      {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm'  }}
+                  </address>
+                </div>
+                <div *ngIf="accepted" class="col-md-6 text-md-right">
+                    <address>
+                        <strong>Motivo cancelacion:</strong
+                        ><br />
+                        {{ request.motivo_cancelacion }}
+                    </address>
+                </div>
+              </div>
+              <div *ngIf="accepted" class="row">
+                <div class="col-md-6">
+                    <address>
+                        <strong>Aceptacion:</strong><br />
+                        {{ request.aceptacion | yesNo | titlecase}}
+                    </address>
+                </div>     
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</ng-container>
+

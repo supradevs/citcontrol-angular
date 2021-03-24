@@ -13,7 +13,7 @@
       <div class="dropdown-list-content dropdown-list-icons">
         <ng-container *ngIf="notifications.length > 0; else noNotifications">
             <ng-container *ngFor="let notification of notifications">
-                <a [routerLink]="['/productor/solicitud', notification.id]" routerLinkActive="router-link-active"  class="dropdown-item dropdown-item-unread">
+                <a (click)="redirect(notification.id)" routerLinkActive="router-link-active"  class="dropdown-item dropdown-item-unread c-pointer">
                     <div class="dropdown-item-icon text-white" [style]="{'background': notification.estado | color}" >
                     <i class="far fa-credit-card"></i>
                     </div>
