@@ -1,12 +1,12 @@
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { LoadSpinnerService } from '../../../../shared/services/load-spinner.service';
 import { DatesValidator } from '../../../../shared/validators/DatesValidator';
 import { TimesService } from '../../services/times.service';
 import { ProductorService } from '../../services/productor.service';
 import { Packing, Service, ServiceRequest, ServiceConfig } from '../../models';
 import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 @Component({
   selector: 'app-create-requests',
@@ -15,18 +15,19 @@ import { HoursHelperService } from '../../../../shared/helpers/hours-helper.serv
 })
 export class CreateRequestsComponent {
 
+  @ViewChild('modal') modal:any
+
   form: FormGroup;
   packings: Packing[] = [];
   services: Service[] = [];
   serviceConfig = ServiceConfig;
-  success: boolean = false;
   minHour: string;
 
   constructor(
     private fb: FormBuilder, 
     private productorService: ProductorService,
     private hoursHelper: HoursHelperService,
-    private spinner: LoadSpinnerService,
+    private spinner: SpinnerService,
     private times: TimesService
   ) {
 
@@ -134,17 +135,12 @@ export class CreateRequestsComponent {
           .subscribe(
             () => {
               this.spinner.hide()
-              this.success = true;
+              this.modal.open();
               this.form.reset();
             },
             (error) => console.log(error)
           );
     }
-  }
-
-  onAccept(): void
-  {
-    this.success = false;
   }
 
   mapForm(): ServiceRequest[]

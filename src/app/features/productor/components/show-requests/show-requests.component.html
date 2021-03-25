@@ -86,10 +86,11 @@
 </div>
 
 <app-modal
-    [show]="modalReprogramming"
     [title]="'Reprogramar Solicitud'"
     [btnRightDisable]="formReprogramming.invalid"
-    (rightClick)="onReprogrammingRequest($event)"
+    [footerHidden]="false"
+    (accept)="onReprogrammingRequest($event)"
+    #reprogrammingModal
 >
     <form [formGroup]="formReprogramming">
         <div class="form-group">
@@ -139,7 +140,8 @@
     *ngIf="request"
     [title]="(request.fecha_inicio | outOfTerm) ? 'Cancelar fuera de termino' : 'Cancelar en termino'"
     [show]="modalInTerm"
-    (rightClick)="onCancelRequest($event)"
+    (accept)="onCancelRequest($event)"
+    #cancelModal
 >
     <ng-container>
 

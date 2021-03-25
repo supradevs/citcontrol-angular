@@ -1,8 +1,8 @@
-import { LoadSpinnerService } from './../../../shared/services/load-spinner.service';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './../services/auth.service';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +10,8 @@ import { AuthService } from './../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+
+  @ViewChild('modal') modal: any;
 
   error: boolean = false;
 
@@ -24,14 +26,13 @@ export class LoginComponent {
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private spinner: LoadSpinnerService
+    private spinner: SpinnerService
   ) {
 
     if(this.authService.isLogged())
     {
       this.redirect(this.authService.user().role);
     }
-
   }
 
   onLogin(): void
@@ -46,8 +47,8 @@ export class LoginComponent {
         this.redirect(role);
       },
       (error: any) => {
-        this.error = true;
         this.spinner.hide();
+        this.modal.open();
       }
     );
   }

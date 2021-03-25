@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, debounceTime } from 'rxjs/operators';
 
@@ -8,9 +8,9 @@ import { DatesValidator } from '../../../../shared/validators/DatesValidator';
 import { Packing, Request, Reprogramming } from '../../models';
 import { TimesService } from '../../services/times.service';
 import { ProductorService } from '../../services/productor.service';
-import { LoadSpinnerService } from '../../../../shared/services/load-spinner.service';
 import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
 import { OutOfTermPipe } from '../../pipes/out-of-term.pipe';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 @Component({
   selector: 'app-show-requests',
@@ -18,6 +18,9 @@ import { OutOfTermPipe } from '../../pipes/out-of-term.pipe';
   styleUrls: ['./show-requests.component.scss']
 })
 export class ShowRequestsComponent implements OnInit {
+
+  @ViewChild('reprogrammingModal') reprogrammingModal:any;
+  @ViewChild('cancelModal') cancelModal:any;
 
   public form: FormGroup;
   public formCancel: FormGroup;
@@ -38,10 +41,10 @@ export class ShowRequestsComponent implements OnInit {
   constructor(
     private fb: FormBuilder, 
     public productorService: ProductorService,
-    private spinner: LoadSpinnerService,
     private times: TimesService,
     private hoursHelper: HoursHelperService,
-    private outOfTerm: OutOfTermPipe
+    private outOfTerm: OutOfTermPipe,
+    private spinner: SpinnerService
     ) { 
       this.minHour = this.times.minHour();
     }
@@ -134,6 +137,7 @@ export class ShowRequestsComponent implements OnInit {
     this.request = request;
     this.modalReprogramming = !this.modalReprogramming;
     this.index = index;
+    this.reprogrammingModal?.open()
   }
 
   onModalCancel(request:Request, index: number): void 
@@ -141,30 +145,36 @@ export class ShowRequestsComponent implements OnInit {
     this.request = request;
     this.modalInTerm = !this.modalInTerm;
     this.index = index;
+    this.cancelModal?.open();
   }
 
-  onCancelRequest(event: any): void {
-
-    const date = this.request.fecha_inicio;
-    const outOfTerm = this.outOfTerm.transform(date);
-    const text = outOfTerm ? this.formCancel.value.text : '';
-    this.spinner.show();
-    this.productorService.cancelRequest(this.request.id, text).subscribe((data:any) => {
-      this.requests[this.index] = data.data;
-      this.spinner.hide();
-    });
+  onCancelRequest(accept: boolean): void {
+    if(accept)
+    {
+      const date = this.request.fecha_inicio;
+      const outOfTerm = this.outOfTerm.transform(date);
+      const text = outOfTerm ? this.formCancel.value.text : '';
+      this.spinner.show();
+      this.productorService.cancelRequest(this.request.id, text).subscribe((data:any) => {
+        this.requests[this.index] = data.data;
+        this.spinner.hide();
+      });
+    }
   }
 
-  onReprogrammingRequest(event: any): void {
-    const values = this.formReprogramming.value;
-    this.spinner.show();
-    this.productorService
-        .reprogrammingRequest(this.request.id, Reprogramming.create(values))
-        .subscribe((data:any) => {
-          this.formReprogramming.reset({fecha_inicio: this.minHour});
-          this.requests[this.index] = data.data;
-          this.spinner.hide();
-        });
+  onReprogrammingRequest(accept: boolean): void {
+    if(accept)
+    {
+      const values = this.formReprogramming.value;
+      this.spinner.show();
+      this.productorService
+          .reprogrammingRequest(this.request.id, Reprogramming.create(values))
+          .subscribe((data:any) => {
+            this.formReprogramming.reset({fecha_inicio: this.minHour});
+            this.requests[this.index] = data.data;
+            this.spinner.hide();
+          });
+    }
   }
 
   isInvalid(controlName: string, error: string): boolean

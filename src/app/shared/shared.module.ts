@@ -9,7 +9,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { PlannerCalendarComponent } from './components/planner-calendar/planner-calendar.component';
-import { LoadSpinnerComponent } from './components/load-spinner/load-spinner.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { TitleSectionComponent } from './components/title-section/title-section.component';
 
@@ -26,7 +25,6 @@ const elements = [
   //components
   NavbarComponent,
   PlannerCalendarComponent,
-  LoadSpinnerComponent,
   AlertComponent,
   TitleSectionComponent,
   ModalComponent,

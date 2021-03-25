@@ -96,6 +96,10 @@
 </form>
 
   
-<app-alert [color]="'success'" [show]="success" (accept)="onAccept()">
-  Solicitudes creadas
-</app-alert>
+<app-modal 
+  [title]="'Aviso'"
+  [footerHidden]="true"
+  #modal
+>
+  <p>Solcitudes creadas</p>
+</app-modal>

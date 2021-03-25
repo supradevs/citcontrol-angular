@@ -4,12 +4,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module'
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ApiTokenInterceptorService } from './core/interceptors/api-token-interceptor.service';
-import { SharedModule } from './shared/shared.module';
+import { CoreModule } from './core/core.module'
 
 @NgModule({
   declarations: [

@@ -2,10 +2,11 @@ import {
   Component, 
   Input, 
   Output, 
-  EventEmitter, 
-  SimpleChanges, 
+  EventEmitter,
+  ViewChild, 
 } from '@angular/core';
-import { random } from '../../helpers/random.function';
+
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modal',
@@ -13,6 +14,8 @@ import { random } from '../../helpers/random.function';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent {
+
+  @ViewChild('modalRef') modalRef: any;
 
   @Input()
   show: any;
@@ -30,39 +33,46 @@ export class ModalComponent {
   btnLeftDisable: boolean = false;
 
   @Input()
+  btnRightHidden: boolean = false;
+
+  @Input()
+  btnLeftHidden: boolean = false;
+
+  @Input()
+  footerHidden: boolean = false;
+
+  @Input()
   btnRightDisable: boolean = false;
 
   @Output() 
-  leftClick = new EventEmitter<boolean>();
+  accept = new EventEmitter<boolean>();
 
-  @Output() 
-  rightClick = new EventEmitter<boolean>();
+  constructor(private modalService: NgbModal) {}
 
-  public randomId: number;
-
-  constructor()
-  {
-    this.randomId = random(1000,9000);
+  open() {
+    const content = this.modalRef;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      console.log(`Closed with: ${result}`);
+      this.emitResult(result);
+    }, (reason: any) => {
+      this.emitResult(false);
+      console.log(`Dismissed ${this.getDismissReason(reason)}`);
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {   
-
-    if(('show' in changes) && (!changes.show.firstChange))
-    {
-      setTimeout(() => {
-        document.getElementById("openModalButton" + this.randomId).click();
-      }, 50)
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
     }
-
   }
 
-  onLeftClick(): void 
+  emitResult(value: boolean): void 
   {
-    this.leftClick.emit(true);
+    this.accept.emit(value);
   }
 
-  onRightClick(): void 
-  {
-    this.rightClick.emit(true);
-  }
 }

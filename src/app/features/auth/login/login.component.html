@@ -68,7 +68,11 @@
         </div>
       </div>
     </section>
-  
-   <app-alert [color]="'danger'" [show]="error">
-     Usuario o contraseña invalida
-   </app-alert>
+
+<app-modal #modal
+   [title]="'Error'"
+   [footerHidden]="true"
+>
+  <p>Usuario o contraseña invalida</p>
+</app-modal>
+
