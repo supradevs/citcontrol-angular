@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { Request } from 'src/app/features/productor/models';
-import { LoadSpinnerService } from 'src/app/shared/services/load-spinner.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class NotificationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private notificationService: NotificationsService,
-    private spinner: LoadSpinnerService,
+    private spinner: SpinnerService,
   ) { }
 
   ngOnInit(): void {

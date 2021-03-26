@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
 import { LoadSpinnerService } from 'src/app/shared/services/load-spinner.service';
 import { NotificationsService } from 'src/app/shared/services/notifications.service';
 
@@ -17,7 +18,7 @@ export class ShowRequestComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private notificationService: NotificationsService,
-    private spinner: LoadSpinnerService
+    private spinner: SpinnerService
   ) { }
 
   ngOnInit(): void {
