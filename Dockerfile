@@ -4,6 +4,6 @@ COPY package.json* package-lock.json* ./
 RUN npm cache clean --force
 RUN npm install
 COPY . .
-RUN npm run build --configuration=qa
+RUN npm run build --prod --configuration=qa
 FROM nginx:latest
 COPY --from=build /app/dist/citcontrol-angular /usr/share/nginx/html
