@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-import { Packing } from '../models'
+import { Packing, WeekRequest } from '../models'
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,20 @@ export class PackingsService {
 
   constructor(private http: HttpClient) { }
 
-  getPackings(search: string, provinces: string, state: string): Observable<any>
+  getPackings(search: string, provinces: string, state: string): Observable<Packing[]>
   {
     const url = `${this.api}/inspeccion/estado_empaque?search=${search}&provincias=${provinces}&estado=${state}`;
 
     return this.http.get<Packing[]>(url).pipe(map((data:any) => data.data));
   }
+
+
+  getWeek(packingId: number, date: string): Observable<WeekRequest[]>
+  {
+      const url = `${this.api}/inspeccion/solicitud_empaque_semanal/${packingId}?fecha_inicio=${date}`;
+      return this.http.get<WeekRequest[]>(url).pipe(
+         map((data:any) => data.data)
+      );
+  }
+
 }

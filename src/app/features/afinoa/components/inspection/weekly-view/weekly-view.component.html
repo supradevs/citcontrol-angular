@@ -1,0 +1,67 @@
+<app-title-section
+  [title]="'Vista semanal'"
+  [description]="'Muestra las solicitudes por empaque'"
+>
+</app-title-section>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <h4>Empaque Umbrella Corp</h4>
+    </div>
+    <div class="card-body">
+        <ng-container>
+            <button hidden="true" id="render" (click)="render()">AVER</button>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <div
+                            class="btn btn-primary c-pointer"
+                            mwlCalendarPreviousView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            (click)="debouncedClick($event)"
+                        >
+                            Previo
+                        </div>
+                        <div
+                            class="btn btn-outline-secondary c-pointer"
+                            mwlCalendarToday
+                            [(viewDate)]="viewDate"
+                        >
+                            Hoy
+                        </div>
+                        <div
+                            class="btn btn-primary c-pointer"
+                            mwlCalendarNextView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            (click)="debouncedClick($event)"
+                        >
+                            Siguiente
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 text-left">
+                <h3>
+                    {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+                </h3>
+                </div>
+            </div>
+            <br />
+            <div [ngSwitch]="view">
+                <mwl-calendar-week-view
+                    *ngSwitchCase="CalendarView.Week"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh"
+                    (eventTimesChanged)="eventTimesChanged($event)"
+                >
+                </mwl-calendar-week-view>
+            </div>
+            
+           
+        
+        </ng-container>
+        
+    </div>
+</div>

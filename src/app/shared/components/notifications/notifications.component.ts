@@ -36,11 +36,18 @@ export class NotificationsComponent implements OnInit {
     )
   }
 
-
   redirect(id: number): void 
   {
     const user = this.authService.user();
-    const module = user.role.toLowerCase();
-    this.router.navigateByUrl(`${module}/solicitud/${id}`);
+    this.router.navigateByUrl(this.url(user.role, id));
+  }
+
+  private url(role: string, id: number): string
+  {
+     switch(role.toLocaleLowerCase())
+     {
+       case 'productor': return `productor/solicitud/${id}`;
+       case 'afinoa': return `afinoa/inspeccion/solicitud/${id}`;
+     }
   }
 }

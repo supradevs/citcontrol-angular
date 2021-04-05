@@ -39,10 +39,8 @@
                         </tr>
                     </thead>                
                     <tbody>
-                        <tr 
-                            *ngFor="let item of packings"
-                        >
-                            <td class="text-center">{{ item.id }}</td>
+                        <tr *ngFor="let item of packings">
+                            <td class="text-center"><a [routerLink]="['/afinoa/inspeccion/empaque/', item.id]">{{ item.id }}</a></td>
                             <td class="text-center">{{ item.codigo_empaque }}</td>
                             <td class="text-center">{{ item.empaque }}</td>
                             <td class="text-center">{{ item.horas_solicitadas }} hs.</td>

@@ -1,24 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { AfinoaRoutingModule } from './afinoa-routing.module';
 
 import { AfinoaComponent } from './afinoa.component';
-import { ShowComponent } from './components/packings/show/show.component';
-import { ListComponent } from './components/packings/list/list.component';
+import { ListComponent } from './components/inspection/list/list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { NotificationComponent } from './components/packings/notification/notification.component';
+import { NotificationComponent } from './components/inspection/notification/notification.component';
+import { WeeklyViewComponent } from './components/inspection/weekly-view/weekly-view.component';
+import { RequestsComponent } from './components/inspection/requests/requests.component';
+import { InspectionComponent } from './components/inspection/inspection.component';
 
 
 @NgModule({
   declarations: [
+    InspectionComponent,
     AfinoaComponent,
-    ShowComponent,
     ListComponent,
     NotificationComponent,
+    WeeklyViewComponent,
+    RequestsComponent,
   ],
   imports: [
     CommonModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     SharedModule,
     AfinoaRoutingModule,
   ]

@@ -3,10 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from 'src/app/shared/guards/auth.guard';
 
+import { InspectionComponent } from './components/inspection/inspection.component';
+
 import { AfinoaComponent } from './afinoa.component';
-import { ListComponent } from './components/packings/list/list.component';
-import { NotificationComponent } from './components/packings/notification/notification.component';
-import { ShowComponent } from './components/packings/show/show.component';
+import { ListComponent } from './components/inspection/list/list.component';
+import { NotificationComponent } from './components/inspection/notification/notification.component';
+import { RequestsComponent } from './components/inspection/requests/requests.component';
+import { WeeklyViewComponent } from './components/inspection/weekly-view/weekly-view.component';
 
 
 const routes: Routes = [
@@ -15,19 +18,45 @@ const routes: Routes = [
     component: AfinoaComponent,
     canActivate: [AuthGuard],
     data: {role: 'Afinoa'},
-    children:[
+    children: [
       {
-        path:'empaques',
-        component: ListComponent
+        path:'inspeccion',
+        component: InspectionComponent,
+        children: [
+            {
+              path:'empaques',
+              component: ListComponent,
+            },
+            {
+              path:'empaque/:id',
+              component: WeeklyViewComponent
+            },
+            {
+              path:'solicitud/:id',
+              component: NotificationComponent
+            },
+            {
+              path:'solicitudes',
+              component: RequestsComponent
+            },
+            {
+              path:'**',
+              pathMatch: 'prefix',
+              redirectTo: 'empaques'
+            },
+        ]
       },
-      {
-        path:'solicitud/:id',
-        component: NotificationComponent
-      },
+      
+      // {
+      //   path:'monitoreo',
+      //   component: X, 
+      //   children: [ ... ]
+      // }
+
       {
         path:'**',
         pathMatch: 'prefix',
-        redirectTo: 'empaques'
+        redirectTo: 'inspeccion'
       },
     ]
   }
