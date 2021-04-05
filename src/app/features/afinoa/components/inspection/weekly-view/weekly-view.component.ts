@@ -86,7 +86,7 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
       const startOfWeekDay = format(startOfWeek(this.viewDate), 'yyyy-MM-dd');
       this.packingService.getWeek(this.packingId, startOfWeekDay).subscribe(
         (weekRequests: WeekRequest[]) => {
-          WeekEvent.fromArray(weekRequests).forEach(event => this.addEvent(event))
+          WeekEvent.fromArray(weekRequests).forEach((event:WeekEvent) => this.addEvent(event))
           document.getElementById('render').click()
           this.spinner.hide();
       });
