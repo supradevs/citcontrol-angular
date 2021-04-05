@@ -23,10 +23,10 @@ export class PackingsService {
   }
 
 
-  getWeek(packingId: number, date: string): Observable<WeekRequest[]>
+  getWeek(packingId: number, date: string): Observable<any>
   {
       const url = `${this.api}/inspeccion/solicitud_empaque_semanal/${packingId}?fecha_inicio=${date}`;
-      return this.http.get<WeekRequest[]>(url).pipe(
+      return this.http.get(url).pipe(
          map((data:any) => data.data)
       );
   }

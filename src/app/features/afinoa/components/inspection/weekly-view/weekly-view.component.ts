@@ -50,6 +50,8 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
   activeDayIsOpen: boolean = true;
 
   debouncedClick: any;
+  
+  packing: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -85,8 +87,9 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
       this.spinner.show();
       const startOfWeekDay = format(startOfWeek(this.viewDate), 'yyyy-MM-dd');
       this.packingService.getWeek(this.packingId, startOfWeekDay).subscribe(
-        (weekRequests: WeekRequest[]) => {
-          WeekEvent.fromArray(weekRequests).forEach((event:WeekEvent) => this.addEvent(event))
+        (data:any) => {
+          this.packing = data.empaque;
+          WeekEvent.fromArray(data.solicitudes).forEach((event:WeekEvent) => this.addEvent(event))
           document.getElementById('render').click()
           this.spinner.hide();
       });
