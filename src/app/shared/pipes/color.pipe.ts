@@ -6,11 +6,9 @@ import { Colors } from '../models/colors.enum';
 })
 export class ColorPipe implements PipeTransform {
 
-  transform(value: string): string {
+  transform(value: string | number): string {
     
-    const state = value.toLowerCase();
-
-    const colors = {
+    const colorsString = {
       'a programar': Colors.toSchedule,
       'programada': Colors.scheduled,
       'completada': Colors.completed,
@@ -18,7 +16,23 @@ export class ColorPipe implements PipeTransform {
       'cancelada fuera de termino': Colors.canceledOutOfTerm,
     }
 
-    return colors[state];
+    const colorsNumber = {
+      1: Colors.toSchedule,
+      2: Colors.scheduled,
+      3: Colors.completed,
+      4: Colors.canceledInTerm,
+      5: Colors.canceledOutOfTerm,
+    }
+
+    if(typeof value == 'number')
+    {
+      return colorsNumber[value];
+    }
+    else
+    {
+      return colorsString[value.toLowerCase()];
+    }
+
   }
 
 }
