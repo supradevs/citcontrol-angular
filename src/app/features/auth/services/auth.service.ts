@@ -23,7 +23,6 @@ export class AuthService {
   login(credentials: Credentials, remember: boolean): Observable<any>
   {
     const url = environment.API_URL + '/login';
-    const headers = new HttpHeaders({'AcceptZZ':'application/json', 'Content-type': 'application/json'});
     return this.http.post(url, credentials)
       .pipe(
         map((res:any) => {
