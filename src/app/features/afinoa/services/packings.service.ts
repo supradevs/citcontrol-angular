@@ -18,8 +18,10 @@ export class PackingsService {
   getPackings(search: string, provinces: string, state: string): Observable<Packing[]>
   {
     const url = `${this.api}/inspeccion/estado_empaque?search=${search}&provincias=${provinces}&estado=${state}`;
-
-    return this.http.get<Packing[]>(url).pipe(map((data:any) => data.data));
+    
+    return this.http.get<Packing[]>(url).pipe(map((data:any) => {
+      return data.data;
+    }));
   }
 
 
