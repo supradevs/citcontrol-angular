@@ -29,7 +29,7 @@ export class WeekEvent {
         this.meta = meta;
     }
 
-    public static create(weekRequest: WeekRequest): CalendarEvent
+    public static create(weekRequest: WeekRequest): WeekEvent
     {
         const start = new Date(format(new Date( weekRequest.fecha_inicio ), 'yyyy-MM-dd HH:00:00' ));
         const end = new Date(format(new Date( weekRequest.fecha_fin ), 'yyyyy-MM-dd HH:00:00' ));
