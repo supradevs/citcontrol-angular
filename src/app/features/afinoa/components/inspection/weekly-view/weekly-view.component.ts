@@ -19,7 +19,8 @@ import { WeekEvent } from '../../../models';
 import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 import { debounced } from '../../../../../shared/helpers/debounced.function'
-import { PackingCancellationStates, PackingsStatesIds } from 'src/app/shared/models';
+import { PackingCancellationStates } from 'src/app/shared/models';
+import { PackingsStatesIds } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-weekly-view',
@@ -124,10 +125,6 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
     this.events = [...this.events, event];
   }
 
-  deleteEvent(requestId: number) {
-    this.events = this.events.filter((event) => event.meta.id !== requestId);
-  }
-
   handleEvent(event:any): void
   {
     this.selectedWeekEvent = event;
@@ -160,8 +157,8 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   private updateEvent(weekRequest: WeekRequest)
   {
-    this.deleteEvent(weekRequest.id);
-    this.addEvent(WeekEvent.create(weekRequest));
+    const index = this.events.findIndex(event => event.meta.id == weekRequest.id);
+    this.events[index] = WeekEvent.create(weekRequest);
     this.refreshView();
   }
 
