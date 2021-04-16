@@ -10,7 +10,6 @@
     </div>
     <div class="card-body">
         <ng-container>
-            <button hidden="true" id="render" (click)="render()">AVER</button>
             <div class="row text-center">
                 <div class="col-md-4">
                     <div class="btn-group">
@@ -55,6 +54,8 @@
                     [viewDate]="viewDate"
                     [events]="events"
                     [refresh]="refresh"
+                    [weekStartsOn]="weekStartsOn"
+                    [locale]="locale"
                     (eventTimesChanged)="eventTimesChanged($event)"
                 >
                 </mwl-calendar-week-view>
@@ -66,3 +67,20 @@
         
     </div>
 </div>
+
+ 
+<app-modal 
+  [title]="'Validar causa de cancelación'"
+  [btnLeftText]="'No Válido'"
+  [btnRightText]="'Válido'"
+  [btnLeftStyle]="'btn-danger'"
+  [btnRightStyle]="'btn-success'"
+  (leftEvent)="onInvalid($event)"
+  (rightEvent)="onValid($event)"
+  #modal
+>
+    <ng-container *ngIf="selectedWeekEvent">
+        <b>Solicitud:</b> #{{ selectedWeekEvent.meta.id }} <br>
+        <b>Cancelacion por:</b> {{ selectedWeekEvent.meta.motivo_cancelacion }}.
+    </ng-container>
+</app-modal>

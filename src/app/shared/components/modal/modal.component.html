@@ -13,16 +13,18 @@
         (click)="modal.close(false)" 
         [disabled]="btnLeftDisable"
         [hidden]="btnLeftHidden"
+        [ngClass]="btnLeftStyle"
         type="button" 
-        class="btn btn-secondary" 
+        class="btn"
         data-dismiss="modal">{{ btnLeftText }}
       </button>
       <button
         (click)="modal.close(true)" 
         [disabled]="btnRightDisable"
         [hidden]="btnRightHidden"
+        [ngClass]="btnRightStyle"
         type="button" 
-        class="btn btn-primary"
+        class="btn"
         data-dismiss="modal" 
       >
         {{ btnRightText }}

@@ -42,6 +42,10 @@ export class ApiTokenInterceptorService implements HttpInterceptor {
         this.router.navigateByUrl(`/`);
         return of(err.message); 
     }
+
+    if (err.status === 500) {
+        alert('Ocurrio un error en el servidor')
+    }
     return throwError(err);
 }
 
