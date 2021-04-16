@@ -78,7 +78,6 @@ export class ListComponent implements OnInit {
     .subscribe((packings:any) => {
       this.packings = packings;
       this.spinner.hide();
-      console.log(packings)
     });
   }
   
