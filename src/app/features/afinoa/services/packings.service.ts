@@ -33,33 +33,6 @@ export class PackingsService {
 
   modifyCancellation(requestId: number, statusId: number): Observable<any>
   {
-    return of({
-      id: 166,
-      servicio: "despacho",
-      servicio_id: 3,
-      estado: "cancelada fuera de termino",
-      estado_id: 5,
-      fecha_inicio: "2021-04-23 21:00:00",
-      fecha_fin: "2021-04-24 09:00:00",
-      motivo_cancelacion: "Ad hic hic corporis qui numquam iste sed.",
-      estado_validacion: "asdas",
-      estado_validacion_id: 2,
-      empleados: [
-      {
-      apellido: "Murazik",
-      nombre: "Aniya"
-      },
-      {
-      apellido: "Strosin",
-      nombre: "Casper"
-      },
-      {
-      apellido: "Kunde",
-      nombre: "Kaylee"
-      }
-      ]
-      })
-
     const url = `${this.api}/afinoa/respuesta_validacion_solicitud/${requestId}`;
     return this.http.put(url, {estado_validacion_id: statusId}).pipe(
       map((data:any) => data.data.solicitud)

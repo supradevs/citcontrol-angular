@@ -1,3 +1,4 @@
+import { WeekRequest } from './../../../models/week-request.interface';
 import { ActivatedRoute } from '@angular/router';
 import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, OnDestroy } from '@angular/core';
 
@@ -113,7 +114,6 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   addEvent(event: WeekEvent): void
   {
-
     const cancelled = event.meta.estado_id == PackingsStatesIds.CANCELADAS_FUERA_DE_TERMINO;
     const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
 
@@ -124,6 +124,10 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
     this.events = [...this.events, event];
   }
 
+  deleteEvent(requestId: number) {
+    this.events = this.events.filter((event) => event.meta.id !== requestId);
+  }
+
   handleEvent(event:any): void
   {
     this.selectedWeekEvent = event;
@@ -132,29 +136,33 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   onValid(accept: boolean): void
   {
-    this.spinner.show()
-    const requestId = this.selectedWeekEvent.meta.id;
     const statusId = PackingCancellationStates.VALIDADO;
-    this.packingService.modifyCancellation(requestId, statusId)
-    .subscribe(
-      (data) => this.updateEvent(data),
-      (error) => alert('ocurrio un erro'),
-      () => this.spinner.hide()
-    );
+    this.validation(statusId);
   }
 
   onInvalid(accept: boolean): void
   {
     const statusId = PackingCancellationStates.RECHAZADO;
-    const packingId = this.selectedWeekEvent.meta.id;
+    this.validation(statusId);
   }
 
-  private updateEvent(request:any)
+  private validation(statusId: number): void 
   {
-    const index = this.events.findIndex(e => e.meta.id == request.id)
-    this.events[index].actions.length = 0;
-    this.events[index].meta = request;
-    this.refreshView()
+    this.spinner.show()
+    const requestId = this.selectedWeekEvent.meta.id;
+    this.packingService.modifyCancellation(requestId, statusId)
+    .subscribe(
+      (weekRequest: WeekRequest) => this.updateEvent(weekRequest),
+      (error) => alert('ocurrio un error'),
+      () => this.spinner.hide()
+    );
+  }
+
+  private updateEvent(weekRequest: WeekRequest)
+  {
+    this.deleteEvent(weekRequest.id);
+    this.addEvent(WeekEvent.create(weekRequest));
+    this.refreshView();
   }
 
   refreshView(): void {

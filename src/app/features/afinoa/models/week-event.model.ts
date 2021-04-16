@@ -31,13 +31,9 @@ export class WeekEvent {
 
     public static create(weekRequest: WeekRequest): CalendarEvent
     {
-        const id = weekRequest.id;
-        const employees = weekRequest.empleados.map(employe => employe.apellido + ' ' + employe.nombre).join('<br>');
         const start = new Date(format(new Date( weekRequest.fecha_inicio ), 'yyyy-MM-dd HH:00:00' ));
         const end = new Date(format(new Date( weekRequest.fecha_fin ), 'yyyyy-MM-dd HH:00:00' ));
-        const startText = format(new Date( weekRequest.fecha_inicio ), 'dd/MM HH' );
-        const endText = format(new Date( weekRequest.fecha_fin ), 'dd/MM HH' );
-        const title = `<b>SOLICITUD #${ weekRequest.id } <br> Del ${ startText }hs. al ${ endText }hs. <br> ${ weekRequest.servicio.toUpperCase() } <br> ${ weekRequest.estado.toUpperCase() }</b> <br> ${ employees }`;
+        const title = WeekEvent.titleMessage(weekRequest)
         const color = {
             primary: StateColor.byId( weekRequest.estado_id ),
             secondary: StateColor.byId( weekRequest.estado_id ),
@@ -48,6 +44,29 @@ export class WeekEvent {
     public static fromArray(requests: WeekRequest[]): CalendarEvent[]
     {
         return requests.map(request => WeekEvent.create(request));
+    }
+
+    public static titleMessage(weekRequest: WeekRequest): string 
+    {
+        const startText = format(new Date( weekRequest.fecha_inicio ), 'dd/MM HH' );
+        const endText = format(new Date( weekRequest.fecha_fin ), 'dd/MM HH' );
+        const employees = weekRequest.empleados.map(employe => employe.apellido + ' ' + employe.nombre).join('<br>');
+        let validationMessage = '';
+        
+        if(weekRequest.estado_validacion_id != null)
+        {
+            validationMessage = `ESTADO VALIDACIÓN: ${ weekRequest.estado_validacion.toUpperCase() }`;
+        }   
+        
+        return [
+            `SOLICITUD #${ weekRequest.id }`,
+            `Del ${ startText }hs. al ${ endText }hs.`,
+            `${ weekRequest.servicio.toUpperCase() }`,
+            `${ weekRequest.estado.toUpperCase() }`,
+            `${ validationMessage }`,
+            `${ employees }`,
+        ]
+        .join('<br>');
     }
 
 }
