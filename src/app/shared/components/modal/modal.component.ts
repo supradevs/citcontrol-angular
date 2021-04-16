@@ -31,6 +31,12 @@ export class ModalComponent {
 
   @Input()
   btnLeftDisable: boolean = false;
+ 
+  @Input()
+  btnLeftStyle: string = 'btn-secondary';
+  
+  @Input()
+  btnRightStyle: string = 'btn-primary';
 
   @Input()
   btnRightHidden: boolean = false;
@@ -47,12 +53,19 @@ export class ModalComponent {
   @Output() 
   accept = new EventEmitter<boolean>();
 
+  @Output() 
+  leftEvent = new EventEmitter<boolean>();
+
+  @Output() 
+  rightEvent = new EventEmitter<boolean>();
+
   constructor(private modalService: NgbModal) {}
 
   open() {
     const content = this.modalRef;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       console.log(`Closed with: ${result}`);
+      this.emitEvents(result);
       this.emitResult(result);
     }, (reason: any) => {
       this.emitResult(false);
@@ -75,4 +88,11 @@ export class ModalComponent {
     this.accept.emit(value);
   }
 
+  emitEvents(value: boolean): void
+  {
+    if(value)
+      this.rightEvent.emit(true);
+    else
+      this.leftEvent.emit(true)
+  }
 }

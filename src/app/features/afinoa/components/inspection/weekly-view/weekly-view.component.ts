@@ -14,10 +14,11 @@ import {
 import { CustomDateFormatter } from '../../../../../shared/providers';
 
 import { PackingsService } from '../../../services/packings.service';
-import { WeekEvent, WeekRequest } from '../../../models';
+import { WeekEvent } from '../../../models';
 import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 import { debounced } from '../../../../../shared/helpers/debounced.function'
+import { PackingCancellationStates, PackingsStatesIds } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-weekly-view',
@@ -33,9 +34,13 @@ import { debounced } from '../../../../../shared/helpers/debounced.function'
 })
 export class WeeklyViewComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @ViewChild('modal') modal:any
 
   private packingId: number;
+
+  locale: string = 'es-AR';
+
+  weekStartsOn: number = 1
 
   view: CalendarView = CalendarView.Week;
 
@@ -52,6 +57,17 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
   debouncedClick: any;
   
   packing: string;
+
+  selectedWeekEvent: WeekEvent;
+
+  action: CalendarEventAction = {
+      label: '<i class="fas fa-exclamation-triangle text-white mr-2"></i>',
+      a11yLabel: 'Edit',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleEvent(event);
+      },
+  }
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -81,26 +97,69 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   }
 
-  getRequests()
+  getRequests(): void
   {
       this.events = [];
       this.spinner.show();
-      const startOfWeekDay = format(startOfWeek(this.viewDate), 'yyyy-MM-dd');
+      const startOfWeekDay = format(startOfWeek(this.viewDate,  {weekStartsOn: 1}), 'yyyy-MM-dd');
       this.packingService.getWeek(this.packingId, startOfWeekDay).subscribe(
         (data:any) => {
           this.packing = data.empaque;
           WeekEvent.fromArray(data.solicitudes).forEach((event:WeekEvent) => this.addEvent(event))
-          document.getElementById('render').click()
+          this.refreshView();
           this.spinner.hide();
       });
   }
 
-  addEvent(event: WeekEvent)
+  addEvent(event: WeekEvent): void
   {
+
+    const cancelled = event.meta.estado_id == PackingsStatesIds.CANCELADAS_FUERA_DE_TERMINO;
+    const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
+
+    if(cancelled && pendingOfValidation )
+    {
+      event.actions.push(this.action);
+    }
     this.events = [...this.events, event];
   }
 
-  render(){}
+  handleEvent(event:any): void
+  {
+    this.selectedWeekEvent = event;
+    this.modal.open()
+  }
+
+  onValid(accept: boolean): void
+  {
+    this.spinner.show()
+    const requestId = this.selectedWeekEvent.meta.id;
+    const statusId = PackingCancellationStates.VALIDADO;
+    this.packingService.modifyCancellation(requestId, statusId)
+    .subscribe(
+      (data) => this.updateEvent(data),
+      (error) => alert('ocurrio un erro'),
+      () => this.spinner.hide()
+    );
+  }
+
+  onInvalid(accept: boolean): void
+  {
+    const statusId = PackingCancellationStates.RECHAZADO;
+    const packingId = this.selectedWeekEvent.meta.id;
+  }
+
+  private updateEvent(request:any)
+  {
+    const index = this.events.findIndex(e => e.meta.id == request.id)
+    this.events[index].actions.length = 0;
+    this.events[index].meta = request;
+    this.refreshView()
+  }
+
+  refreshView(): void {
+    this.refresh.next();
+  }
 
   ngOnDestroy() {
     this.debouncedClick.unsubscribe();
