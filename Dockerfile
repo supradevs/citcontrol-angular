@@ -6,4 +6,5 @@ RUN npm install && npm cache clean --force
 COPY . .
 RUN npm run build --output-hashing=all
 FROM nginx:latest
+COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist/citcontrol-angular /usr/share/nginx/html
