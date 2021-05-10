@@ -52,12 +52,12 @@
                             <td>
                                 <ng-container *ngIf="request.estado === 'a programar'">
                                     <div *ngIf="request.fecha_inicio | available" class="w-100 d-flex justify-content-center">
-                                        <i 
+                                        <!-- <i 
                                             *ngIf="!(request.fecha_inicio | outOfTerm)" 
                                             (click)="onModalReprogramming(request, i)" 
                                             title="REPROGRAMAR SOLICITUD" 
                                             class="far fa-calendar-times mr-4 c-pointer">
-                                        </i>
+                                        </i> -->
                                         <i 
                                             (click)="onModalCancel(request, i)" 
                                             title="CANCELAR SOLICITUD" 
@@ -128,9 +128,8 @@
                 class="form-control"
             >
             <b class="text-danger" *ngIf="isInvalid('fecha_fin', 'invalidDates')">
-                * La fecha de fin debe ser entre 
-                {{ serviceConfig.MINIMUN_RANGE }} y {{ serviceConfig.MAXIMUN_RANGE }} 
-                horas despues de la fecha de inicio
+                Las fechas seleccionadas son invalidas. 
+                El rango máximo por servicio es de {{ serviceConfig.MAXIMUN_RANGE }} horas.
             </b>
         </div>
     </form>

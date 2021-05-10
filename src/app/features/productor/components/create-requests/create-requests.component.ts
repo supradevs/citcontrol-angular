@@ -1,13 +1,9 @@
-import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
-
-import { DatesValidator } from '../../../../shared/validators/DatesValidator';
 import { TimesService } from '../../services/times.service';
 import { ProductorService } from '../../services/productor.service';
 import { Packing, Service, ServiceRequest, ServiceConfig } from '../../models';
-import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
 import { SpinnerService } from 'src/app/core/services/spinner.service';
-
+import * as moment from 'moment'
 @Component({
   selector: 'app-create-requests',
   templateUrl: './create-requests.component.html',
@@ -17,21 +13,16 @@ export class CreateRequestsComponent {
 
   @ViewChild('modal') modal:any
 
-  form: FormGroup;
   packings: Packing[] = [];
   services: Service[] = [];
   serviceConfig = ServiceConfig;
-  minHour: string;
+  formList: any = [];
 
   constructor(
-    private fb: FormBuilder, 
     private productorService: ProductorService,
-    private hoursHelper: HoursHelperService,
     private spinner: SpinnerService,
-    private times: TimesService
+    private timesService: TimesService
   ) {
-
-    this.minHour = this.times.minHour();
 
     this.productorService
       .getPackings()
@@ -41,94 +32,83 @@ export class CreateRequestsComponent {
       .getServices()
       .subscribe((services: Service[]) => this.services = services);
 
-    this.initForm();
-
+    this.onNewForm();
   }
 
-  initForm(): void
+  onNewForm(empaque_id: string = '', servicio_id: string = '',extraordinaria: number = 0, fecha_inicio: Date | string = '', fecha_fin: Date | string = '', valid: boolean = false): void 
   {
-    this.form = this.fb.group({
-      list: this.fb.array([])
+    this.formList.push({
+      empaque_id,
+      servicio_id,
+      extraordinaria,
+      fecha_inicio,
+      fecha_fin,
+      valid
     });
-    this.controlList.push( this.newGroup );
   }
 
-  get controlList(): FormArray
+  onCopyForm( index:number ): void 
   {
-    return this.form.get('list') as FormArray;
-  }
+    let { 
+      empaque_id,
+      servicio_id,
+      extraordinaria,
+      fecha_inicio,
+      fecha_fin,
+      valid
+    } = this.formList[index];
 
-  get newGroup(): FormGroup
-  {
-    return this.fb.group({
-        empaque_id: ['', Validators.required],
-        servicio_id: ['', Validators.required],
-        fecha_inicio: [this.minHour, [Validators.required, DatesValidator.min(this.minHour)]],
-        fecha_fin: ['', [Validators.required]]
-      },
-      {
-        validator: this.times.checkTimeRangeIsValid('fecha_inicio', 'fecha_fin')
-      })
-  }
+    fecha_inicio =  moment(fecha_inicio).add(1, 'days').toDate();
+    fecha_fin = moment(fecha_fin).add(1,'days').toDate();
 
-  onCreateRequest(): void 
-  {
-    this.controlList.push( this.newGroup );
-  }
-
-  onDeleteRequest( index:number ): void 
-  {
-    if(this.controlList.length > 1)
+    if(fecha_inicio < this.timesService.lastSunday() )
     {
-      this.controlList.removeAt( index );
+      this.onNewForm( 
+        empaque_id,
+        servicio_id,
+        extraordinaria,
+        fecha_inicio,
+        fecha_fin,
+        valid
+      )
+    }
+    else{
+      alert('Limite alcanzado');
     }
   }
 
-  get minLengthControl(): boolean 
+  onDeleteForm( index:number ): void 
   {
-    return this.controlList.length > 1;
-  }
-
-  setDate(event: any, index: number, controlName: string)
-  {
-    if(event.target.value)
+    if(this.formList.length > 1)
     {
-      const hourOclock = this.hoursHelper.setOclock(event.target.value).format('YYYY-MM-DDTHH:mm');
-      const controlsRow = this.controlList.at(index);
-      event.target.value = hourOclock;
-      controlsRow['controls'][controlName].setValue(hourOclock);
+      this.formList.splice(index, 1);
     }
-
   }
 
-  getControl(index: number, controlName: string)
-  {
-    return this.controlList.controls[index]['controls'][controlName];
-  }
+   onSetForm(form:any, index: number): void 
+   {
+      const {
+        empaque_id,
+        extraordinaria,
+        fecha_fin,
+        fecha_inicio,
+        servicio_id,
+        valid,
+      } = form;
 
-  isInvalid(index: number, controlName: string, error: string = ''): boolean
-  {
-    const control = this.controlList.controls[index]['controls'][controlName];
-    
-    if(error.length > 0)
-      return control.invalid && control.dirty && control.hasError(error);
-    else 
-      return control.invalid && control.dirty;
-  }
+     this.formList[index].empaque_id = empaque_id;
+     this.formList[index].extraordinaria = extraordinaria ;
+     this.formList[index].fecha_fin = fecha_fin ;
+     this.formList[index].fecha_inicio = fecha_inicio ;
+     this.formList[index].servicio_id = servicio_id ;
+     this.formList[index].valid = valid ;
+   }
 
-  markAsInvalidControls(): void 
-  {
-    this.controlList.controls.forEach((item: any) => {
-      Object.values(item.controls).forEach((control:FormControl) => {
-        control.markAsDirty()
-      })
-    });
-  }
 
   onSubmit()
   {
-    this.markAsInvalidControls();
-    if(this.form.valid)
+    console.log(this.formList)
+    if(false)
     {
       this.spinner.show();
       this.productorService.createRequests(this.mapForm())
@@ -143,10 +123,17 @@ export class CreateRequestsComponent {
     }
   }
 
+  get isValid(): boolean 
+  {
+    return this.formList.filter(form => form.valid == false).length == 0;
+  }
+
+
   mapForm(): ServiceRequest[]
   {
     return this.form.value.list.map((controls:any) => ServiceRequest.create(controls))
   }
 
+ 
 
 }

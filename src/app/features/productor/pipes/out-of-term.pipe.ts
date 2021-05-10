@@ -15,7 +15,7 @@ export class OutOfTermPipe implements PipeTransform {
     const duration = moment.duration(start.diff(now));
     const hours = duration.asHours();
    
-    if( hours > 0 && hours < ServiceConfig.HOURS_IN_ADVANCE)
+    if( hours > 0 && hours <= ServiceConfig.CANCEL_OUT_OF_TERM)
     {
       return true;
     }

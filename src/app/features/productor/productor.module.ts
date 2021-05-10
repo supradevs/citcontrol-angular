@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 import { ProductorRoutingModule } from './productor-routing.module';
 import { ProductorComponent } from './productor.component';
@@ -10,6 +11,7 @@ import { ShowRequestComponent } from './components/show-request/show-request.com
 import { InTermPipe } from './pipes/in-term.pipe';
 import { OutOfTermPipe } from './pipes/out-of-term.pipe';
 import { AvailablePipe } from './pipes/available.pipe';
+import { CardFormComponent } from './components/create-requests/card-form.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +21,13 @@ import { AvailablePipe } from './pipes/available.pipe';
     InTermPipe, 
     OutOfTermPipe, 
     AvailablePipe, 
-    ShowRequestComponent
+    ShowRequestComponent, 
+    CardFormComponent
   ],
   imports: [
     CommonModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
     SharedModule,
     ProductorRoutingModule
   ],
