@@ -97,7 +97,7 @@ export class CreateRequestsComponent {
       } = form;
 
      this.formList[index].empaque_id = empaque_id;
-     this.formList[index].extraordinaria = extraordinaria ;
+     this.formList[index].extraordinaria = extraordinaria;
      this.formList[index].fecha_fin = fecha_fin ;
      this.formList[index].fecha_inicio = fecha_inicio ;
      this.formList[index].servicio_id = servicio_id ;
@@ -107,33 +107,32 @@ export class CreateRequestsComponent {
 
   onSubmit()
   {
-    console.log(this.formList)
-    if(false)
-    {
-      this.spinner.show();
-      this.productorService.createRequests(this.mapForm())
-          .subscribe(
-            () => {
-              this.spinner.hide()
-              this.modal.open();
-              this.form.reset();
-            },
-            (error) => console.log(error)
-          );
-    }
+    this.spinner.show();
+    this.productorService.createRequests(this.mapForms())
+        .subscribe(
+          () => {
+            this.modal.open();
+            this.resetList();
+          },
+          () => console.log(),
+          () => this.spinner.hide()
+    );
   }
 
   get isValid(): boolean 
   {
-    return this.formList.filter(form => form.valid == false).length == 0;
+    return this.formList.filter((form:any) => form.valid == false).length === 0;
   }
 
-
-  mapForm(): ServiceRequest[]
+  mapForms(): ServiceRequest[]
   {
-    return this.form.value.list.map((controls:any) => ServiceRequest.create(controls))
+    return this.formList.map((controls:any) => ServiceRequest.create(controls));
   }
 
- 
+  resetList(): void 
+  {
+      this.formList.length = 0;
+      this.onNewForm();
+  }
 
 }

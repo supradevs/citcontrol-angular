@@ -1,4 +1,3 @@
-import { ServiceConfig } from './../../models/service-config.enum';
 import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { TimesService } from './../../services/times.service';
@@ -155,6 +154,7 @@ export class CardFormComponent implements OnInit {
     this.initForm();
     this.setMinMax();
     this.detectChanges();
+    this.setExtraordinary();
   }
 
   initForm(): void
