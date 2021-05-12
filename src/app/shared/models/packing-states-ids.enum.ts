@@ -7,3 +7,4 @@ export enum PackingsStatesIds {
     "CANCELADAS_FUERA_DE_TERMINO" = 5,
     "SIN_PEDIDO" = 6
 }
+
