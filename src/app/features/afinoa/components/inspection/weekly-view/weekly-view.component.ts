@@ -115,7 +115,7 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   addEvent(event: WeekEvent): void
   {
-    const cancelled = event.meta.estado_id == RequestsStates.CANCELADAS_FUERA_DE_TERMINO;
+    const cancelled = event.meta.estado_id == RequestsStates.CANCELADA_FUERA_DE_TERMINO;
     const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
 
     if(cancelled && pendingOfValidation )
