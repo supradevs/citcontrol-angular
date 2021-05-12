@@ -46,9 +46,6 @@ export class ProductorService {
 
   createRequests(requests: ServiceRequest[])
   {
-    return this.http.post(`${this.api}/inspeccion/solicitud_empaque`, {servicios: requests})
-    .pipe(
-      delay(1000)
-    );
+    return this.http.post(`${this.api}/inspeccion/solicitud_empaque`, {servicios: requests});
   }
 }

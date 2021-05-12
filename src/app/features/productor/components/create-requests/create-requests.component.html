@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form" class="section">
+<div class="section">
 
   <div class="section-body">
 
@@ -8,7 +8,7 @@
     </app-title-section>
     
 
-    <div class="alert alert-warning alert-has-icon">
+    <div *ngIf="false" class="alert alert-warning alert-has-icon">
       <div class="alert-icon"><i class="fas fa-info-circle"></i></div>
       <div class="alert-body">
         <div class="alert-title">Atención</div>
@@ -24,78 +24,37 @@
     <div class="card">
       <div class="card-header d-flex justify-content-between">
         <h4>Formulario</h4>
-        <span (click)="onCreateRequest()" class="btn btn-info c-pointer">Crear solicitud</span>
+        <span (click)="onNewForm()" class="btn btn-info c-pointer">Crear solicitud</span>
       </div>
       <div class="card-body">
-          <ng-container formArrayName="list">
-
-            <ng-container *ngFor="let controls of controlList.controls; let i = index;">
-             
-              <section [formGroupName]="i" class="w-100 d-flex justify-content-between mb-5">
-                
-                <div class="text-center">
-                  <span><b>Empaque</b></span> <br>
-                  <select formControlName="empaque_id" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
-                    <option value="">Seleccionar</option>
-                    <option *ngFor="let packing of packings" [value]="packing.id">{{ packing.empaque }}</option>
-                  </select>
-                  <b class="text-danger" *ngIf="isInvalid(i, 'empaque_id')">
-                    * campo requerido
-                  </b>
-                </div>
-
-                <div class="text-center">
-                  <span><b>Servicio</b></span> <br>
-                  <select formControlName="servicio_id" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2">
-                    <option value="">Seleccionar</option>
-                    <option *ngFor="let service of services" [value]="service.id">{{ service.servicio }}</option>
-                  </select>
-                  <b class="text-danger" *ngIf="isInvalid(i, 'servicio_id')">
-                    * campo requerido
-                  </b>
-                </div>
-
-                <div class="text-center">
-                  <span><b>Fecha inicio</b></span> <br>
-                  <input (change)="setDate($event, i, 'fecha_inicio')" formControlName="fecha_inicio" type="datetime-local" step="3600" class="form-control mb-2 mr-sm-2">
-                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_inicio', 'isMinor')">
-                    * La mínima fecha de inicio disponible es <br> {{ minHour | date:'dd/MM/yyyy HH:00' }}
-                  </b>
-                </div>
-
-                <div class="text-center">
-                  <span><b>Fecha fin</b></span> <br>
-                  <input (change)="setDate($event, i, 'fecha_fin')" formControlName="fecha_fin" type="datetime-local" class="form-control mb-2 mr-sm-2">
-                  <b class="text-danger" *ngIf="isInvalid(i, 'fecha_fin', 'invalidDates')">
-                    * La fecha de fin debe ser entre {{ serviceConfig.MINIMUN_RANGE }} y {{ serviceConfig.MAXIMUN_RANGE }} <br> horas despues de la fecha de inicio
-                  </b>
-                </div>
-
-                <div class="d-flex justify-content-center align-items-center">
-                  <i 
-                    (click)="onDeleteRequest(i)" 
-                    [ngClass]="{'text-danger c-pointer': minLengthControl}"
-                    title="ELIMINAR FILA" 
-                    class="fa fa-times-circle fa-lg c-pointer position-relative top-6 right-8">
-                  </i>
-                </div>
-            </section>
-            <hr>
-            </ng-container>
-
-          </ng-container>
+        <ng-container *ngFor="let form of formList; let i = index;">
+          <app-card-form 
+            [packings]="packings"
+            [services]="services"
+            [packing]="form.empaque_id"
+            [service]="form.servicio_id"
+            [start]="form.fecha_inicio"
+            [end]="form.fecha_fin"
+            [isExtraordinary]="form.extraordinaria"
+            (delete)="onDeleteForm(i)"
+            (copy)="onCopyForm(i)"
+            (values)="onSetForm($event, i)"
+          >
+          </app-card-form>
+        </ng-container>
       </div>
     </div>
 
     <div class="row mb-5 pb-5">
       <div class="col-md-12 d-flex justify-content-end">
-        <button class="btn btn-lg btn-success">Enviar</button>
+        <button [disabled]="!isValid" (click)="onSubmit()" type="button" class="btn btn-lg btn-success">Enviar</button>
       </div>
     </div>
   </div>
-</form>
+</div>
 
-  
+   
+
 <app-modal 
   [title]="'Aviso'"
   [footerHidden]="true"
