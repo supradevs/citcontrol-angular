@@ -1,6 +1,6 @@
 import { CalendarEvent, CalendarEventAction } from 'angular-calendar';
 import { WeekRequest } from './index';
-import { StateColor } from '../../../shared/models'
+import { ColorsStates } from '../../../shared/models'
 import { format } from 'date-fns';
 
 
@@ -35,8 +35,8 @@ export class WeekEvent {
         const end = new Date(format(new Date( weekRequest.fecha_fin ), 'yyyyy-MM-dd HH:00:00' ));
         const title = WeekEvent.titleMessage(weekRequest)
         const color = {
-            primary: StateColor.byId( weekRequest.estado_id ),
-            secondary: StateColor.byId( weekRequest.estado_id ),
+            primary: ColorsStates[weekRequest.estado_id],
+            secondary: ColorsStates[weekRequest.estado_id],
         };
         return new WeekEvent(start, end, title, color, weekRequest);
     }

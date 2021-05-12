@@ -1,16 +1,16 @@
-import { FormGroup, FormBuilder, FormArray, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap, debounceTime } from 'rxjs/operators';
 
 import { ServiceConfig } from '../../models';
-import { DatesValidator } from '../../../../shared/validators/DatesValidator';
 import { Packing, Request } from '../../models';
 import { TimesService } from '../../services/times.service';
 import { ProductorService } from '../../services/productor.service';
 import { HoursHelperService } from '../../../../shared/helpers/hours-helper.service';
 import { OutOfTermPipe } from '../../pipes/out-of-term.pipe';
 import { SpinnerService } from 'src/app/core/services/spinner.service';
+import { RequestsStates } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-show-requests',
@@ -90,9 +90,7 @@ export class ShowRequestsComponent implements OnInit {
 
     this.productorService.getRequests(packingId, search, this.currentPage)
     .subscribe((data:any) => {
-
       this.requests = data.data;
-
       const {
         current_page,
         per_page,
@@ -137,6 +135,16 @@ export class ShowRequestsComponent implements OnInit {
     this.modalInTerm = !this.modalInTerm;
     this.index = index;
     this.cancelModal?.open();
+  }
+
+  canCancel(request: Request): boolean 
+  {
+    return [
+      RequestsStates.A_PROGRAMAR, 
+      RequestsStates.ASIGNADA, 
+      RequestsStates.ENVIADA 
+    ]
+    .includes(request.estado_id);
   }
 
   onCancelRequest(accept: boolean): void {

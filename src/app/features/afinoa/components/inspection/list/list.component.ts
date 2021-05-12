@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { LoadSpinnerService } from 'src/app/shared/services/load-spinner.service';
-import { PackingsStates, Provinces } from '../../../../../shared/models';
+import { Provinces } from '../../../../../shared/models';
 import { PackingsService } from '../../../services/packings.service';
-import { Packing } from '../../../models'
+import { Packing, PackingFilters } from '../../../models'
 
 @Component({
   selector: 'app-list',
@@ -25,7 +25,7 @@ export class ListComponent implements OnInit {
     },
   ];
 
-  public packingsStates = PackingsStates;
+  public packingsFilters = PackingFilters;
 
   public packings: Packing[] = [];
 
@@ -49,7 +49,7 @@ export class ListComponent implements OnInit {
     this.form = this.fb.group({
       search: [''],
       provinces: [this.provinces[0].value],
-      state:[this.packingsStates[0].id]
+      state:[this.packingsFilters[0].id]
     });
   }
 

@@ -12,4 +12,5 @@ export interface Request {
     created_at: string;
     servicio: string;
     estado: string;
+    estado_id: number;
 }

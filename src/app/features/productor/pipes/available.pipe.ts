@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment'
 
-import { ServiceConfig } from './../models/service-config.enum';
-
 @Pipe({
   name: 'available'
 })

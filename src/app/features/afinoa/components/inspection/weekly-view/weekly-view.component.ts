@@ -1,6 +1,6 @@
 import { WeekRequest } from './../../../models/week-request.interface';
 import { ActivatedRoute } from '@angular/router';
-import { Component, ChangeDetectionStrategy, ViewChild, TemplateRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, OnInit, OnDestroy } from '@angular/core';
 
 import { startOfWeek, format } from 'date-fns';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ import { SpinnerService } from 'src/app/core/services/spinner.service';
 
 import { debounced } from '../../../../../shared/helpers/debounced.function'
 import { PackingCancellationStates } from 'src/app/shared/models';
-import { PackingsStatesIds } from 'src/app/shared/models';
+import { RequestsStates } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-weekly-view',
@@ -115,7 +115,7 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   addEvent(event: WeekEvent): void
   {
-    const cancelled = event.meta.estado_id == PackingsStatesIds.CANCELADAS_FUERA_DE_TERMINO;
+    const cancelled = event.meta.estado_id == RequestsStates.CANCELADAS_FUERA_DE_TERMINO;
     const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
 
     if(cancelled && pendingOfValidation )
