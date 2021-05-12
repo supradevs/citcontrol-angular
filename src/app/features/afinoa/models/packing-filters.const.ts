@@ -38,7 +38,7 @@ export const PackingFilters = [
         state: 'Rechazadas'
     },
     {
-        id: 8,
+        id: 9,
         state: 'Sin pedido'
     }
 ]

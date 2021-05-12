@@ -1,9 +1,8 @@
-import { WeekRequest } from './../../../models/week-request.interface';
 import { ActivatedRoute } from '@angular/router';
 import { Component, ChangeDetectionStrategy, ViewChild, OnInit, OnDestroy } from '@angular/core';
-
 import { startOfWeek, format } from 'date-fns';
 import { Subject } from 'rxjs';
+import { WeekRequest } from './../../../models';
 import {
   CalendarDateFormatter,
   CalendarEvent,
@@ -36,7 +35,9 @@ import { RequestsStates } from 'src/app/shared/models';
 })
 export class WeeklyViewComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal:any
+  @ViewChild('validationModal') validationModal:any
+  
+  @ViewChild('rejectModal') rejectModal:any
 
   private packingId: number;
 
@@ -62,14 +63,21 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   selectedWeekEvent: WeekEvent;
 
-  action: CalendarEventAction = {
+  pendingValidationAction: CalendarEventAction = {
       label: '<i class="fas fa-exclamation-triangle text-white mr-2"></i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent(event);
+        this.handleValidationEvent(event);
       },
   }
-  
+
+  pendingRejectionAction: CalendarEventAction = {
+      label: '<i class="fas fa-clock text-white mr-2"></i>',
+      a11yLabel: 'Edit',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleRejectionEvent(event);
+      },
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -105,7 +113,7 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
       this.spinner.show();
       const startOfWeekDay = format(startOfWeek(this.viewDate,  {weekStartsOn: 1}), 'yyyy-MM-dd');
       this.packingService.getWeek(this.packingId, startOfWeekDay).subscribe(
-        (data:any) => {
+        (data:{empaque: string, solicitudes: WeekRequest[]}) => {
           this.packing = data.empaque;
           WeekEvent.fromArray(data.solicitudes).forEach((event:WeekEvent) => this.addEvent(event))
           this.refreshView();
@@ -115,20 +123,42 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
 
   addEvent(event: WeekEvent): void
   {
-    const cancelled = event.meta.estado_id == RequestsStates.CANCELADA_FUERA_DE_TERMINO;
-    const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
-
-    if(cancelled && pendingOfValidation )
+    if(this.pendingValidation(event))
     {
-      event.actions.push(this.action);
+      event.actions.push(this.pendingValidationAction);
     }
+
+    if(this.pendingRejection(event))
+    {
+      event.actions.push(this.pendingRejectionAction);
+    }
+
     this.events = [...this.events, event];
   }
 
-  handleEvent(event:any): void
+  pendingValidation(event: WeekEvent): boolean 
+  {
+    const cancelled = event.meta.estado_id == RequestsStates.CANCELADA_FUERA_DE_TERMINO;
+    const pendingOfValidation = event.meta.estado_validacion_id == PackingCancellationStates.PENDIENTE;
+    return cancelled && pendingOfValidation;
+  }
+
+  pendingRejection(event: WeekEvent): boolean 
+  {
+    return event.meta.estado_id == RequestsStates.A_PROGRAMAR && !!event.meta.extraordinaria;
+  }
+
+
+  handleValidationEvent(event:any): void
   {
     this.selectedWeekEvent = event;
-    this.modal.open()
+    this.validationModal.open()
+  }
+
+  handleRejectionEvent(event:any): void
+  {
+    this.selectedWeekEvent = event;
+    this.rejectModal.open()
   }
 
   onValid(accept: boolean): void
@@ -141,6 +171,21 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
   {
     const statusId = PackingCancellationStates.RECHAZADO;
     this.validation(statusId);
+  }
+
+  onReject(accept: boolean): void
+  {
+    this.spinner.show()
+    const requestId = this.selectedWeekEvent.meta.id;
+    this.packingService.rejectRequest(requestId)
+    .subscribe(
+      // (weekRequest: WeekRequest) => this.updateEvent(weekRequest),
+      // (error) => alert('ocurrio un error'),
+      // 
+      () => {},
+      () => {},
+      () => this.spinner.hide()
+    );
   }
 
   private validation(statusId: number): void 

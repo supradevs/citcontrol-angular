@@ -48,7 +48,7 @@
                 </div>
             </div>
             <br />
-            <div [ngSwitch]="view">
+            <div [ngSwitch]="view" class="scroll-container" #scrollContainer>
                 <mwl-calendar-week-view
                     *ngSwitchCase="CalendarView.Week"
                     [viewDate]="viewDate"
@@ -77,10 +77,25 @@
   [btnRightStyle]="'btn-success'"
   (leftEvent)="onInvalid($event)"
   (rightEvent)="onValid($event)"
-  #modal
+  #validationModal
 >
     <ng-container *ngIf="selectedWeekEvent">
         <b>Solicitud:</b> #{{ selectedWeekEvent.meta.id }} <br>
         <b>Cancelacion por:</b> {{ selectedWeekEvent.meta.motivo_cancelacion }}.
     </ng-container>
 </app-modal>
+
+<app-modal 
+  [title]="'Rechazar solicitud extraordinaria'"
+  [btnRightText]="'Rechazar'"
+  [btnRightStyle]="'btn-danger'"
+  (rightEvent)="onReject($event)"
+  #rejectModal
+>
+    <ng-container *ngIf="selectedWeekEvent">
+        <b>Solicitud:</b> #{{ selectedWeekEvent.meta.id }} <br>
+        <b>Fecha de inicio:</b> {{ selectedWeekEvent.meta.fecha_inicio |  date: 'dd/MM/yyyy HH:mm' }}.
+    </ng-container>
+</app-modal>
+
+

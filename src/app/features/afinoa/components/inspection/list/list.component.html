@@ -46,6 +46,9 @@
                             <td class="text-center">{{ packing.horas_solicitadas }} hs.</td>
                             <td class="text-center pb-3" [style]="{'color': packing.estado_id | color}">{{ packing.estado }}</td>
                         </tr> 
+                        <tr *ngIf="packings.length == 0">
+                            <td colspan="5" class="text-center">No hay datos para los filtros aplicados</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
