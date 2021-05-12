@@ -2,7 +2,7 @@
 
 <app-title-section
   [title]="'Detalle solicitud'"
-  [description]="'Muestra el detalle de la solicitud seleccionada'"
+  [description]="'Muestra el detalle de la notificación'"
 >
 </app-title-section>
 
@@ -22,7 +22,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <address>
-                      <strong>Servicio:</strong><br />
+                      <strong>Servicio:</strong><br/>
                       {{ request.servicio  }}
                     </address>
                   </div>
@@ -36,14 +36,8 @@
                 <div class="row">
                   <div class="col-md-6">
                     <address>
-                      <strong>Solicitud reprogramada:</strong><br />
-                      {{ request.reprogramada | yesNo | titlecase}}
-                    </address>
-                  </div>
-                  <div class="col-md-6 text-md-right">
-                    <address>
-                      <strong>Estado:</strong><br />
-                      {{ request.estado  }}<br /><br />
+                      <strong>Estado:</strong><br/>
+                      <span [style]="{'color': request.estado_id | color}">{{ request.estado }}</span><br/><br/>
                     </address>
                   </div>
                 </div>
