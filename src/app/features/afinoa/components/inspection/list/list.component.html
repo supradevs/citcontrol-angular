@@ -35,18 +35,16 @@
                             <th class="text-center">Codigo</th>
                             <th class="text-center">Empaque</th>
                             <th class="text-center">Horas solicitdas</th>
-                            <th class="text-center">Estados</th>
+                            <th class="text-center">Estado</th>
                         </tr>
                     </thead>                
                     <tbody>
-                        <tr *ngFor="let item of packings">
-                            <td class="text-center"><a [routerLink]="['/afinoa/inspeccion/empaque/', item.id]">{{ item.id }}</a></td>
-                            <td class="text-center">{{ item.codigo_empaque }}</td>
-                            <td class="text-center">{{ item.empaque }}</td>
-                            <td class="text-center">{{ item.horas_solicitadas }} hs.</td>
-                            <td class="text-center pb-3">
-                                <div *ngFor="let estado of item.estados" [ngStyle]="{'color': (estado.id | color)}">{{ estado.estado | titlecase }}</div>
-                            </td>
+                        <tr *ngFor="let packing of packings">
+                            <td class="text-center"><a [routerLink]="['/afinoa/inspeccion/empaque/', packing.id]">{{ packing.id }}</a></td>
+                            <td class="text-center">{{ packing.codigo_empaque }}</td>
+                            <td class="text-center">{{ packing.empaque }}</td>
+                            <td class="text-center">{{ packing.horas_solicitadas }} hs.</td>
+                            <td class="text-center pb-3" [style]="{'color': 1 | color}">CORREGIR</td>
                         </tr> 
                     </tbody>
                 </table>

@@ -1,6 +1,6 @@
 export enum ColorsStates {
     '#deeaee', // SIN TIPO [0]
-    '#d64161', // A PROGRAMAR [1],
+    '#dc3545', // A PROGRAMAR [1],
     '#ffc107', // ASIGNADA [2],
     '#82b74b', // ENVIADA [3]
     '#2196f3', // COMPLETADA [4]

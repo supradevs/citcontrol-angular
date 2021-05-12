@@ -6,6 +6,6 @@ export interface Packing {
     id: number,
     codigo_empaque: string,
     empaque: string,
-    estados: Estado[],
+    estados: Estado,
     horas_solicitadas: number,
 }
