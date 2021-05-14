@@ -15,7 +15,7 @@
             <ng-container *ngFor="let notification of notifications">
                 <a (click)="redirect(notification.id)" routerLinkActive="router-link-active"  class="dropdown-item dropdown-item-unread c-pointer">
                     <div class="dropdown-item-icon text-white" [style]="{'background': notification.estado_id | color}" >
-                    <i class="far fa-credit-card"></i>
+                        <i class="far fa-credit-card"></i>
                     </div>
                     <div class="dropdown-item-desc">
                         Solicitud #{{ notification.solicitud_id }} - {{ notification.estado | uppercase }}

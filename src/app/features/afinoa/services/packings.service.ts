@@ -40,7 +40,10 @@ export class PackingsService {
 
   rejectRequest(requestId: number):  Observable<any>
   {
-    return of([]);
+    const url = `${this.api}/afinoa/rechazar_solicitud_extraordinaria/${requestId}`;
+    return this.http.put(url, {}).pipe(
+      map((data:any) => data.data.solicitud)
+    );
   }
 
 

@@ -179,11 +179,8 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
     const requestId = this.selectedWeekEvent.meta.id;
     this.packingService.rejectRequest(requestId)
     .subscribe(
-      // (weekRequest: WeekRequest) => this.updateEvent(weekRequest),
-      // (error) => alert('ocurrio un error'),
-      // 
-      () => {},
-      () => {},
+      (weekRequest: WeekRequest) => this.updateEvent(weekRequest),
+      (error) => alert('ocurrio un error'),
       () => this.spinner.hide()
     );
   }

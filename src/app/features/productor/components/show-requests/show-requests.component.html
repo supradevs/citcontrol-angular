@@ -30,6 +30,7 @@
                             <th>Servicio</th>
                             <th>Inicio</th>
                             <th>Fin</th>
+                            <th>Extraordinaria</th>
                             <th>Estado</th>
                             <th>Detalle</th>
                             <th></th>
@@ -41,6 +42,7 @@
                             <td width="2%">{{ request.servicio }}</td>
                             <td>{{ request.fecha_inicio | date: 'dd/MM/yyyy HH:mm' }}</td>
                             <td>{{ request.fecha_fin | date: 'dd/MM/yyyy HH:mm' }}</td>
+                            <td class="text-center">{{ request.extraordinaria | yesNo | titlecase }}</td>
                             <td [style]="{'color': request.estado_id | color}" width="15%">{{ request.estado | uppercase  }}</td>
                             <td width="" class="p-2">
                                 <p *ngIf="request.fecha_cancelacion">Fecha cancelacion: {{ request.fecha_cancelacion | date: 'dd/MM/yyyy HH:mm' }}<br></p>
