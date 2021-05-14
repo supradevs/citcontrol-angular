@@ -10,6 +10,7 @@ import { ListComponent } from './components/inspection/list/list.component';
 import { NotificationComponent } from './components/inspection/notification/notification.component';
 import { RequestsComponent } from './components/inspection/requests/requests.component';
 import { WeeklyViewComponent } from './components/inspection/weekly-view/weekly-view.component';
+import { WeeklyScheduleComponent } from './components/inspection/weekly-schedule/weekly-schedule.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,10 @@ const routes: Routes = [
             {
               path:'empaque/:id',
               component: WeeklyViewComponent
+            },
+            {
+              path:'empaque/:id/programacion',
+              component: WeeklyScheduleComponent
             },
             {
               path:'solicitud/:id',

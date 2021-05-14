@@ -1,0 +1,176 @@
+<app-title-section
+  [title]="'Programación semanal'"
+  [description]="'Permite programar las solicitudes de la semana'"
+>
+</app-title-section>
+
+<div class="container mt-5">
+
+    <div class="row mb-5">
+        <div class="col-12 d-flex justify-content-between">
+            <div class="btn-group">
+                <div
+                    class="btn btn-outline-secondary c-pointer"
+                    mwlCalendarToday
+                    [(viewDate)]="viewDate"
+                    (click)="debouncedClick($event)"
+                >
+                    Semana actual
+                </div>
+                <div
+                    class="btn btn-primary c-pointer"
+                    mwlCalendarNextView
+                    [view]="view"
+                    [(viewDate)]="viewDate"
+                    (click)="debouncedClick($event)"
+                >
+                    Siguiente
+                </div>
+            </div>
+            <button type="button" class="btn btn-warning">Guardar Programación</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            
+            <div class="card bg-transparent shadow-none">
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <select class="form-control">
+                                <option value="">solicutd N</option>
+                                <option value="">solicutd N</option>
+                                <option value="">solicutd N</option>
+                                <option value="">solicutd N</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div 
+                            mwlDroppable
+                            (drop)="externalDrop($event.dropData.event)"
+                            dragOverClass="drag-over"
+                            class="col-12"
+                        >
+                            <!--item-->
+                            <ng-container *ngFor="let event of externalEvents">
+                                <div                                    
+                                    class="person-info p-3 mb-3 bg-white shadow rounded"
+                                >
+                                    <div 
+                                        mwlDraggable
+                                        [dropData]="{event: event}"
+                                        [touchStartLongPress]="{ delay: 300, delta: 30 }"
+                                        dragActiveClass="drag-active"
+                                        [style.color]="event.color.primary"
+                                        class="c-pointer mb-1 p-1"
+                                    >
+                                        <b>{{ event.title }}</b>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <div> 
+                                            <i class="far fa-clock mr-1"></i>
+                                            <span>250hs</span>
+                                        </div>
+                                        <div>Senior</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <span>Leg. 47441</span>
+                                        <span>Sello 4132</span>
+                                    </div>
+                                    <div class="d-flex text-muted">
+                                        <i class="fas fa-industry mr-1 mt-1"></i>
+                                        <span>Empaque Mate Daimon</span>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <!--/item-->
+
+                        </div>
+
+                    </div>
+                    
+                    <div
+                    *ngIf="false"
+                    mwlDroppable
+                    (drop)="externalDrop($event.dropData.event)"
+                    dragOverClass="drag-over"
+                  >
+                    <div class="card-body">
+                      <p *ngIf="externalEvents.length === 0"><em>No events added</em></p>
+                      <ul>
+                        <li
+                          *ngFor="let event of externalEvents"
+                          mwlDraggable
+                          [dropData]="{event: event}"
+                          [touchStartLongPress]="{ delay: 300, delta: 30 }"
+                          dragActiveClass="drag-active"
+                        >
+                          <a href="javascript:;" [style.color]="event.color.primary">
+                            {{ event.title }}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-12 col-md-9 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                   <div class="row pb-3">
+                        <div class="col-12 d-flex justify-content-between">
+                            <b>Nombre del empaque - Solicitud #4336632</b>
+                            <span>
+                                <i *ngIf="view == CalendarView.Week" (click)="view = CalendarView.Day" class="far fa-calendar-minus fs-20 c-pointer" title="Cambiar a vista diaria" ></i>
+                                <i *ngIf="view == CalendarView.Day" (click)="view = CalendarView.Week" class="far fa-calendar-alt fs-20 c-pointer" title="Cambiar a vista semanal" ></i>
+                                <i class="far fa-object-ungroup fs-20 ml-2 c-pointer" title="Copiar asignación"></i>
+                            </span>
+                        </div>
+                        <div *ngIf="view == CalendarView.Day" class="col-12 d-flex justify-content-center">
+                            <span>
+                                {{ viewDate | date:'EEEE' | titlecase }}
+                                {{ viewDate | date:'d' }} de 
+                                {{ viewDate | date:'MMMM' }} de 
+                                {{ viewDate | date:'y' }}
+                            </span>
+                        </div>
+                   </div>
+                    <div [ngSwitch]="view" class="scroll-container" #scrollContainer>
+                        <mwl-calendar-week-view
+                            *ngSwitchCase="CalendarView.Week"
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            [refresh]="refresh"
+                            [weekStartsOn]="weekStartsOn"
+                            [locale]="locale"
+                            (eventTimesChanged)="eventDropped($event)"
+                            (beforeViewRender)="beforeWeekViewRender($event)"
+                        >
+                        </mwl-calendar-week-view>
+
+                        <mwl-calendar-day-view
+                            *ngSwitchCase="CalendarView.Day"
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            [refresh]="refresh"
+                            [snapDraggedEvents]="false"
+                            (eventTimesChanged)="eventDropped($event)"
+                            (beforeViewRender)="beforeWeekViewRender($event)"
+                        >
+                        </mwl-calendar-day-view>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

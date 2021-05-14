@@ -12,6 +12,7 @@ import { NotificationComponent } from './components/inspection/notification/noti
 import { WeeklyViewComponent } from './components/inspection/weekly-view/weekly-view.component';
 import { RequestsComponent } from './components/inspection/requests/requests.component';
 import { InspectionComponent } from './components/inspection/inspection.component';
+import { WeeklyScheduleComponent } from './components/inspection/weekly-schedule/weekly-schedule.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { InspectionComponent } from './components/inspection/inspection.componen
     NotificationComponent,
     WeeklyViewComponent,
     RequestsComponent,
+    WeeklyScheduleComponent,
   ],
   imports: [
     CommonModule,

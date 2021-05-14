@@ -39,7 +39,7 @@ export class WeeklyViewComponent implements OnInit, OnDestroy {
   
   @ViewChild('rejectModal') rejectModal:any
 
-  private packingId: number;
+  packingId: number;
 
   locale: string = 'es-AR';
 

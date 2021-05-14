@@ -50,7 +50,7 @@ export class WeekEvent {
     {
         const startText = format(new Date( weekRequest.fecha_inicio ), 'dd/MM HH' );
         const endText = format(new Date( weekRequest.fecha_fin ), 'dd/MM HH' );
-        const employees = []; //weekRequest.empleados.map(employe => employe.apellido + ' ' + employe.nombre).join('<br>');
+        const employees = weekRequest.empleados.map(employe => employe.apellido + ' ' + employe.nombre).join('<br>');
         let validationMessage = '';
         
         if(weekRequest.estado_validacion_id != null)

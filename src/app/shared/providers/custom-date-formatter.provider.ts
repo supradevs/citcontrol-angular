@@ -7,10 +7,10 @@ import { es } from 'date-fns/locale';
 @Injectable()
 export class CustomDateFormatter extends CalendarDateFormatter {
     public weekViewTitle({ date, locale }: DateFormatterParams): string {
-        const startDay = getDate(startOfWeek(date));
-        const startMonth = format(startOfWeek(date), 'LLLL', { locale: es });
-        const endDay = getDate(endOfWeek(date));
-        const endMonth = format(endOfWeek(date), 'LLLL', { locale: es });
+        const startDay = getDate(startOfWeek(date, {weekStartsOn: 1}));
+        const startMonth = format(startOfWeek(date, {weekStartsOn: 1}), 'LLLL', { locale: es });
+        const endDay = getDate(endOfWeek(date, {weekStartsOn: 1}));
+        const endMonth = format(endOfWeek(date, {weekStartsOn: 1}), 'LLLL', { locale: es });
         return `Semana del ${ startDay } de ${ startMonth } al ${ endDay } de ${ endMonth }`;
     }
 

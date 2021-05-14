@@ -5,8 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from './../../../../environments/environment';
 
-import { Reprogramming } from './../models/reprogramming.model';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -37,11 +35,6 @@ export class ProductorService {
   {
     const data = { motivo_cancelacion: text };
     return this.http.put<any[]>(`${this.api}/inspeccion/solicitud_cancelacion/${requestId}`, data);
-  }
-
-  reprogrammingRequest(requestId: number, data: Reprogramming): Observable<any> 
-  {
-    return this.http.put<any[]>(`${this.api}/inspeccion/solicitud_reprogramacion/${requestId}`, data);
   }
 
   createRequests(requests: ServiceRequest[])

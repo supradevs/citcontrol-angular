@@ -6,7 +6,11 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h4 *ngIf="packing">{{ packing }}</h4>
+        <h4 *ngIf="packing; else elseBlock">{{ packing }}</h4>
+        <ng-template #elseBlock>
+            <h4>Cargando...</h4>
+        </ng-template>
+        <a [routerLink]="['/afinoa/inspeccion/empaque/' + this.packingId + '/programacion']" routerLinkActive="router-link-active"  class="btn btn-outline-warning">Programar</a>
     </div>
     <div class="card-body">
         <ng-container>
