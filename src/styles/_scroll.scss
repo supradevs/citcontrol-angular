@@ -1,7 +1,7 @@
 
 /* Tamaño del scroll */
 .scroll-bar::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
   
    /* Estilos barra (thumb) de scroll */
@@ -13,4 +13,6 @@
   .scroll-bar::-webkit-scrollbar-thumb:active {
     background-color: #999999;
   }
+  
+
   
