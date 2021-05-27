@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ViewEncapsulation, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ViewEncapsulation, Component, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as moment from 'moment';
 
@@ -13,8 +13,7 @@ import {
 
 import { debounced } from '../../../../../shared/helpers/debounced.function'
 import { ProgrammingService } from '../../../services/programming/programming.service';
-import { WeekProgrammingEvent } from './../../../models/week-programming-event.model';
-
+import { StoreRequest } from '../../../models';
 @Component({
   selector: 'app-weekly-schedule',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +22,8 @@ import { WeekProgrammingEvent } from './../../../models/week-programming-event.m
   styleUrls: ['./weekly-schedule.component.scss']
 })
 export class WeeklyScheduleComponent implements OnInit {
+
+  @ViewChild('modal') modal:any
 
   locale: string = 'es-AR';
 
@@ -48,6 +49,12 @@ export class WeeklyScheduleComponent implements OnInit {
 
   externalEvents: CalendarEvent[] = [];
 
+  employeesOverlapping: any = [];
+
+  copyIndex: number;
+
+  canPaste: boolean = false;
+
   activeRequest = {
     id: null,
     events: [],
@@ -63,6 +70,7 @@ export class WeeklyScheduleComponent implements OnInit {
     primary: '#ff0d07',
     secondary: '#f332327a'
   }
+
 
   constructor(private programmingService: ProgrammingService) {
 
@@ -82,7 +90,7 @@ export class WeeklyScheduleComponent implements OnInit {
 
     this.programmingService.getEmployees().subscribe((employees: CalendarEvent[]) => this.externalEvents = employees);
 
-    this.programmingService.removeElement().subscribe((employee: CalendarEvent) => this.removeElement(employee));
+    this.programmingService.removeElement().subscribe((event: CalendarEvent) => this.removeElement(event));
 
    }
 
@@ -90,39 +98,36 @@ export class WeeklyScheduleComponent implements OnInit {
   {
     this.events = [];
     this.activeRequest = this.requests[event.target.value];
+    this.viewDate = this.activeRequest.start;
 
     for(let savedEvent of this.activeRequest.events)
     {
-      const index = this.externalEvents.findIndex(e => e.meta.extra.id == savedEvent.meta.extra.id);
-      const external = this.externalEvents[index];
+      const external = this.externalEvents.find(e => e.meta.extra.id == savedEvent.meta.extra.id);
+      external.title = savedEvent.title;
       external.start = savedEvent.start;
       external.end = savedEvent.end;
       external.color = savedEvent.color;
       external.meta.valid = savedEvent.meta.valid;  
       this.events.push(external);
     }
-
     this.refreshView()
+    this.setCanPaste();
   }
 
   insertEvents(): void 
   {
     for(let event of this.activeRequest.events)
     {
-      const newEvent = new WeekProgrammingEvent(
-          event.meta.valid,
-          event.meta.extra,
-          () => console.log(777),
-          event.start,
-          event.end,
-        )
+      const newEvent = this.programmingService.createWeekProgrammingEvent(event.meta.extra, event.meta.valid, event.start, event.end);
+
       this.events.push(newEvent);
     }
   }
 
-  removeElement(employee: CalendarEvent)
+  removeElement(event: CalendarEvent)
   {
-    this.activeRequest.events = this.activeRequest.events.filter((e) => e.meta.extra.id !== employee.meta.extra.id );
+    this.events = this.events.filter((e) => e.meta.extra.id !== event.meta.extra.id);
+    this.activeRequest.events = this.activeRequest.events.filter((e) => e.meta.extra.id !== event.meta.extra.id);
   }
 
   ngOnInit(): void {
@@ -130,8 +135,8 @@ export class WeeklyScheduleComponent implements OnInit {
   }
 
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    const startDay = this.activeRequest.start.getDay() - 1;
-    const endDay = this.activeRequest.end.getDay() - 1;
+    const startDay = this.view == CalendarView.Week ? this.activeRequest.start.getDay() - 1 : 0;
+    const endDay = this.view == CalendarView.Week ? this.activeRequest.end.getDay() - 1 : 0;
     const hours = this.activeRequest.start.getHours()
     let segmentValues = [];
    
@@ -144,6 +149,8 @@ export class WeeklyScheduleComponent implements OnInit {
         const hour = renderEvent.hourColumns[column].hours[h];
 
         if(hour.segments[0].date > this.activeRequest.end) break;
+
+        if(hour.segments[0].date < this.activeRequest.start) continue;
 
         hour.segments.forEach((segment) => {
           
@@ -195,11 +202,12 @@ export class WeeklyScheduleComponent implements OnInit {
     event.start = newStart;
     event.end   = newEnd ? newEnd : moment(event.start).add(1, 'hours').toDate();
     event.title = this.setTitle(event);
-    event       = this.eventOutOfRange(event);
+    event       = this.eventHasConflictWithDates(event);
     
     if (!eventLoaded) this.events.push(event);
 
     this.events = [...this.events];
+
     this.saveEventInActiveRequest(event);
   }
 
@@ -209,27 +217,18 @@ export class WeeklyScheduleComponent implements OnInit {
   
     if(index == -1) 
     {
-      this.activeRequest.events.push(
-        new WeekProgrammingEvent(
-          event.meta.valid,
-          event.meta.extra,
-          () => console.log(777),
-          event.start,
-          event.end,
-        )
-      )
+      const newEvent = this.programmingService.createWeekProgrammingEvent(event.meta.extra, event.meta.valid, event.start, event.end);
+      this.activeRequest.events.push(newEvent);
     }
     else 
     {
-      this.activeRequest.events[index].color = event.color;
-      this.activeRequest.events[index].start = event.start;
-      this.activeRequest.events[index].end = event.end;
-      this.activeRequest.events[index].meta.valid = event.meta.valid;
-
+      const {title, color, start, end, meta} = event; 
+      this.activeRequest.events[index].meta.valid = meta.valid;
+      this.activeRequest.events[index] = {...this.activeRequest.events[index], title, color, start, end};
     }
   }
 
-  eventOutOfRange(event: CalendarEvent): CalendarEvent 
+  eventHasConflictWithDates(event: CalendarEvent): CalendarEvent 
   {
     if(this.eventDroppedInvalid(event))
     {
@@ -247,10 +246,7 @@ export class WeeklyScheduleComponent implements OnInit {
 
   eventDroppedInvalid(event: CalendarEvent): boolean
   {
-    return (
-      event.start < this.activeRequest.start || 
-      event.end > this.activeRequest.end    
-    )
+    return event.start < this.activeRequest.start || event.end > this.activeRequest.end;
   }
 
   private emptySegment(segment: Date): boolean 
@@ -286,4 +282,64 @@ export class WeeklyScheduleComponent implements OnInit {
     return `${ employee.apellido } ${ employee.nombre }`;
   }
 
+  save(): void 
+  {
+    this.employeesOverlapping = this.programmingService.employeesOverlapping(this.requests);
+
+    if( this.employeesOverlapping.length > 0 ) return;
+
+    const validRequests = this.requests.filter((request:any ) => request.valid);
+
+    if(validRequests.length > 0)
+    {
+      this.programmingService.store( StoreRequest.fromArray(this.requests) ).subscribe(
+        (data:any) => this.employeesOverlapping = data
+      );
+    }
+    
+  }
+
+  copy(icon:any)
+  {
+    icon.open();
+
+    this.copyIndex = this.requests.findIndex(request => this.activeRequest.id == request.id);
+  }
+
+  setCanPaste(): void 
+  {
+    if(this.copyIndex == undefined) return null;
+
+    const requestA = this.requests[this.copyIndex];
+    const requestB = this.activeRequest;
+    this.canPaste  = this.programmingService.canPaste(requestA, requestB)
+  }
+
+  paste()
+  {
+    if(this.canPaste)
+    {
+      const requestA = this.requests[this.copyIndex];
+      const requestB = this.activeRequest;
+      const diff = this.programmingService.requestsDiff(requestA, requestB);
+      
+      this.events = [];
+      requestB.events = [];
+
+      for(let savedEvent of requestA.events)
+      {
+        const external = this.externalEvents.find(e => e.meta.extra.id == savedEvent.meta.extra.id);
+        external.title = savedEvent.title;
+        external.start = moment(savedEvent.start).add(diff, 'hours').toDate();
+        external.end = moment(savedEvent.end).add(diff, 'hours').toDate();
+        external.color = savedEvent.color;
+        external.meta.valid = savedEvent.meta.valid;  
+        this.events.push(external);
+        const newEvent = this.programmingService.createWeekProgrammingEvent(external.meta.extra, external.meta.valid, external.start, external.end);
+        requestB.events.push(newEvent);
+      }
+      this.refreshView()
+
+    }
+  }
 }

@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
+import { ContextMenuModule } from 'ngx-contextmenu';
 import { AfinoaRoutingModule } from './afinoa-routing.module';
 
 import { AfinoaComponent } from './afinoa.component';
@@ -27,9 +28,13 @@ import { WeeklyScheduleComponent } from './components/inspection/weekly-schedule
   ],
   imports: [
     CommonModule,
+    NgbModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
+    }),
+    ContextMenuModule.forRoot({
+      useBootstrap4: true,
     }),
     SharedModule,
     AfinoaRoutingModule,

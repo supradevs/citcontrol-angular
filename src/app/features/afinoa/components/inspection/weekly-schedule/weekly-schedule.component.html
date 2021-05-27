@@ -4,144 +4,262 @@
 >
 </app-title-section>
 
-    <div class="container mt-5">
-        <!-- <pre>{{ this.activeRequest | json }}</pre> -->
-        <pre>{{ this.events | json }}</pre>
-        <div class="row mb-4">
-            <div class="col-12 d-flex justify-content-end">
-                <button type="button" class="btn btn-warning">Guardar Programación</button>
-            </div>
+<div class="container mt-5">
+    <!-- <pre>{{ this.activeRequest | json }}</pre> -->
+    <!-- <pre>{{ this.events | json }}</pre> -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-end">
+            <button (click)="save()" type="button" class="btn btn-warning">Guardar Programación</button>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-md-3 col-lg-3">
-                
-                <div class="card bg-transparent shadow-none">
-                    <div class="card-body pt-0">
-                        <div class="row mb-3">
-                            <div class="col-12 p-0">
-                                <select (change)="onSelect($event)" class="form-control">
-                                    <option disabled>Solicitudes</option>
-                                    <option [value]="i" *ngFor="let request of requests; let i = index;">
-                                        #{{ request.id }} - 
-                                        {{ request.start | date:'dd/MM HH:mm' }} 
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div 
-                                mwlDroppable
-                                dragOverClass="drag-over"
-                                class="col-12 p-1 scroll-bar"
-                                [style.height]="'calc(100vh - 180px)'"
-                                [style.overflowY]="'scroll'"
-                                [style.padding]="'0px 5px'"
-                            >
-                                <!--item-->
-                                <ng-container *ngFor="let event of externalEvents">
-                                    <div class="person-info p-3 mb-3 bg-white border rounded">
-                                        <div 
-                                            mwlDraggable
-                                            [dropData]="{event: event}"
-                                            [touchStartLongPress]="{ delay: 100, delta: 10 }"
-                                            dragActiveClass="drag-active"
-                                            class="c-pointer mb-1 p-1"
-                                        >
-                                            <b>
-                                                {{ fullName(event.meta.extra) }}
-                                            </b>
-                                        </div>
-                                        <div class="d-flex justify-content-between text-muted">
-                                            <div> 
-                                                <i class="far fa-clock mr-1"></i>
-                                                <span>{{ event.meta.extra.horas }}hs</span>
-                                            </div>
-                                            <div>{{ event.meta.extra.seniority }}</div>
-                                        </div>
-                                        <div class="d-flex justify-content-between text-muted">
-                                            <span>Leg. {{ event.meta.extra.legajo }}</span>
-                                            <span>Sello {{ event.meta.extra.sello }}</span>
-                                        </div>
-                                        <div class="d-flex text-muted">
-                                            <i class="fas fa-industry mr-1 mt-1"></i>
-                                            <span>{{ event.meta.extra.empaques[0] }}</span>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                                <!--/item-->
-                            </div>
+    <ng-container *ngIf="employeesOverlapping.length > 0">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    <div class="row mb-2">
+                        <div class="col-12">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" class="text-white text-center">
+                                            Error en la programación. Corregir para evitar solapamientos.
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-white">Empleado</th>
+                                        <th class="text-white">Solicitud A</th>
+                                        <th class="text-white">Solicitud B</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let overlap of employeesOverlapping">
+                                        <td class="text-white"> {{ fullName(overlap.employee) }} </td> 
+                                        <td class="text-white">
+                                            Solicitud #{{ overlap.overlapA.id }} <br>
+                                            Asignado:
+                                            {{ overlap.overlapA.start | date:'HH:mm' }} a
+                                            {{ overlap.overlapA.end | date:'HH:mm' }}hs 
+
+                                        </td>
+                                        <td class="text-white">
+                                            Solicitud #{{ overlap.overlapB.id }} <br>
+                                            Asignado:
+                                            {{ overlap.overlapB.start | date:'HH:mm' }} a
+                                            {{ overlap.overlapB.end | date:'HH:mm' }}hs 
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </ng-container>
 
+    <div class="row">
+        <div class="col-xs-12 col-md-3 col-lg-3">
+            
+            <div class="card bg-transparent shadow-none">
+                <div class="card-body pt-0">
+                    <div class="row mb-3">
+                        <div class="col-12 p-0">
+                            <select (change)="onSelect($event)" class="form-control">
+                                <option disabled>Solicitudes</option>
+                                <option [value]="i" *ngFor="let request of requests; let i = index;">
+                                    #{{ request.id }} - 
+                                    {{ request.start | date:'dd/MM HH:mm' }} 
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div 
+                            mwlDroppable
+                            dragOverClass="drag-over"
+                            class="col-12 p-1 scroll-bar"
+                            [style.height]="'calc(100vh - 180px)'"
+                            [style.overflowY]="'scroll'"
+                            [style.padding]="'0px 5px'"
+                        >
+                            <!--item-->
+                            <ng-container *ngFor="let event of externalEvents">
+                                <div class="person-info p-3 mb-3 bg-white border rounded">
+                                    <div 
+                                        mwlDraggable
+                                        [dropData]="{event: event}"
+                                        [touchStartLongPress]="{ delay: 100, delta: 10 }"
+                                        dragActiveClass="drag-active"
+                                        class="c-pointer mb-1 p-1"
+                                    >
+                                        <b>
+                                            {{ fullName(event.meta.extra) }}
+                                        </b>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <div> 
+                                            <i class="far fa-clock mr-1"></i>
+                                            <span>{{ event.meta.extra.horas }}hs</span>
+                                        </div>
+                                        <div>{{ event.meta.extra.seniority }}</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-muted">
+                                        <span>Leg. {{ event.meta.extra.legajo }}</span>
+                                        <span>Sello {{ event.meta.extra.sello }}</span>
+                                    </div>
+                                    <div class="d-flex text-muted">
+                                        <i class="fas fa-industry mr-1 mt-1"></i>
+                                        <span>{{ event.meta.extra.empaques[0] }}</span>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <!--/item-->
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-xs-12 col-md-9 col-lg-9">
-                <div class="card">
-                    <div class="card-body">
-                    <div class="row pb-3">
-                            <div class="col-12 d-flex justify-content-between">
-                                <a [routerLink]="['/afinoa/inspeccion/empaque', 1]" routerLinkActive="router-link-active"  >{{ packing }}</a>
-                                <span>
-                                    <i 
-                                        mwlCalendarToday
-                                        [(viewDate)]="viewDate"
-                                        (click)="debouncedClick($event)"
-                                        class="fas fa-calendar-day mr-3 fs-20 c-pointer" title="Semana actual">
-                                    </i>
-                                    <i
-                                        mwlCalendarNextView
-                                        [view]="view"
-                                        [(viewDate)]="viewDate"
-                                        (click)="debouncedClick($event)"
-                                        class="fas fa-chevron-right mr-4 fs-20 c-pointer" title="Semana siguinte"
-                                    >
-                                    </i>
-                                </span>
-                                <span *ngIf="activeRequest">
-                                    <i *ngIf="isRequestValid" class="fas fa-clipboard-check mr-3 fs-20 text-success" title="Solicitud completada"></i>
-                                    <i *ngIf="!isRequestValid" class="fas fa-spinner fa-pulse mr-3 fs-20 text-warning" title="Solicitud pendiente"></i>
-                                    <i *ngIf="view == CalendarView.Week" (click)="view = CalendarView.Day" class="far fa-calendar-minus mr-3 fs-20 c-pointer" title="Cambiar a vista diaria" ></i>
-                                    <i *ngIf="view == CalendarView.Day" (click)="view = CalendarView.Week" class="far fa-calendar-alt mr-3 fs-20 c-pointer" title="Cambiar a vista semanal" ></i>
-                                    <i [ngClass]="{'text-muted': !isRequestValid, 'c-pointer': isRequestValid}" class="far fa-object-ungroup fs-20" title="Copiar asignación"></i>
-                                </span>
-                            </div>
-                            <div *ngIf="view == CalendarView.Day" class="col-12 d-flex justify-content-center">
-                                <span>
-                                    {{ viewDate | date:'EEEE' | titlecase }}
-                                    {{ viewDate | date:'d' }} de 
-                                    {{ viewDate | date:'MMMM' }} de 
-                                    {{ viewDate | date:'y' }}
-                                </span>
-                            </div>
-                    </div>
-                            <div [ngSwitch]="view" class="scroll-container" #scrollContainer>
-                                <mwl-calendar-week-view
-                                    *ngSwitchCase="CalendarView.Week"
-                                    [viewDate]="viewDate"
-                                    [events]="events"
-                                    [refresh]="refresh"
-                                    [weekStartsOn]="weekStartsOn"
-                                    [locale]="locale"
-                                    (eventTimesChanged)="eventDropped($event)"
-                                    (beforeViewRender)="beforeWeekViewRender($event)"
-                                >
-                                </mwl-calendar-week-view>
+        </div>
 
-                                <mwl-calendar-day-view
-                                    *ngSwitchCase="CalendarView.Day"
-                                    [viewDate]="viewDate"
-                                    [events]="events"
-                                    [refresh]="refresh"
-                                    [snapDraggedEvents]="false"
-                                    (eventTimesChanged)="eventDropped($event)"
-                                    (beforeViewRender)="beforeWeekViewRender($event)"
+        <div class="col-xs-12 col-md-9 col-lg-9">
+            <div class="card">
+                <div class="card-body">
+                <div class="row pb-3">
+                        <div class="col-12 d-flex justify-content-between">
+                            <a [routerLink]="['/afinoa/inspeccion/empaque', 1]" routerLinkActive="router-link-active"  >{{ packing }}</a>
+                            <span>
+                                <i 
+                                    mwlCalendarToday
+                                    [(viewDate)]="viewDate"
+                                    (click)="debouncedClick($event)"
+                                    class="fas fa-calendar-day mr-3 fs-20 c-pointer" title="Semana actual">
+                                </i>
+                                <i
+                                    mwlCalendarNextView
+                                    [view]="view"
+                                    [(viewDate)]="viewDate"
+                                    (click)="debouncedClick($event)"
+                                    class="fas fa-chevron-right mr-4 fs-20 c-pointer" title="Semana siguinte"
                                 >
-                                </mwl-calendar-day-view>
+                                </i>
+                            </span>
+                            <span *ngIf="activeRequest">
+                                <i *ngIf="isRequestValid" class="fas fa-clipboard-check mr-3 fs-20 text-success" title="Solicitud completada"></i>
+                                <i *ngIf="!isRequestValid" class="fas fa-spinner fa-pulse mr-3 fs-20 text-warning" title="Solicitud pendiente"></i>
+                                <i *ngIf="view == CalendarView.Week" (click)="view = CalendarView.Day" class="far fa-calendar-minus mr-3 fs-20 c-pointer" title="Cambiar a vista diaria" ></i>
+                                <i *ngIf="view == CalendarView.Day" (click)="view = CalendarView.Week" class="far fa-calendar-alt mr-3 fs-20 c-pointer" title="Cambiar a vista semanal" ></i>
+                                <i ngbTooltip="Copiado!" [autoClose]="true" triggers="manual" #t="ngbTooltip" (click)="isRequestValid ? copy(t) : null" [ngClass]="{'text-muted': !isRequestValid, 'c-pointer': isRequestValid}" class="far fa-object-ungroup fs-20"></i>
+                            </span>
+                        </div>
+                        <div *ngIf="view == CalendarView.Day" class="col-12 d-flex justify-content-center">
+                            <span>
+                                {{ viewDate | date:'EEEE' | titlecase }}
+                                {{ viewDate | date:'d' }} de 
+                                {{ viewDate | date:'MMMM' }} de 
+                                {{ viewDate | date:'y' }}
+                            </span>
+                        </div>
+                </div>
+
+                        <context-menu #basicMenu>
+                            <ng-template contextMenuItem (execute)="paste()">
+                                {{ canPaste ? 'Pegar' : 'Nada para pegar' }}
+                            </ng-template>
+                        </context-menu>
+
+                        <ng-template
+                            #weekHeaderTemplate
+                            let-days="days"
+                            let-locale="locale"
+                            let-dayHeaderClicked="dayHeaderClicked"
+                        >
+                        <div class="cal-day-headers">
+                            <div
+                                class="cal-header"
+                                *ngFor="let day of days"
+                                [class.cal-past]="day.isPast"
+                                [class.cal-today]="day.isToday"
+                                [class.cal-future]="day.isFuture"
+                                [class.cal-weekend]="day.isWeekend"
+                                (click)="dayHeaderClicked.emit({day: day})"
+                                [contextMenu]="basicMenu"
+                                [contextMenuSubject]="day.date"
+                            >
+                                <b>{{ day.date | calendarDate:'weekViewColumnHeader':locale }}</b><br />
+                                <span
+                                >{{ day.date | calendarDate:'weekViewColumnSubHeader':locale }}</span
+                                >
                             </div>
-                    </div>
+                        </div>
+                        </ng-template>
+
+                        <ng-template
+                            #weekViewHourSegment
+                            let-segment="segment"
+                            let-locale="locale"
+                            let-segmentHeight="segmentHeight"
+                            let-isTimeLabel="isTimeLabel"
+                        >
+                            <div
+                                class="cal-hour-segment"
+                                [style.height.px]="segmentHeight"
+                                [class.cal-hour-start]="segment.isStart"
+                                [class.cal-after-hour-start]="!segment.isStart"
+                                [ngClass]="segment.cssClass"
+                                [contextMenu]="basicMenu"
+                                [contextMenuSubject]="segment.date"
+                            >
+                                <div class="cal-time" *ngIf="isTimeLabel">
+                                {{ segment.date | calendarDate: 'weekViewHour':locale }}
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <div [ngSwitch]="view" class="scroll-container" #scrollContainer>
+                            <mwl-calendar-week-view
+                                *ngSwitchCase="CalendarView.Week"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [refresh]="refresh"
+                                [weekStartsOn]="weekStartsOn"
+                                [locale]="locale"
+                                [headerTemplate]="weekHeaderTemplate"
+                                [hourSegmentTemplate]="weekViewHourSegment"
+                                (eventTimesChanged)="eventDropped($event)"
+                                (beforeViewRender)="beforeWeekViewRender($event)"
+                            >
+                            </mwl-calendar-week-view>
+
+                            <mwl-calendar-day-view
+                                *ngSwitchCase="CalendarView.Day"
+                                [viewDate]="viewDate"
+                                [events]="events"
+                                [refresh]="refresh"
+                                [snapDraggedEvents]="false"
+                                (eventTimesChanged)="eventDropped($event)"
+                                (beforeViewRender)="beforeWeekViewRender($event)"
+                            >
+                            </mwl-calendar-day-view>
+                        </div>
+
+                   
+                       
+
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<app-modal [title]="'Error de programación'" [footerHidden]="true" #modal>
+    <b>Solicitudes con solapamiento de empleados:</b>
+    <ul>
+        <li>#45534 con #54332</li>
+        <li>#45534 con #54332</li>
+        <li>#45534 con #54332</li>
+    </ul>
+</app-modal>
+  

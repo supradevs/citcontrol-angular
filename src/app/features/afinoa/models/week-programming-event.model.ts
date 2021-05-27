@@ -1,3 +1,4 @@
+import { CalendarEvent } from 'angular-calendar';
 import * as moment from 'moment';
 
 interface ColorEvent {
@@ -42,7 +43,7 @@ export class WeekProgrammingEvent {
     constructor(
         valid: boolean = false,
         extra: any,
-        action: (event:any) => void,
+        action: ({ event }: { event: CalendarEvent }) => void,
         start: Date,
         end: Date
     ) {
@@ -54,7 +55,7 @@ export class WeekProgrammingEvent {
             onClick: action
         }
 
-        //this.actions.push(actionEvent);
+        this.actions.push(actionEvent);
         this.meta        = {color, valid, extra};
         this.color       = valid ? color : this.invalidColors;
         this.start       = start ? start : new Date;
