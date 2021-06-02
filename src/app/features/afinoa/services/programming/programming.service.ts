@@ -60,8 +60,8 @@ export class ProgrammingService {
         },
         {
           id: 954,
-          fecha_inicio: '2021-05-12 11:00:00',
-          fecha_fin: '2021-05-12 16:00:00',
+          fecha_inicio: '2021-05-12 05:00:00',
+          fecha_fin: '2021-05-12 10:00:00',
           empleados: [],
         },
         {
