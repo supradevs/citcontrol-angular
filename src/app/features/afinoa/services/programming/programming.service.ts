@@ -325,7 +325,7 @@ export class ProgrammingService {
         legajo: 'Abf453',
         seniority: 'senior',
         horas: 10,
-        empaquesX: [
+        empaques: [
           'Empaque NOA',
           'Empaque San Martin',
           'Empaque Umbrella',

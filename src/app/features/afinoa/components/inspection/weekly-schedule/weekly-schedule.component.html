@@ -114,14 +114,9 @@
                   </div>
                   <div class="d-flex text-muted">
                     <i class="fas fa-industry mr-1 mt-1"></i>
-                    <span [ngbTooltip]="tipContent">
+                    <span [title]="packings(event.meta.extra.empaques)">
                       {{ event.meta.extra.empaques | slice: 0:1 }}
                     </span>
-                    <ng-template #tipContent>
-                      <span *ngFor="let empaque of event.meta.extra.empaques">
-                        {{ empaque }} <br />
-                      </span>
-                    </ng-template>
                   </div>
                 </div>
               </ng-container>
