@@ -1,15 +1,19 @@
-.c-pointer{
-    cursor: pointer;
+.c-pointer {
+  cursor: pointer;
+}
+
+.c-move {
+  cursor: move;
 }
 
 @for $i from 1 through 10 {
   $j: $i * 10;
 
-  .vh-#{$j}{
+  .vh-#{$j} {
     height: #{$j}vh;
   }
 
-  .vw-#{$j}{
+  .vw-#{$j} {
     height: #{$j}vh;
   }
 }

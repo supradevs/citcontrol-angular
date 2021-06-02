@@ -35,7 +35,7 @@ export class ProgrammingService {
               empaques: [
                 'Empaque NOA',
                 'Empaque San Martin',
-                'Emapque Umbrella',
+                'Empaque Umbrella',
                 'Empaque Superpack',
               ],
               asignacion: {
@@ -118,7 +118,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -133,7 +133,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -148,7 +148,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -163,7 +163,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -178,7 +178,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -193,7 +193,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -208,7 +208,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -223,7 +223,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -238,7 +238,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -253,7 +253,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -268,7 +268,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -283,7 +283,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -298,7 +298,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -313,7 +313,7 @@ export class ProgrammingService {
         empaques: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
@@ -328,7 +328,7 @@ export class ProgrammingService {
         empaquesX: [
           'Empaque NOA',
           'Empaque San Martin',
-          'Emapque Umbrella',
+          'Empaque Umbrella',
           'Empaque Superpack',
         ],
       },
