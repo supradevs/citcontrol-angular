@@ -23,6 +23,7 @@ export class ProgrammingService {
           fecha_inicio: '2021-05-10 22:00:00',
           fecha_fin: '2021-05-11 06:00:00',
           estado_id: 4,
+          servicio: 'consolidado',
           empleados: [
             {
               id: 214,
@@ -50,30 +51,35 @@ export class ProgrammingService {
           fecha_inicio: '2021-05-11 02:00:00',
           fecha_fin: '2021-05-11 04:00:00',
           estado_id: 1,
+          servicio: 'consolidado',
           empleados: [],
         },
         {
           id: 24,
           fecha_inicio: '2021-05-11 01:00:00',
           fecha_fin: '2021-05-11 06:00:00',
+          servicio: 'consolidado',
           empleados: [],
         },
         {
           id: 954,
           fecha_inicio: '2021-05-12 05:00:00',
           fecha_fin: '2021-05-12 10:00:00',
+          servicio: 'consolidado',
           empleados: [],
         },
         {
           id: 146,
           fecha_inicio: '2021-05-13 01:00:00',
           fecha_fin: '2021-05-13 06:00:00',
+          servicio: 'consolidado',
           empleados: [],
         },
         {
           id: 973,
           fecha_inicio: '2021-05-14 01:00:00',
           fecha_fin: '2021-05-14 06:00:00',
+          servicio: 'consolidado',
           empleados: [],
         },
       ],
@@ -90,6 +96,7 @@ export class ProgrammingService {
   private mapRequests(requests: any[]) {
     return requests.map((request) => ({
       id: request.id,
+      service: request.servicio,
       start: new Date(request.fecha_inicio),
       end: new Date(request.fecha_fin),
       programmable: true,
@@ -499,7 +506,7 @@ export class ProgrammingService {
     return of(map);
   }
 
-  canPaste(requestA: any, requestB: any): boolean {
+  sameDuration(requestA: any, requestB: any): boolean {
     return this.hoursHelperService.sameDuration(
       requestA.start,
       requestA.end,

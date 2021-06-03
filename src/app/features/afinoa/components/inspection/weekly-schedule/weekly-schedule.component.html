@@ -7,6 +7,7 @@
 <div class="container mt-5">
   <!-- <pre>{{ this.activeRequest | json }}</pre> -->
   <!-- <pre>{{ this.events | json }}</pre> -->
+  <!-- <pre>{{ this.requests | json }}</pre> -->
   <div class="row mb-4">
     <div class="col-12 d-flex justify-content-end">
       <button (click)="save()" type="button" class="btn btn-warning">
@@ -72,7 +73,7 @@
                   [value]="i"
                   *ngFor="let request of requests; let i = index"
                 >
-                  #{{ request.id }} -
+                  #{{ request.id }} - {{ request.service | titlecase }} -
                   {{ request.start | date: "dd/MM HH:mm" }}
                 </option>
               </select>
@@ -179,18 +180,6 @@
                   class="far fa-calendar-alt mr-3 fs-20 c-pointer"
                   title="Cambiar a vista semanal"
                 ></i>
-                <i
-                  ngbTooltip="Copiado!"
-                  [autoClose]="true"
-                  triggers="manual"
-                  #t="ngbTooltip"
-                  (click)="isRequestValid ? copy(t) : null"
-                  [ngClass]="{
-                    'text-muted': !isRequestValid,
-                    'c-pointer': isRequestValid
-                  }"
-                  class="far fa-object-ungroup fs-20"
-                ></i>
               </span>
             </div>
             <div
@@ -206,8 +195,14 @@
           </div>
 
           <context-menu #basicMenu>
-            <ng-template contextMenuItem (execute)="paste()">
-              {{ canPaste ? "Pegar" : "Nada para pegar" }}
+            <ng-template contextMenuItem (execute)="isRequestValid ? copy() : null">
+              <span [ngClass]="[isRequestValid ? '' : 'text-muted']">Copiar</span>
+            </ng-template>
+            <ng-template contextMenuItem (execute)="canPaste ? paste() : null">
+              <span [ngClass]="[canPaste ? '' : 'text-muted']">Pegar</span>
+            </ng-template>
+            <ng-template contextMenuItem (execute)="canPaste ? pasteAll() : null">
+              <span [ngClass]="[canPaste ? '' : 'text-muted']">Pegar en todas</span>
             </ng-template>
           </context-menu>
 

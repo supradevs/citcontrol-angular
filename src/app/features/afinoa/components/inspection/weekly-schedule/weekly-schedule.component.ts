@@ -62,6 +62,7 @@ export class WeeklyScheduleComponent implements OnInit {
 
   activeRequest = {
     id: null,
+    service: null,
     events: [],
     programmable: true,
     valid: false,
@@ -323,9 +324,7 @@ export class WeeklyScheduleComponent implements OnInit {
     }
   }
 
-  copy(icon: any) {
-    icon.open();
-
+  copy() {
     this.copyIndex = this.requests.findIndex(
       (request) => this.activeRequest.id == request.id
     );
@@ -336,38 +335,62 @@ export class WeeklyScheduleComponent implements OnInit {
 
     const requestA = this.requests[this.copyIndex];
     const requestB = this.activeRequest;
-    this.canPaste = this.programmingService.canPaste(requestA, requestB);
+    this.canPaste = this.programmingService.sameDuration(requestA, requestB);
   }
 
-  paste() {
+  paste(): void {
     if (this.canPaste) {
       const requestA = this.requests[this.copyIndex];
       const requestB = this.activeRequest;
       const diff = this.programmingService.requestsDiff(requestA, requestB);
-
       this.events = [];
       requestB.events = [];
-
-      for (let savedEvent of requestA.events) {
-        const external = this.externalEvents.find(
-          (e) => e.meta.extra.id == savedEvent.meta.extra.id
-        );
-        external.title = savedEvent.title;
-        external.start = moment(savedEvent.start).add(diff, 'hours').toDate();
-        external.end = moment(savedEvent.end).add(diff, 'hours').toDate();
-        external.color = savedEvent.color;
-        external.meta.valid = savedEvent.meta.valid;
-        this.events.push(external);
-        const newEvent = this.programmingService.createWeekProgrammingEvent(
-          external.meta.extra,
-          external.meta.valid,
-          external.start,
-          external.end
-        );
-        requestB.events.push(newEvent);
-      }
-      this.refreshView();
+      this.cloneEvents(requestA, requestB, diff, true);
     }
+  }
+
+  pasteAll(): void 
+  {
+    const requestA = this.requests[this.copyIndex];
+
+    this.events = [];
+
+    for(let index in this.requests) 
+    {
+      const requestB = this.requests[index];
+
+      if(this.copyIndex === Number(index) || !this.programmingService.sameDuration(requestA, requestB)) continue;
+
+      const diff = this.programmingService.requestsDiff(requestA, requestB);
+      requestB.events = [];
+      this.cloneEvents(requestA, requestB, diff);
+      
+    }
+    this.paste()
+  }
+
+  cloneEvents(requestA: any, requestB: any, diff: number, current = false): void 
+  {
+    for (let savedEvent of requestA.events) 
+    {
+      const external = this.externalEvents.find((e) => e.meta.extra.id == savedEvent.meta.extra.id);
+      external.start = moment(savedEvent.start).add(diff, 'hours').toDate();
+      external.end = moment(savedEvent.end).add(diff, 'hours').toDate();
+      external.color = savedEvent.color;
+      external.meta.valid = savedEvent.meta.valid;
+      external.title = this.setTitle(external);
+      
+      if(current) this.events.push(external);
+
+      const newEvent = this.programmingService.createWeekProgrammingEvent(
+        external.meta.extra,
+        external.meta.valid,
+        external.start,
+        external.end
+      );
+      requestB.events.push(newEvent);
+    }
+    this.refreshView();
   }
 
   packings(packings: string[]): string {
