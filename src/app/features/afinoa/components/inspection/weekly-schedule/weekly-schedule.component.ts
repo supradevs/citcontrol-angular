@@ -78,23 +78,26 @@ export class WeeklyScheduleComponent implements OnInit {
   };
 
   constructor(private programmingService: ProgrammingService) {
+    
     this.programmingService.fetch(3, 'sdsf').subscribe((programming) => {
       const { packing, requests } = programming;
 
       if (requests.length > 0) this.activeRequest = requests[0];
-
-      this.viewDate = this.activeRequest.start;
-      this.packing = packing;
-      this.requests = requests;
-      this.loading = false;
-      this.insertEvents();
-      this.refreshView();
+        this.viewDate = this.activeRequest.start;
+        this.packing = packing;
+        this.requests = requests;
+        this.loading = false;
+        this.insertEvents();
+        this.refreshView();
     });
 
     this.programmingService
       .getEmployees()
       .subscribe(
-        (employees: CalendarEvent[]) => (this.externalEvents = employees)
+        (employees: CalendarEvent[]) => {
+          this.externalEvents = employees
+          this.refreshView();
+        }
       );
 
     this.programmingService
@@ -111,12 +114,15 @@ export class WeeklyScheduleComponent implements OnInit {
       const external = this.externalEvents.find(
         (e) => e.meta.extra.id == savedEvent.meta.extra.id
       );
-      external.title = savedEvent.title;
-      external.start = savedEvent.start;
-      external.end = savedEvent.end;
-      external.color = savedEvent.color;
-      external.meta.valid = savedEvent.meta.valid;
-      this.events.push(external);
+
+      if(external) { 
+        external.title = savedEvent.title;
+        external.start = savedEvent.start;
+        external.end = savedEvent.end;
+        external.color = savedEvent.color;
+        external.meta.valid = savedEvent.meta.valid;
+        this.events.push(external);
+      }
     }
     this.refreshView();
     this.setCanPaste();
@@ -149,12 +155,9 @@ export class WeeklyScheduleComponent implements OnInit {
   }
 
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    const startDay =
-      this.view == CalendarView.Week
-        ? this.activeRequest.start.getDay() - 1
-        : 0;
-    const endDay =
-      this.view == CalendarView.Week ? this.activeRequest.end.getDay() - 1 : 0;
+    
+    const startDay = this.view == CalendarView.Week ? this.activeRequest.start.getDay() - 1 : 0;
+    const endDay = this.view == CalendarView.Week ? this.activeRequest.end.getDay() - 1 : 0;
     const hours = this.activeRequest.start.getHours();
     let segmentValues = [];
 
@@ -183,7 +186,8 @@ export class WeeklyScheduleComponent implements OnInit {
   private validateRequestState(segmentValues: boolean[]): void {
     if (this.requestHasEmptySegment(segmentValues) || this.misplacedEmployee())
       this.activeRequest.valid = false;
-    else this.activeRequest.valid = true;
+    else
+      this.activeRequest.valid = true;
   }
 
   private misplacedEmployee(): boolean {
@@ -224,6 +228,7 @@ export class WeeklyScheduleComponent implements OnInit {
     this.events = [...this.events];
 
     this.saveEventInActiveRequest(event);
+    this.refreshView();
   }
 
   saveEventInActiveRequest(event: CalendarEvent): void {
@@ -271,6 +276,18 @@ export class WeeklyScheduleComponent implements OnInit {
     );
   }
 
+
+  allEvents(): void {
+
+    let events = [];
+
+    this.requests.forEach((request:any) => {
+      events = [...events,...request.events];
+    });
+
+    this.events = events;
+  }
+
   private emptySegment(segment: Date): boolean {
     const segmentShift = moment(segment).add(1, 'seconds');
 
@@ -293,9 +310,7 @@ export class WeeklyScheduleComponent implements OnInit {
   }
 
   private setTitle(event: CalendarEvent): string {
-    return `<b class="fs-13">${this.fullName(
-      event.meta.extra
-    )} - ${this.getHours(event)}</b>`;
+    return `<b class="fs-13">${this.fullName(event.meta.extra)} - ${this.getHours(event)}</b>`;
   }
 
   private getHours(event: CalendarEvent): string {

@@ -18,6 +18,7 @@ import { ColorPipe } from './pipes/color.pipe';
 import { ModalComponent } from './components/modal/modal.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { DateAgoPipe } from './pipes/date-ago.pipe';
+import { ButtonEmailComponent } from './components/button-email/button-email.component';
 
 
 const elements = [
@@ -49,6 +50,7 @@ const elements = [
   ],
   declarations: [
    ...elements,
+   ButtonEmailComponent,
   ],
   exports:[
     FormsModule,

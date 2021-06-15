@@ -69,10 +69,7 @@
             <div class="col-12 p-0">
               <select (change)="onSelect($event)" class="form-control">
                 <option disabled>Solicitudes</option>
-                <option
-                  [value]="i"
-                  *ngFor="let request of requests; let i = index"
-                >
+                <option [value]="i" *ngFor="let request of requests; let i = index">
                   #{{ request.id }} - {{ request.service | titlecase }} -
                   {{ request.start | date: "dd/MM HH:mm" }}
                 </option>
@@ -133,53 +130,13 @@
         <div class="card-body">
           <div class="row pb-3">
             <div class="col-12 d-flex justify-content-between">
-              <a
-                [routerLink]="['/afinoa/inspeccion/empaque', 1]"
-                routerLinkActive="router-link-active"
-                >{{ packing }}</a
-              >
-              <span>
-                <i
-                  mwlCalendarToday
-                  [(viewDate)]="viewDate"
-                  (click)="debouncedClick($event)"
-                  class="fas fa-calendar-day mr-3 fs-20 c-pointer"
-                  title="Semana actual"
-                >
-                </i>
-                <i
-                  mwlCalendarNextView
-                  [view]="view"
-                  [(viewDate)]="viewDate"
-                  (click)="debouncedClick($event)"
-                  class="fas fa-chevron-right mr-4 fs-20 c-pointer"
-                  title="Semana siguinte"
-                >
-                </i>
-              </span>
+              <a [routerLink]="['/afinoa/inspeccion/empaque', 1]" routerLinkActive="router-link-active">{{ packing }}</a>
               <span *ngIf="activeRequest">
-                <i
-                  *ngIf="isRequestValid"
-                  class="fas fa-clipboard-check mr-3 fs-20 text-success"
-                  title="Solicitud completada"
-                ></i>
-                <i
-                  *ngIf="!isRequestValid"
-                  class="fas fa-spinner fa-pulse mr-3 fs-20 text-warning"
-                  title="Solicitud pendiente"
-                ></i>
-                <i
-                  *ngIf="view == CalendarView.Week"
-                  (click)="view = CalendarView.Day"
-                  class="far fa-calendar-minus mr-3 fs-20 c-pointer"
-                  title="Cambiar a vista diaria"
-                ></i>
-                <i
-                  *ngIf="view == CalendarView.Day"
-                  (click)="view = CalendarView.Week"
-                  class="far fa-calendar-alt mr-3 fs-20 c-pointer"
-                  title="Cambiar a vista semanal"
-                ></i>
+                <i *ngIf="isRequestValid" class="fas fa-clipboard-check mr-3 fs-20 text-success" title="Solicitud completada"></i>
+                <i *ngIf="!isRequestValid"class="fas fa-spinner fa-pulse mr-3 fs-20 text-warning" title="Solicitud pendiente"></i>
+                <i *ngIf="view == CalendarView.Week" (click)="view = CalendarView.Day" class="far fa-calendar-minus mr-3 fs-20 c-pointer" title="Cambiar a vista diaria"></i>
+                <i *ngIf="view == CalendarView.Day" (click)="view = CalendarView.Week" class="far fa-calendar-alt mr-3 fs-20 c-pointer" title="Cambiar a vista semanal"></i>
+                <i (click)="allEvents()" class="fas fa-calendar-week  mr-3 fs-20 c-pointer"></i>
               </span>
             </div>
             <div
@@ -289,11 +246,3 @@
   </div>
 </div>
 
-<app-modal [title]="'Error de programación'" [footerHidden]="true" #modal>
-  <b>Solicitudes con solapamiento de empleados:</b>
-  <ul>
-    <li>#45534 con #54332</li>
-    <li>#45534 con #54332</li>
-    <li>#45534 con #54332</li>
-  </ul>
-</app-modal>

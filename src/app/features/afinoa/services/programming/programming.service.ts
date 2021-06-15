@@ -1,8 +1,11 @@
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { CalendarEvent } from 'angular-calendar';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { WeekProgrammingEvent, StoreRequest, Overlap } from '../../models';
 import { HoursHelperService } from 'src/app/shared/helpers/hours-helper.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +14,12 @@ export class ProgrammingService {
   private subject = new Subject<any>();
   private removeElement$ = this.subject.asObservable();
 
-  constructor(private hoursHelperService: HoursHelperService) {}
+  readonly api: string = environment.API_URL;
+
+  constructor(
+    private hoursHelperService: HoursHelperService,
+    private http: HttpClient
+  ) {}
 
   fetch(packingId: number, date: string): Observable<any> {
     const data = {
@@ -26,9 +34,9 @@ export class ProgrammingService {
           servicio: 'consolidado',
           empleados: [
             {
-              id: 214,
-              nombre: 'Juan',
-              apellido: 'Perez',
+              id: 151,
+              nombre: 'Albertha',
+              apellido: 'Rice',
               sello: '42525',
               legajo: 'Abf453',
               seniority: 'senior',
@@ -113,252 +121,32 @@ export class ProgrammingService {
   }
 
   getEmployees(): Observable<any> {
-    const data = [
-      {
-        id: 214,
-        nombre: 'Juan',
-        apellido: 'Perez',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 45,
-        nombre: 'Marcelo',
-        apellido: 'Gallardo',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 643,
-        nombre: 'Julian',
-        apellido: 'Serrano',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 8955,
-        nombre: 'Marta',
-        apellido: 'Estuart',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 784,
-        nombre: 'Pedro',
-        apellido: 'Infante',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 4385,
-        nombre: 'Roberto',
-        apellido: 'Carlos',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 3484,
-        nombre: 'Gloria',
-        apellido: 'Estefan',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 50464,
-        nombre: 'Maria',
-        apellido: 'Nieves',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 9034,
-        nombre: 'Leonel',
-        apellido: 'Cristiano',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 433478,
-        nombre: 'Marcelo',
-        apellido: 'Tinelli',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 83457,
-        nombre: 'Roberto',
-        apellido: 'Di Nero',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 3634,
-        nombre: 'Susana',
-        apellido: 'Gimenez',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 45742,
-        nombre: 'Pablo',
-        apellido: 'Escobar',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 7346,
-        nombre: 'Astor',
-        apellido: 'Piazolla',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-      {
-        id: 26614,
-        nombre: 'Alicia',
-        apellido: 'Maravilla',
-        sello: '42525',
-        legajo: 'Abf453',
-        seniority: 'senior',
-        horas: 10,
-        empaques: [
-          'Empaque NOA',
-          'Empaque San Martin',
-          'Empaque Umbrella',
-          'Empaque Superpack',
-        ],
-      },
-    ];
 
-    const events = data.map((employee, index) => {
-      const self = this;
+    const url = `${this.api}/afinoa/inspectores_disponibles`;
+    const self = this;
+    
+    return this.http.get(url).pipe(
+      map((data:any) => {
 
-      const callback = ({ event }) => {
-        const service = self;
-        service.subject.next(event);
-      };
+        const events = data.data.map((employee:any) => {
+          const callback = ({ event }) => {
+            const service = self;
+            service.subject.next(event);
+          };
+    
+          return new WeekProgrammingEvent(
+            false,
+            employee,
+            callback,
+            new Date(),
+            new Date()
+          );
+        });
 
-      return new WeekProgrammingEvent(
-        false,
-        employee,
-        callback,
-        new Date(),
-        new Date()
-      );
-    });
+        return events;
+      })
+    );
 
-    return of(events);
   }
 
   removeElement(): Observable<any> {

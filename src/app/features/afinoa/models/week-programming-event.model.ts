@@ -81,11 +81,27 @@ export class WeekProgrammingEvent {
 
     private getRandomColor(value: number): ColorEvent
     {
-        let blue = Math.floor(value % 256);
-        let green = Math.floor(value / 256 % 256);
-        let red = Math.floor(value / 256 / 256 % 256);
-        const color = "rgb(" + red + "," + green + "," + blue + ")";
-        return {primary: color, secondary: color};
+        const stringToColour = (value: number) => {
+
+          let total = String(value).split('').map(n => Number(n)).reduce((a,b) => a+b,0);
+
+          let str = String(value * total);
+
+          let hash = 0;
+          for (var i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+          }
+          var colour = '#';
+          for (var i = 0; i < 3; i++) {
+            let value = (hash >> (i * 8)) & 0xFF;
+            colour += ('00' + value.toString(16)).substr(-2);
+          }
+          return colour;
+      }
+
+      const color = stringToColour(value);
+
+      return {primary: color, secondary: color};
     }
 
 }
