@@ -1,0 +1,58 @@
+<div class="section">
+
+  <div class="section-body">
+
+    <app-title-section 
+      [title]="'Crear solicitudes'" 
+      [description]="'Permite crear solicitudes de servicios.'">
+    </app-title-section>
+    
+
+    <div *ngIf="false" class="alert alert-warning alert-has-icon">
+      <div class="alert-icon"><i class="fas fa-info-circle"></i></div>
+      <div class="alert-body">
+        <div class="alert-title">Atención</div>
+          <ul>
+            <li>Por cada fila se va a crear una solicitud.</li>
+            <li>El rango máximo por solicitud es de 12 hs, en caso de requerir mas horas se debe crear una nueva solicitud.</li>
+            <li>El rango mínimo de cada solicitud es de una hora.</li>
+            <li>Se puede solicitar un servicio con un minimo de 8 horas de anticipación.</li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <h4>Formulario</h4>
+        <span (click)="onNewForm()" class="btn btn-info c-pointer">Crear solicitud</span>
+      </div>
+      <div class="card-body">
+        <ng-container *ngFor="let form of formList; let i = index;">
+          <app-card-form 
+            [packings]="packings"
+            [services]="services"
+            [packing]="form.empaque_id"
+            [service]="form.servicio_id"
+            [start]="form.fecha_inicio"
+            [end]="form.fecha_fin"
+            [isExtraordinary]="form.extraordinaria"
+            (delete)="onDeleteForm(i)"
+            (copy)="onCopyForm(i)"
+            (values)="onSetForm($event, i)"
+          >
+          </app-card-form>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="row mb-5 pb-5">
+      <div class="col-md-12 d-flex justify-content-end">
+        <button [disabled]="!isValid" (click)="onSubmit()" type="button" class="btn btn-lg btn-success">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal [title]="'Aviso'" [footerHidden]="true" #modal>
+  <p>Solcitudes creadas</p>
+</app-modal>

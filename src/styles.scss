@@ -1,0 +1,30 @@
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import './styles/utils';
+@import './styles/scroll';
+@import './styles/font-sizes';
+@import './styles/position';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+
+html, body {
+    height:100%;
+}
+
+.navbar-bg {
+    height: 70px;
+}
+
+body.layout-3 .main-content {
+    padding-top: 100px;
+}
+
+.beep:after {
+    background-color: #d71212;
+}
+
+.cal-event-title{
+    color:white;
+}
+
+.dropdown-list .dropdown-list-content {
+    overflow-y: scroll;
+}

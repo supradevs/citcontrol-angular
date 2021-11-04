@@ -1,0 +1,28 @@
+<div *ngIf="show" id="modal-alert">
+    <div class="w-25">
+        <div class="alert alert-has-icon" [class]="backgroundColor">
+            <div class="alert-icon">
+                <ng-container [ngSwitch]="color">
+                    <i *ngSwitchCase="'info'" class="fas fs-15 fa-lightbulb"></i>
+                    <i *ngSwitchCase="'danger'" class="fas fs-15 fa-exclamation-triangle"></i>
+                    <i *ngSwitchCase="'warning'" class="fas fs-15 fa-exclamation-circle"></i>
+                    <i *ngSwitchCase="'success'" class="fas fs-15 fa-check"></i>
+                </ng-container>
+                
+            </div>
+            <div class="alert-body">
+                <div class="alert-title">Alerta</div>
+                <div class="alert-content">
+                    <ng-content></ng-content>
+                </div>
+                <div 
+                    [ngClass]="{'justify-content-end': only, 'justify-content-between': !only}"
+                    class="alert-footer mt-3 d-flex justify-content-between"
+                >
+                    <button *ngIf="!only" (click)="onCancel()" class="alert-btn-secondary">Cancelar</button>
+                    <button (click)="onAccept()" class="alert-btn-primary">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

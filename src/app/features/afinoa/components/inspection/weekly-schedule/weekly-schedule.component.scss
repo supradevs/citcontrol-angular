@@ -1,0 +1,21 @@
+.cal-month-view .bg-request,
+.cal-week-view .cal-day-columns .bg-request,
+.cal-day-view .bg-request {
+    background-color: #a5a5a5 !important;
+}
+
+.drag-active {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+.drag-over {
+    background-color: #eee;
+}
+
+ .fill-height {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }

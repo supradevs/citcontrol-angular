@@ -1,0 +1,34 @@
+  <ng-template #modalRef let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+      <span class="close c-pointer" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </span>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div *ngIf="!footerHidden" class="modal-footer">
+      <button 
+        (click)="modal.close(false)" 
+        [disabled]="btnLeftDisable"
+        [hidden]="btnLeftHidden"
+        [ngClass]="btnLeftStyle"
+        type="button" 
+        class="btn"
+        data-dismiss="modal">{{ btnLeftText }}
+      </button>
+      <button
+        (click)="modal.close(true)" 
+        [disabled]="btnRightDisable"
+        [hidden]="btnRightHidden"
+        [ngClass]="btnRightStyle"
+        type="button" 
+        class="btn"
+        data-dismiss="modal" 
+      >
+        {{ btnRightText }}
+      </button>
+    </div>
+  </ng-template>
+  

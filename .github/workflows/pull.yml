@@ -1,0 +1,22 @@
+name: Angular-citcontrol
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  angular-citcontrol:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to QA
+      uses: appleboy/ssh-action@master
+      with:
+          username: ${{ secrets.USERNAME }}
+          host: ${{ secrets.HOST }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/citcontrol-angular
+            git pull origin develop
+            docker build -t citcontrol-image .
+            docker rm -f citcontrol-web
+            docker run -d -p 7300:80 --name citcontrol-web citcontrol-image

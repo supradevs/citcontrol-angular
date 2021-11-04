@@ -1,0 +1,1 @@
+export { CustomDateFormatter } from './custom-date-formatter.provider'

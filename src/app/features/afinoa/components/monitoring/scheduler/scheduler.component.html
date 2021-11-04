@@ -1,0 +1,127 @@
+<section class="section">
+
+  <div class="section-body">
+    <h2 class="section-title">Solicitudes</h2>
+    <p class="section-lead">Programar solicitudes</p>
+
+    <ng-container *ngIf="toggle">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <ul class="nav nav-pills flex-column mb-2">
+                <li class="nav-item"><a href="#" class="nav-link ">Tucumán</a></li>
+                <li class="nav-item"><a href="#" class="nav-link active">Salta / Jujuy</a></li>
+              </ul>
+              <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <select name="" id="" class="form-control">
+                        <option value="">a programar</option>
+                        <option value="">a programar</option>
+                        <option value="">a programar</option>
+                    </select>
+                </li>
+              </ul>
+              <hr>
+              <div class="summary-item">
+                <div class="mb-3">
+                    <input type="checkbox"> Seleccionar todo
+                </div>
+                <ul class="list-unstyled list-unstyled-border scroll-bar pr-2" style="height: 50vh; overflow-y: scroll;">
+                  <li class="media">
+                    <a (click)="openLightModal = !openLightModal" class="c-pointer">
+                      <img (click)="openLightModal = !openLightModal" alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-1-50.png">
+                    </a>
+                    <div class="media-body">
+                      <!-- <div class="media-right fs-12"><i class="fas fa-map-marker-alt"></i>&nbsp;450km - 150has</div> -->
+                      <div class="media-title"><a href="#">NH-4529-341</a></div>
+                      <div class="text-small text-muted">
+                        <span><i class="fas fa-map-marker-alt"></i> 150km</span>
+                        <span class="ml-3"><i class="fas fa-th"></i> 150has</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="media">
+                    <a (click)="openLightModal = !openLightModal">
+                      <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-2-50.png">
+                    </a>
+                    <div class="media-body">
+                      <div class="media-right">$499</div>
+                      <div class="media-title"><a href="#">RocketZ</a></div>
+                      <div class="text-muted text-small">by <a href="#">Hasan Basri</a> <div class="bullet"></div> Sunday
+                      </div>
+                    </div>
+                  </li>
+                  <li class="media" *ngFor="let item of [1,1,1,1,1,1,1,1]">
+                    <a href="#">
+                      <img alt="image" class="mr-3 rounded" width="50" src="../assets/img/products/product-3-50.png">
+                    </a>
+                    <div class="media-body">
+                      <div class="media-right">$149</div>
+                      <div class="media-title"><a href="#">Xiaomay Readme 4.0</a></div>
+                      <div class="text-small text-muted">by <a href="#">Kusnaedi</a> <div class="bullet"></div> Tuesday
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <form id="setting-form">
+            <div class="card" id="settings-card">
+              <div class="card-body">
+                <div style="width: 100%">
+                    <iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=es&amp;q=Les%20Rambles,%201%20Barcelona,%20Spain+(Mi%20nombre%20de%20egocios)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                </div>
+              </div>
+              <div class="card-footer bg-whitesmoke text-md-right">
+                <button (click)="toggle = !toggle" class="btn btn-primary" id="save-btn">Programar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!toggle">
+      <div class="row">
+        <div class="col-md-12">
+          <form id="setting-form">
+            <div class="card" id="settings-card">
+              <div class="card-header py-1">
+                <div class="form-group">
+
+                </div>
+              </div>
+              <div class="card-body">
+                <app-planner-calendar></app-planner-calendar>
+
+                <div class="row">
+                  <div class="col-12">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Necessitatibus, atque incidunt. Praesentium eveniet cupiditate facere architecto sunt odit at reiciendis numquam fuga eos quae, distinctio qui temporibus suscipit, ex libero!
+                  </div>
+                </div>
+
+              </div>
+              <div class="card-footer bg-whitesmoke text-md-right">
+                <button (click)="toggle = !toggle" class="btn btn-primary" id="save-btn">Programar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+
+  </div>
+  </section>
+
+
+  <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<!-- <button (click)="openLightModal = !openLightModal">cambio</button> -->
+

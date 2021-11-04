@@ -1,0 +1,105 @@
+<app-title-section
+  [title]="'Vista semanal'"
+  [description]="'Muestra las solicitudes por empaque'"
+>
+</app-title-section>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <h4 *ngIf="packing; else elseBlock">{{ packing }}</h4>
+        <ng-template #elseBlock>
+            <h4>Cargando...</h4>
+        </ng-template>
+        <a [routerLink]="['/afinoa/inspeccion/empaque/' + this.packingId + '/programacion']" routerLinkActive="router-link-active"  class="btn btn-outline-warning">Programar</a>
+    </div>
+    <div class="card-body">
+        <ng-container>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <div
+                            class="btn btn-primary c-pointer"
+                            mwlCalendarPreviousView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            (click)="debouncedClick($event)"
+                        >
+                            Previo
+                        </div>
+                        <div
+                            class="btn btn-outline-secondary c-pointer"
+                            mwlCalendarToday
+                            [(viewDate)]="viewDate"
+                            (click)="debouncedClick($event)"
+                        >
+                            Semana actual
+                        </div>
+                        <div
+                            class="btn btn-primary c-pointer"
+                            mwlCalendarNextView
+                            [view]="view"
+                            [(viewDate)]="viewDate"
+                            (click)="debouncedClick($event)"
+                        >
+                            Siguiente
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 text-left">
+                <h3>
+                    {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+                </h3>
+                </div>
+            </div>
+            <br />
+            <div [ngSwitch]="view" class="scroll-container" #scrollContainer>
+                <mwl-calendar-week-view
+                    *ngSwitchCase="CalendarView.Week"
+                    [viewDate]="viewDate"
+                    [events]="events"
+                    [refresh]="refresh"
+                    [weekStartsOn]="weekStartsOn"
+                    [locale]="locale"
+                    (eventTimesChanged)="eventTimesChanged($event)"
+                >
+                </mwl-calendar-week-view>
+            </div>
+            
+           
+        
+        </ng-container>
+        
+    </div>
+</div>
+
+ 
+<app-modal 
+  [title]="'Validar causa de cancelación'"
+  [btnLeftText]="'Rechazar'"
+  [btnRightText]="'Validar'"
+  [btnLeftStyle]="'btn-danger'"
+  [btnRightStyle]="'btn-success'"
+  (leftEvent)="onInvalid($event)"
+  (rightEvent)="onValid($event)"
+  #validationModal
+>
+    <ng-container *ngIf="selectedWeekEvent">
+        <b>Solicitud:</b> #{{ selectedWeekEvent.meta.id }} <br>
+        <b>Cancelacion por:</b> {{ selectedWeekEvent.meta.motivo_cancelacion }}.
+    </ng-container>
+</app-modal>
+
+<app-modal 
+  [title]="'Rechazar solicitud extraordinaria'"
+  [btnRightText]="'Rechazar'"
+  [btnRightStyle]="'btn-danger'"
+  (rightEvent)="onReject($event)"
+  #rejectModal
+>
+    <ng-container *ngIf="selectedWeekEvent">
+        <b>Solicitud:</b> #{{ selectedWeekEvent.meta.id }} <br>
+        <b>Fecha de inicio:</b> {{ selectedWeekEvent.meta.fecha_inicio |  date: 'dd/MM/yyyy HH:mm' }}.
+    </ng-container>
+</app-modal>
+
+

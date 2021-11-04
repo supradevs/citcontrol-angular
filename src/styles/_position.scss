@@ -1,0 +1,22 @@
+
+@for $i from 1 through 20 {
+
+  .top-#{$i}{
+    top: #{$i}px;
+  }
+
+  .bottom-#{$i}{
+    bottom: #{$i}px;
+  }
+
+  .left-#{$i}{
+    left: #{$i}px;
+  }
+
+  .right-#{$i}{
+    right: #{$i}px;
+  }
+
+
+}
+;

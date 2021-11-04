@@ -1,0 +1,78 @@
+    <section class="section w-100 vh-100 d-flex align-items-center">
+      <div class="container mt-5">
+        <div class="row">
+
+          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+            <div class="card card-warning">
+              <div class="card-header"><h4 class="text-warning">CITCONTROL</h4></div>
+
+              <div class="card-body">
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="needs-validation" novalidate="">
+                  <div class="form-group">
+                    <label for="text">Usuario</label>
+                    <input
+                      formControlName="username"
+                      type="text"
+                      class="form-control"
+                      name="text"
+                      tabindex="1"
+                      required
+                      autofocus
+                    >
+                    <div class="invalid-feedback">
+                      Ingrese su usuario
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="d-block">
+                    	<label for="password" class="control-label">Contraseña</label>
+                      <div *ngIf="false" class="float-right">
+                        <a href="auth-forgot-password.html" class="text-small">
+                          Forgot Password?
+                        </a>
+                      </div>
+                    </div>
+                    <input
+                      formControlName="password"
+                      id="password"
+                      type="password"
+                      class="form-control"
+                      name="password"
+                      tabindex="2"
+                      required
+                    >
+                    <div class="invalid-feedback">
+                      Ingrese su contraseña
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input formControlName="remember" autocomplete="off" type="checkbox" name="remember" class="custom-control-input c-pointer" tabindex="3" id="remember-me">
+                      <label class="custom-control-label c-pointer" for="remember-me">Recordarme</label>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <input [disabled]="loginForm.invalid" value="Login" type="submit" class="btn btn-warning btn-lg btn-block" tabindex="4">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="simple-footer">
+
+              Copyright &copy; Agencia Supra
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<app-modal #modal
+   [title]="'Error'"
+   [footerHidden]="true"
+>
+  <p>Usuario o contraseña invalida</p>
+</app-modal>
+
